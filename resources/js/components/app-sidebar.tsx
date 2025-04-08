@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, FileText, Tag, FolderTree, Settings, Users, Shield, Image } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -12,6 +12,47 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: '/dashboard',
         icon: LayoutGrid,
+    },
+];
+
+const contentNavItems: NavItem[] = [
+    {
+        title: 'Posts',
+        href: '/posts',
+        icon: FileText,
+    },
+    {
+        title: 'Categories',
+        href: '/categories',
+        icon: FolderTree,
+    },
+    {
+        title: 'Tags',
+        href: '/tags',
+        icon: Tag,
+    },
+    {
+        title: 'Media',
+        href: '/media',
+        icon: Image,
+    },
+];
+
+const adminNavItems: NavItem[] = [
+    {
+        title: 'Users',
+        href: '/users',
+        icon: Users,
+    },
+    {
+        title: 'Roles',
+        href: '/roles',
+        icon: Shield,
+    },
+    {
+        title: 'Settings',
+        href: '/settings',
+        icon: Settings,
     },
 ];
 
@@ -45,6 +86,10 @@ export function AppSidebar() {
 
             <SidebarContent>
                 <NavMain items={mainNavItems} />
+                <div className="mt-2 px-4 text-xs font-semibold text-muted-foreground">Content Management</div>
+                <NavMain items={contentNavItems} />
+                <div className="mt-2 px-4 text-xs font-semibold text-muted-foreground">Administration</div>
+                <NavMain items={adminNavItems} />
             </SidebarContent>
 
             <SidebarFooter>
