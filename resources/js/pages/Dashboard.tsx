@@ -219,25 +219,25 @@ export default function Dashboard({
                                     </Link>
                                 </div>
                             ) : (
-                                <div className="space-y-4">
-                                    {recentPosts.map(post => (
-                                        <div key={post.id} className="flex items-center">
-                                            <div className="space-y-1">
-                                                <p className="text-sm font-medium leading-none">{post.title}</p>
-                                                <p className="text-sm text-muted-foreground">
-                                                    by {post.author.name} • {new Date(post.created_at).toLocaleDateString()}
-                                                </p>
-                                            </div>
-                                            <div className="ml-auto">
-                                                <span className={`text-xs ${
-                                                    post.status === 'published' ? 'text-green-500' : 'text-yellow-500'
-                                                }`}>
-                                                    {post.status}
-                                                </span>
-                                            </div>
+                            <div className="space-y-4">
+                                {recentPosts.map(post => (
+                                    <div key={post.id} className="flex items-center">
+                                        <div className="space-y-1">
+                                            <p className="text-sm font-medium leading-none">{post.title}</p>
+                                            <p className="text-sm text-muted-foreground">
+                                                by {post.author.name} • {new Date(post.created_at).toLocaleDateString()}
+                                            </p>
                                         </div>
-                                    ))}
-                                </div>
+                                        <div className="ml-auto">
+                                            <span className={`text-xs ${
+                                                post.status === 'published' ? 'text-green-500' : 'text-yellow-500'
+                                            }`}>
+                                                {post.status}
+                                            </span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                             )}
                         </CardContent>
                     </Card>
@@ -260,28 +260,28 @@ export default function Dashboard({
                                     </Link>
                                 </div>
                             ) : (
-                                <div className="grid grid-cols-4 gap-4">
-                                    {recentMedia.map(media => (
-                                        <div key={media.id} className="relative aspect-square group">
-                                            {media.mime_type?.startsWith('image/') ? (
-                                                <img
-                                                    src={media.url}
-                                                    alt={media.name}
-                                                    className="w-full h-full object-cover rounded-lg"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg">
-                                                    <FileText className="h-6 w-6 text-gray-400" />
-                                                </div>
-                                            )}
-                                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
-                                                <p className="text-white text-xs text-center px-2 truncate">
-                                                    {media.name}
-                                                </p>
+                            <div className="grid grid-cols-4 gap-4">
+                                {recentMedia.map(media => (
+                                    <div key={media.id} className="relative aspect-square group">
+                                        {media.mime_type?.startsWith('image/') ? (
+                                            <img
+                                                src={media.url}
+                                                alt={media.name}
+                                                className="w-full h-full object-cover rounded-lg"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg">
+                                                <FileText className="h-6 w-6 text-gray-400" />
                                             </div>
+                                        )}
+                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                                            <p className="text-white text-xs text-center px-2 truncate">
+                                                {media.name}
+                                            </p>
                                         </div>
-                                    ))}
-                                </div>
+                                    </div>
+                                ))}
+                            </div>
                             )}
                         </CardContent>
                     </Card>
