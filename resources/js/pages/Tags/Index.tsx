@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Plus } from 'lucide-react';
+import { Plus, Tags } from 'lucide-react';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 
@@ -91,58 +91,76 @@ export default function Index({ tags, filters = { search: '' } }: Props) {
                 </div>
 
                 <div className="rounded-lg">
-                    <Table>
-                        <TableHeader>
-                            <TableRow className="border-b">
-                                <TableHead className="text-gray-200">Nama</TableHead>
-                                <TableHead className="text-gray-200">Slug</TableHead>
-                                <TableHead className="text-gray-200">Deskripsi</TableHead>
-                                <TableHead className="text-gray-200">Warna</TableHead>
-                                <TableHead className="text-gray-200">Tanggal Dibuat</TableHead>
-                                <TableHead className="text-gray-200">Aksi</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {tags.data.map((tag) => (
-                                <TableRow key={tag.id} className="border-b border-gray-800 hover:bg-[#0c1015]">
-                                    <TableCell className="text-gray-200">{tag.name}</TableCell>
-                                    <TableCell className="text-gray-200">{tag.slug}</TableCell>
-                                    <TableCell className="text-gray-200">{tag.description}</TableCell>
-                                    <TableCell className="text-gray-200">
-                                        <Badge
-                                            style={{
-                                                backgroundColor: tag.color,
-                                                color: getContrastColor(tag.color),
-                                            }}
-                                        >
-                                            {tag.color}
-                                        </Badge>
-                                    </TableCell>
-                                    <TableCell className="text-gray-200">
-                                        {format(new Date(tag.created_at), 'dd MMMM yyyy', {
-                                            locale: id,
-                                        })}
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="flex space-x-2">
-                                            <Link href={`/tags/${tag.id}/edit`}>
-                                                <Button variant="outline" size="sm"
-                                                    className="border-gray-800 text-gray-200 hover:bg-[#0c1015] hover:text-white">
-                                                    Edit
-                                                </Button>
-                                            </Link>
-                                            <Link href={`/tags/${tag.id}`}>
-                                                <Button variant="outline" size="sm"
-                                                    className="border-gray-800 text-gray-200 hover:bg-[#0c1015] hover:text-white">
-                                                    Lihat
-                                                </Button>
-                                            </Link>
-                                        </div>
-                                    </TableCell>
+                    {tags.data.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-12 px-4 border border-gray-800 rounded-lg">
+                            <Tags className="h-12 w-12 text-gray-400 mb-4" />
+                            <h3 className="text-lg font-medium text-gray-200 mb-1">Belum ada tag</h3>
+                            <p className="text-gray-400 text-center mb-4">
+                                {search
+                                    ? 'Tidak ada tag yang sesuai dengan pencarian Anda'
+                                    : 'Mulai dengan membuat tag untuk mengkategorikan konten Anda'}
+                            </p>
+                            <Link href="/tags/create">
+                                <Button className="bg-white hover:bg-gray-100 text-black">
+                                    <Plus className="mr-2 h-4 w-4" />
+                                    Buat Tag Pertama
+                                </Button>
+                            </Link>
+                        </div>
+                    ) : (
+                        <Table>
+                            <TableHeader>
+                                <TableRow className="border-b">
+                                    <TableHead className="text-gray-200">Nama</TableHead>
+                                    <TableHead className="text-gray-200">Slug</TableHead>
+                                    <TableHead className="text-gray-200">Deskripsi</TableHead>
+                                    <TableHead className="text-gray-200">Warna</TableHead>
+                                    <TableHead className="text-gray-200">Tanggal Dibuat</TableHead>
+                                    <TableHead className="text-gray-200">Aksi</TableHead>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                            </TableHeader>
+                            <TableBody>
+                                {tags.data.map((tag) => (
+                                    <TableRow key={tag.id} className="border-b border-gray-800 hover:bg-[#0c1015]">
+                                        <TableCell className="text-gray-200">{tag.name}</TableCell>
+                                        <TableCell className="text-gray-200">{tag.slug}</TableCell>
+                                        <TableCell className="text-gray-200">{tag.description}</TableCell>
+                                        <TableCell className="text-gray-200">
+                                            <Badge
+                                                style={{
+                                                    backgroundColor: tag.color,
+                                                    color: getContrastColor(tag.color),
+                                                }}
+                                            >
+                                                {tag.color}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell className="text-gray-200">
+                                            {format(new Date(tag.created_at), 'dd MMMM yyyy', {
+                                                locale: id,
+                                            })}
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className="flex space-x-2">
+                                                <Link href={`/tags/${tag.id}/edit`}>
+                                                    <Button variant="outline" size="sm"
+                                                        className="border-gray-800 text-gray-200 hover:bg-[#0c1015] hover:text-white">
+                                                        Edit
+                                                    </Button>
+                                                </Link>
+                                                <Link href={`/tags/${tag.id}`}>
+                                                    <Button variant="outline" size="sm"
+                                                        className="border-gray-800 text-gray-200 hover:bg-[#0c1015] hover:text-white">
+                                                        Lihat
+                                                    </Button>
+                                                </Link>
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    )}
                 </div>
 
                 {/* Pagination */}

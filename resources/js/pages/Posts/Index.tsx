@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/select';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
-import { Plus, ImageIcon } from 'lucide-react';
+import { Plus, ImageIcon, FileText } from 'lucide-react';
 import ReactDOM from 'react-dom/client';
 
 interface Category {
@@ -223,109 +223,127 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                 </div>
 
                 <div className="rounded-lg shadow">
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Judul</TableHead>
-                                <TableHead>Kategori</TableHead>
-                                <TableHead>Tags</TableHead>
-                                <TableHead>Status</TableHead>
-                                <TableHead>Tanggal Publikasi</TableHead>
-                                <TableHead>Tanggal Dibuat</TableHead>
-                                <TableHead>Aksi</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {posts.data.map((post) => (
-                                <TableRow key={post.id}>
-                                    <TableCell>
-                                        <div className="flex items-center space-x-3">
-                                            <div className="flex-shrink-0 w-16 h-12 rounded-md overflow-hidden bg-gray-800">
-                                                {post.featured_image ? (
-                                                    <img
-                                                        src={getImageUrl(post)}
-                                                        alt={post.title}
-                                                        className="w-full h-full object-cover"
-                                                        onError={handleImageError}
-                                                    />
-                                                ) : (
-                                                    <div className="w-full h-full flex items-center justify-center">
-                                                        <ImageIcon className="w-6 h-6 text-gray-400" />
-                                                    </div>
-                                                )}
-                                            </div>
-                                            <div className="flex flex-col">
-                                                <span className="font-medium text-gray-200">{post.title}</span>
-                                                <span className="text-sm text-gray-400 truncate max-w-[300px]">
-                                                    {post.excerpt}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </TableCell>
-                                    <TableCell className="text-gray-200">{post.category.name}</TableCell>
-                                    <TableCell>
-                                        <div className="flex flex-wrap gap-1">
-                                            {post.tags.map((tag) => (
-                                                <Badge
-                                                    key={tag.id}
-                                                    style={{
-                                                        backgroundColor: tag.color,
-                                                        color: getContrastColor(tag.color),
-                                                    }}
-                                                >
-                                                    {tag.name}
-                                                </Badge>
-                                            ))}
-                                        </div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Badge
-                                            variant={
-                                                post.status === 'published'
-                                                    ? 'default'
-                                                    : 'secondary'
-                                            }
-                                            className={
-                                                post.status === 'published'
-                                                    ? 'bg-green-500 hover:bg-green-600'
-                                                    : 'bg-yellow-500 hover:bg-yellow-600'
-                                            }
-                                        >
-                                            {post.status === 'published' ? 'Published' : 'Draft'}
-                                        </Badge>
-                                    </TableCell>
-                                    <TableCell className="text-gray-200">
-                                        {post.published_at
-                                            ? format(new Date(post.published_at), 'dd MMMM yyyy', {
-                                                  locale: id,
-                                              })
-                                            : '-'}
-                                    </TableCell>
-                                    <TableCell className="text-gray-200">
-                                        {format(new Date(post.created_at), 'dd MMMM yyyy', {
-                                            locale: id,
-                                        })}
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="flex space-x-2">
-                                            <Link href={`/posts/${post.id}/edit`}>
-                                                <Button variant="outline" size="sm"
-                                                    className="border-gray-800 text-gray-200 hover:bg-[#0c1015] hover:text-white">
-                                                    Edit
-                                                </Button>
-                                            </Link>
-                                            <Link href={`/posts/${post.id}`}>
-                                                <Button variant="outline" size="sm"
-                                                    className="border-gray-800 text-gray-200 hover:bg-[#0c1015] hover:text-white">
-                                                    Lihat
-                                                </Button>
-                                            </Link>
-                                        </div>
-                                    </TableCell>
+                    {posts.data.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-12 px-4 border border-gray-800 rounded-lg">
+                            <FileText className="h-12 w-12 text-gray-400 mb-4" />
+                            <h3 className="text-lg font-medium text-gray-200 mb-1">Belum ada post</h3>
+                            <p className="text-gray-400 text-center mb-4">
+                                {search || status !== 'all' || category !== 'all'
+                                    ? 'Tidak ada post yang sesuai dengan filter Anda'
+                                    : 'Mulai dengan membuat post baru untuk blog Anda'}
+                            </p>
+                            <Link href="/posts/create">
+                                <Button className="bg-white hover:bg-gray-100 text-black">
+                                    <Plus className="mr-2 h-4 w-4" />
+                                    Buat Post Pertama
+                                </Button>
+                            </Link>
+                        </div>
+                    ) : (
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Judul</TableHead>
+                                    <TableHead>Kategori</TableHead>
+                                    <TableHead>Tags</TableHead>
+                                    <TableHead>Status</TableHead>
+                                    <TableHead>Tanggal Publikasi</TableHead>
+                                    <TableHead>Tanggal Dibuat</TableHead>
+                                    <TableHead>Aksi</TableHead>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                            </TableHeader>
+                            <TableBody>
+                                {posts.data.map((post) => (
+                                    <TableRow key={post.id}>
+                                        <TableCell>
+                                            <div className="flex items-center space-x-3">
+                                                <div className="flex-shrink-0 w-16 h-12 rounded-md overflow-hidden bg-gray-800">
+                                                    {post.featured_image ? (
+                                                        <img
+                                                            src={getImageUrl(post)}
+                                                            alt={post.title}
+                                                            className="w-full h-full object-cover"
+                                                            onError={handleImageError}
+                                                        />
+                                                    ) : (
+                                                        <div className="w-full h-full flex items-center justify-center">
+                                                            <ImageIcon className="w-6 h-6 text-gray-400" />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <div className="flex flex-col">
+                                                    <span className="font-medium text-gray-200">{post.title}</span>
+                                                    <span className="text-sm text-gray-400 truncate max-w-[300px]">
+                                                        {post.excerpt}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell className="text-gray-200">{post.category.name}</TableCell>
+                                        <TableCell>
+                                            <div className="flex flex-wrap gap-1">
+                                                {post.tags.map((tag) => (
+                                                    <Badge
+                                                        key={tag.id}
+                                                        style={{
+                                                            backgroundColor: tag.color,
+                                                            color: getContrastColor(tag.color),
+                                                        }}
+                                                    >
+                                                        {tag.name}
+                                                    </Badge>
+                                                ))}
+                                            </div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Badge
+                                                variant={
+                                                    post.status === 'published'
+                                                        ? 'default'
+                                                        : 'secondary'
+                                                }
+                                                className={
+                                                    post.status === 'published'
+                                                        ? 'bg-green-500 hover:bg-green-600'
+                                                        : 'bg-yellow-500 hover:bg-yellow-600'
+                                                }
+                                            >
+                                                {post.status === 'published' ? 'Published' : 'Draft'}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell className="text-gray-200">
+                                            {post.published_at
+                                                ? format(new Date(post.published_at), 'dd MMMM yyyy', {
+                                                      locale: id,
+                                                  })
+                                                : '-'}
+                                        </TableCell>
+                                        <TableCell className="text-gray-200">
+                                            {format(new Date(post.created_at), 'dd MMMM yyyy', {
+                                                locale: id,
+                                            })}
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className="flex space-x-2">
+                                                <Link href={`/posts/${post.id}/edit`}>
+                                                    <Button variant="outline" size="sm"
+                                                        className="border-gray-800 text-gray-200 hover:bg-[#0c1015] hover:text-white">
+                                                        Edit
+                                                    </Button>
+                                                </Link>
+                                                <Link href={`/posts/${post.id}`}>
+                                                    <Button variant="outline" size="sm"
+                                                        className="border-gray-800 text-gray-200 hover:bg-[#0c1015] hover:text-white">
+                                                        Lihat
+                                                    </Button>
+                                                </Link>
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    )}
                 </div>
 
                 {/* Pagination */}

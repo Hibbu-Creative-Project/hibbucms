@@ -20,35 +20,35 @@ class RoleAndPermissionSeeder extends Seeder
         // Create permissions
         $permissions = [
             // User management
-            'view users',
-            'create users',
-            'edit users',
-            'delete users',
+            ['name' => 'view users', 'group' => 'User Management'],
+            ['name' => 'create users', 'group' => 'User Management'],
+            ['name' => 'edit users', 'group' => 'User Management'],
+            ['name' => 'delete users', 'group' => 'User Management'],
 
             // Content management
-            'view content',
-            'create content',
-            'edit content',
-            'delete content',
-            'publish content',
+            ['name' => 'view content', 'group' => 'Content Management'],
+            ['name' => 'create content', 'group' => 'Content Management'],
+            ['name' => 'edit content', 'group' => 'Content Management'],
+            ['name' => 'delete content', 'group' => 'Content Management'],
+            ['name' => 'publish content', 'group' => 'Content Management'],
 
             // Category management
-            'view categories',
-            'create categories',
-            'edit categories',
-            'delete categories',
+            ['name' => 'view categories', 'group' => 'Category Management'],
+            ['name' => 'create categories', 'group' => 'Category Management'],
+            ['name' => 'edit categories', 'group' => 'Category Management'],
+            ['name' => 'delete categories', 'group' => 'Category Management'],
 
             // Media management
-            'view media',
-            'upload media',
-            'delete media',
+            ['name' => 'view media', 'group' => 'Media Management'],
+            ['name' => 'upload media', 'group' => 'Media Management'],
+            ['name' => 'delete media', 'group' => 'Media Management'],
 
             // Settings
-            'manage settings',
+            ['name' => 'manage settings', 'group' => 'Settings'],
         ];
 
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::create($permission);
         }
 
         // Create roles and assign permissions

@@ -1,7 +1,8 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { FileText, FolderTree, Tag, Image, ArrowUp, ArrowDown } from 'lucide-react';
+import { FileText, FolderTree, Tag, Image, ArrowUp, ArrowDown, Plus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface Stats {
     posts: {
@@ -58,6 +59,55 @@ export default function Dashboard({
     recentPosts = [],
     recentMedia = []
 }: Props) {
+    const hasNoContent = stats.posts.total === 0 &&
+                        stats.categories.total === 0 &&
+                        stats.tags.total === 0 &&
+                        stats.media.total === 0;
+
+    if (hasNoContent) {
+        return (
+            <AppLayout>
+                <Head title="Dashboard" />
+
+                <div className="p-4">
+                    <div className="flex flex-col items-center justify-center py-12 px-4 border border-gray-800 rounded-lg">
+                        <FileText className="h-12 w-12 text-gray-400 mb-4" />
+                        <h3 className="text-lg font-medium text-gray-200 mb-1">Selamat Datang di HibbuCMS</h3>
+                        <p className="text-gray-400 text-center mb-8 max-w-md">
+                            Mulai dengan membuat konten pertama Anda. Anda dapat membuat post, kategori, tag, atau mengunggah media.
+                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <Link href="/posts/create">
+                                <Button className="w-full bg-white hover:bg-gray-100 text-black">
+                                    <FileText className="mr-2 h-4 w-4" />
+                                    Buat Post
+                                </Button>
+                            </Link>
+                            <Link href="/categories/create">
+                                <Button className="w-full bg-white hover:bg-gray-100 text-black">
+                                    <FolderTree className="mr-2 h-4 w-4" />
+                                    Buat Kategori
+                                </Button>
+                            </Link>
+                            <Link href="/tags/create">
+                                <Button className="w-full bg-white hover:bg-gray-100 text-black">
+                                    <Tag className="mr-2 h-4 w-4" />
+                                    Buat Tag
+                                </Button>
+                            </Link>
+                            <Link href="/media">
+                                <Button className="w-full bg-white hover:bg-gray-100 text-black">
+                                    <Image className="mr-2 h-4 w-4" />
+                                    Upload Media
+                                </Button>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </AppLayout>
+        );
+    }
+
     return (
         <AppLayout>
             <Head title="Dashboard" />
@@ -157,25 +207,38 @@ export default function Dashboard({
                             <CardTitle>Recent Posts</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="space-y-4">
-                                {recentPosts.map(post => (
-                                    <div key={post.id} className="flex items-center">
-                                        <div className="space-y-1">
-                                            <p className="text-sm font-medium leading-none">{post.title}</p>
-                                            <p className="text-sm text-muted-foreground">
-                                                by {post.author.name} • {new Date(post.created_at).toLocaleDateString()}
-                                            </p>
+                            {recentPosts.length === 0 ? (
+                                <div className="flex flex-col items-center justify-center py-8">
+                                    <FileText className="h-8 w-8 text-gray-400 mb-2" />
+                                    <p className="text-sm text-gray-400 text-center mb-4">Belum ada post</p>
+                                    <Link href="/posts/create">
+                                        <Button variant="outline" size="sm">
+                                            <Plus className="mr-2 h-4 w-4" />
+                                            Buat Post
+                                        </Button>
+                                    </Link>
+                                </div>
+                            ) : (
+                                <div className="space-y-4">
+                                    {recentPosts.map(post => (
+                                        <div key={post.id} className="flex items-center">
+                                            <div className="space-y-1">
+                                                <p className="text-sm font-medium leading-none">{post.title}</p>
+                                                <p className="text-sm text-muted-foreground">
+                                                    by {post.author.name} • {new Date(post.created_at).toLocaleDateString()}
+                                                </p>
+                                            </div>
+                                            <div className="ml-auto">
+                                                <span className={`text-xs ${
+                                                    post.status === 'published' ? 'text-green-500' : 'text-yellow-500'
+                                                }`}>
+                                                    {post.status}
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div className="ml-auto">
-                                            <span className={`text-xs ${
-                                                post.status === 'published' ? 'text-green-500' : 'text-yellow-500'
-                                            }`}>
-                                                {post.status}
-                                            </span>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                                    ))}
+                                </div>
+                            )}
                         </CardContent>
                     </Card>
 
@@ -185,28 +248,41 @@ export default function Dashboard({
                             <CardTitle>Recent Media</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="grid grid-cols-4 gap-4">
-                                {recentMedia.map(media => (
-                                    <div key={media.id} className="relative aspect-square group">
-                                        {media.mime_type?.startsWith('image/') ? (
-                                            <img
-                                                src={media.url}
-                                                alt={media.name}
-                                                className="w-full h-full object-cover rounded-lg"
-                                            />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg">
-                                                <FileText className="h-6 w-6 text-gray-400" />
+                            {recentMedia.length === 0 ? (
+                                <div className="flex flex-col items-center justify-center py-8">
+                                    <Image className="h-8 w-8 text-gray-400 mb-2" />
+                                    <p className="text-sm text-gray-400 text-center mb-4">Belum ada media</p>
+                                    <Link href="/media">
+                                        <Button variant="outline" size="sm">
+                                            <Plus className="mr-2 h-4 w-4" />
+                                            Upload Media
+                                        </Button>
+                                    </Link>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-4 gap-4">
+                                    {recentMedia.map(media => (
+                                        <div key={media.id} className="relative aspect-square group">
+                                            {media.mime_type?.startsWith('image/') ? (
+                                                <img
+                                                    src={media.url}
+                                                    alt={media.name}
+                                                    className="w-full h-full object-cover rounded-lg"
+                                                />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg">
+                                                    <FileText className="h-6 w-6 text-gray-400" />
+                                                </div>
+                                            )}
+                                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                                                <p className="text-white text-xs text-center px-2 truncate">
+                                                    {media.name}
+                                                </p>
                                             </div>
-                                        )}
-                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
-                                            <p className="text-white text-xs text-center px-2 truncate">
-                                                {media.name}
-                                            </p>
                                         </div>
-                                    </div>
-                                ))}
-                            </div>
+                                    ))}
+                                </div>
+                            )}
                         </CardContent>
                     </Card>
                 </div>

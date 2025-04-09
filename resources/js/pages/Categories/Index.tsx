@@ -11,7 +11,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
-import { Plus } from 'lucide-react';
+import { Plus, FolderTree } from 'lucide-react';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import { Fragment } from 'react';
@@ -120,20 +120,38 @@ export default function Index({ categories, filters = { search: '' } }: Props) {
                 </div>
 
                 <div className="rounded-lg">
-                    <Table>
-                        <TableHeader>
-                            <TableRow className="border-b">
-                                <TableHead className="text-gray-200">Nama</TableHead>
-                                <TableHead className="text-gray-200">Slug</TableHead>
-                                <TableHead className="text-gray-200">Deskripsi</TableHead>
-                                <TableHead className="text-gray-200">Tanggal Dibuat</TableHead>
-                                <TableHead className="text-gray-200">Aksi</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {renderCategories(categories)}
-                        </TableBody>
-                    </Table>
+                    {categories.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-12 px-4 border border-gray-800 rounded-lg">
+                            <FolderTree className="h-12 w-12 text-gray-400 mb-4" />
+                            <h3 className="text-lg font-medium text-gray-200 mb-1">Belum ada kategori</h3>
+                            <p className="text-gray-400 text-center mb-4">
+                                {search
+                                    ? 'Tidak ada kategori yang sesuai dengan pencarian Anda'
+                                    : 'Mulai dengan membuat kategori untuk mengorganisir konten Anda'}
+                            </p>
+                            <Link href="/categories/create">
+                                <Button className="bg-white hover:bg-gray-100 text-black">
+                                    <Plus className="mr-2 h-4 w-4" />
+                                    Buat Kategori Pertama
+                                </Button>
+                            </Link>
+                        </div>
+                    ) : (
+                        <Table>
+                            <TableHeader>
+                                <TableRow className="border-b">
+                                    <TableHead className="text-gray-200">Nama</TableHead>
+                                    <TableHead className="text-gray-200">Slug</TableHead>
+                                    <TableHead className="text-gray-200">Deskripsi</TableHead>
+                                    <TableHead className="text-gray-200">Tanggal Dibuat</TableHead>
+                                    <TableHead className="text-gray-200">Aksi</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {renderCategories(categories)}
+                            </TableBody>
+                        </Table>
+                    )}
                 </div>
             </div>
         </AppLayout>

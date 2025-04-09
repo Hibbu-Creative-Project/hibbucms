@@ -7,7 +7,7 @@ import { Card } from '@/components/ui/card';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import { useDropzone } from 'react-dropzone';
-import { Loader2, Image as ImageIcon, File, FileText, Film, Music } from 'lucide-react';
+import { Loader2, Image as ImageIcon, File, FileText, Film, Music, Plus } from 'lucide-react';
 
 interface Media {
     id: number;
@@ -169,47 +169,67 @@ export default function Index({ media, filters }: Props) {
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    {media.data.map((item) => (
-                        <Card key={item.id} className="overflow-hidden">
-                            <div className="aspect-square relative group">
-                                {item.mime_type?.startsWith('image/') ? (
-                                    <img
-                                        src={item.url}
-                                        alt={item.name}
-                                        className="w-full h-full object-cover"
-                                    />
-                                ) : (
-                                    <div className="w-full h-full flex items-center justify-center bg-gray-100">
-                                        {getFileIcon(item.mime_type)}
-                                    </div>
-                                )}
-                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => router.visit(`/media/${item.id}`)}
-                                    >
-                                        View
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => window.open(`/media/${item.id}/download`)}
-                                    >
-                                        Download
+                    {media.data.length === 0 ? (
+                        <div className="col-span-full">
+                            <div className="flex flex-col items-center justify-center py-12 px-4 border border-gray-800 rounded-lg">
+                                <ImageIcon className="h-12 w-12 text-gray-400 mb-4" />
+                                <h3 className="text-lg font-medium text-gray-200 mb-1">Belum ada media</h3>
+                                <p className="text-gray-400 text-center mb-4">
+                                    {search || type
+                                        ? 'Tidak ada media yang sesuai dengan filter Anda'
+                                        : 'Mulai dengan mengunggah file media pertama Anda'}
+                                </p>
+                                <div {...getRootProps()} className="cursor-pointer">
+                                    <Button className="bg-white hover:bg-gray-100 text-black">
+                                        <Plus className="mr-2 h-4 w-4" />
+                                        Unggah Media
                                     </Button>
                                 </div>
                             </div>
-                            <div className="p-2">
-                                <p className="text-sm font-medium truncate" title={item.name}>
-                                    {item.name}
-                                </p>
-                                <p className="text-xs text-gray-500">
-                                    {item.size} • {format(new Date(item.created_at), 'dd MMM yyyy', { locale: id })}
-                                </p>
-                            </div>
-                        </Card>
-                    ))}
+                        </div>
+                    ) : (
+                        media.data.map((item) => (
+                            <Card key={item.id} className="overflow-hidden">
+                                <div className="aspect-square relative group">
+                                    {item.mime_type?.startsWith('image/') ? (
+                                        <img
+                                            src={item.url}
+                                            alt={item.name}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                                            {getFileIcon(item.mime_type)}
+                                        </div>
+                                    )}
+                                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => router.visit(`/media/${item.id}`)}
+                                        >
+                                            View
+                                        </Button>
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => window.open(`/media/${item.id}/download`)}
+                                        >
+                                            Download
+                                        </Button>
+                                    </div>
+                                </div>
+                                <div className="p-2">
+                                    <p className="text-sm font-medium truncate" title={item.name}>
+                                        {item.name}
+                                    </p>
+                                    <p className="text-xs text-gray-500">
+                                        {item.size} • {format(new Date(item.created_at), 'dd MMM yyyy', { locale: id })}
+                                    </p>
+                                </div>
+                            </Card>
+                        ))
+                    )}
                 </div>
 
                 {media.last_page > 1 && (

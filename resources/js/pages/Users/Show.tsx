@@ -1,8 +1,10 @@
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { ArrowLeft, Edit2, Mail, Shield, Globe, Calendar } from 'lucide-react';
+import { format } from 'date-fns';
+import { id } from 'date-fns/locale';
 
 interface Role {
     id: number;
@@ -20,6 +22,7 @@ interface User {
     twitter_url: string | null;
     instagram_url: string | null;
     linkedin_url: string | null;
+    created_at: string;
 }
 
 interface Props {
@@ -36,124 +39,131 @@ const breadcrumbs = [
         href: '/users',
     },
     {
-        title: 'View',
-        href: '/users/view',
+        title: 'Detail',
+        href: '#',
     },
 ];
 
+const roleColors: { [key: string]: string } = {
+    admin: 'bg-red-500',
+    editor: 'bg-blue-500',
+    author: 'bg-green-500',
+    user: 'bg-gray-500',
+};
+
 export default function Show({ user }: Props) {
+    const socialLinks = [
+        { url: user.facebook_url, icon: 'facebook.svg', label: 'Facebook' },
+        { url: user.twitter_url, icon: 'twitter.svg', label: 'Twitter' },
+        { url: user.instagram_url, icon: 'instagram.svg', label: 'Instagram' },
+        { url: user.linkedin_url, icon: 'linkedin.svg', label: 'LinkedIn' },
+    ].filter(link => link.url);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`User: ${user.name}`} />
 
-            <div className="p-4">
-                <div className="mb-4 flex justify-end">
+            <div className="p-4 max-w-5xl mx-auto">
+                {/* Header */}
+                <div className="flex justify-between items-start mb-8">
+                    <div>
+                        <Link href="/users" className="inline-flex items-center text-gray-400 hover:text-gray-200 mb-4">
+                            <ArrowLeft className="w-4 h-4 mr-2" />
+                            Kembali ke daftar pengguna
+                        </Link>
+                    </div>
+
                     <Link href={`/users/${user.id}/edit`}>
-                        <Button>Edit User</Button>
+                        <Button variant="outline" className="border-gray-700 text-gray-200 hover:bg-gray-800">
+                            <Edit2 className="w-4 h-4 mr-2" />
+                            Edit Pengguna
+                        </Button>
                     </Link>
                 </div>
 
-                <div className="grid gap-4 md:grid-cols-2">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Basic Information</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="flex items-center gap-4">
+                {/* Main Content */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {/* Left Column - Profile Info */}
+                    <div className="md:col-span-1">
+                        <div className="rounded-lg border border-gray-800 bg-[#0c1015] p-6">
+                            <div className="flex flex-col items-center text-center mb-6">
                                 {user.avatar ? (
                                     <img
                                         src={`/storage/${user.avatar}`}
                                         alt={user.name}
-                                        className="h-24 w-24 rounded-full object-cover"
+                                        className="h-32 w-32 rounded-full object-cover ring-4 ring-gray-800 mb-4"
                                     />
                                 ) : (
-                                    <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-100 text-2xl">
-                                        {user.name.charAt(0)}
+                                    <div className="flex h-32 w-32 items-center justify-center rounded-full bg-gray-800 text-gray-200 text-4xl font-bold ring-4 ring-gray-700 mb-4">
+                                        {user.name.charAt(0).toUpperCase()}
                                     </div>
                                 )}
-                                <div>
-                                    <h2 className="text-2xl font-bold">
-                                        {user.name}
-                                    </h2>
-                                    <p className="text-gray-600">{user.email}</p>
-                                    <div className="mt-2 flex gap-1">
-                                        {user.roles.map((role) => (
-                                            <span
-                                                key={role.id}
-                                                className="rounded-full bg-gray-100 px-3 py-1 text-sm"
+                                <h2 className="text-2xl font-bold text-gray-200 mb-1">{user.name}</h2>
+                                <div className="flex items-center gap-2 text-gray-400 mb-4">
+                                    <Mail className="w-4 h-4" />
+                                    {user.email}
+                                </div>
+                                <div className="flex flex-wrap gap-2 justify-center">
+                                    {user.roles.map((role) => (
+                                        <Badge
+                                            key={role.id}
+                                            className={`${roleColors[role.name.toLowerCase()] || 'bg-gray-500'}`}
+                                        >
+                                            <Shield className="w-3 h-3 mr-1" />
+                                            {role.name}
+                                        </Badge>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {user.bio && (
+                                <div className="border-t border-gray-800 pt-4 mt-4">
+                                    <h3 className="text-sm font-semibold text-gray-400 uppercase mb-2">Bio</h3>
+                                    <p className="text-gray-200">{user.bio}</p>
+                                </div>
+                            )}
+
+                            <div className="border-t border-gray-800 pt-4 mt-4">
+                                <h3 className="text-sm font-semibold text-gray-400 uppercase mb-2">Info</h3>
+                                <div className="space-y-2">
+                                    <div className="flex items-center text-gray-200">
+                                        <Calendar className="w-4 h-4 mr-2 text-gray-400" />
+                                        Bergabung {format(new Date(user.created_at), 'dd MMMM yyyy', { locale: id })}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {socialLinks.length > 0 && (
+                                <div className="border-t border-gray-800 pt-4 mt-4">
+                                    <h3 className="text-sm font-semibold text-gray-400 uppercase mb-2">Media Sosial</h3>
+                                    <div className="flex flex-wrap gap-2">
+                                        {socialLinks.map((link, index) => (
+                                            <a
+                                                key={index}
+                                                href={link.url || '#'}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="inline-flex items-center px-3 py-1 rounded-full bg-gray-800 text-gray-200 hover:bg-gray-700 transition-colors"
                                             >
-                                                {role.name}
-                                            </span>
+                                                <img src={`/icons/${link.icon}`} alt={link.label} className="w-4 h-4 mr-2" />
+                                                {link.label}
+                                            </a>
                                         ))}
                                     </div>
                                 </div>
-                            </div>
-                        </CardContent>
-                    </Card>
+                            )}
+                        </div>
+                    </div>
 
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Profile Information</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-4">
-                                {user.bio && (
-                                    <div>
-                                        <h3 className="mb-2 font-semibold">Bio</h3>
-                                        <p className="text-gray-600">{user.bio}</p>
-                                    </div>
-                                )}
-
-                                <div>
-                                    <h3 className="mb-2 font-semibold">
-                                        Social Media
-                                    </h3>
-                                    <div className="flex gap-2">
-                                        {user.facebook_url && (
-                                            <a
-                                                href={user.facebook_url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-gray-600 hover:text-gray-900"
-                                            >
-                                                <Facebook className="h-5 w-5" />
-                                            </a>
-                                        )}
-                                        {user.twitter_url && (
-                                            <a
-                                                href={user.twitter_url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-gray-600 hover:text-gray-900"
-                                            >
-                                                <Twitter className="h-5 w-5" />
-                                            </a>
-                                        )}
-                                        {user.instagram_url && (
-                                            <a
-                                                href={user.instagram_url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-gray-600 hover:text-gray-900"
-                                            >
-                                                <Instagram className="h-5 w-5" />
-                                            </a>
-                                        )}
-                                        {user.linkedin_url && (
-                                            <a
-                                                href={user.linkedin_url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-gray-600 hover:text-gray-900"
-                                            >
-                                                <Linkedin className="h-5 w-5" />
-                                            </a>
-                                        )}
-                                    </div>
-                                </div>
+                    {/* Right Column - Activity & Stats */}
+                    <div className="md:col-span-2">
+                        <div className="rounded-lg border border-gray-800 bg-[#0c1015] p-6">
+                            <h3 className="text-xl font-semibold text-gray-200 mb-4">Aktivitas Terbaru</h3>
+                            <div className="text-gray-400 text-center py-8">
+                                Belum ada aktivitas untuk ditampilkan.
                             </div>
-                        </CardContent>
-                    </Card>
+                        </div>
+                    </div>
                 </div>
             </div>
         </AppLayout>

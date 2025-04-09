@@ -8,6 +8,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RoleController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -38,6 +39,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // User Routes
 Route::middleware(['auth'])->group(function () {
     Route::resource('users', UserController::class);
+    Route::resource('roles', RoleController::class)->except(['show']);
 });
 
 require __DIR__.'/settings.php';
