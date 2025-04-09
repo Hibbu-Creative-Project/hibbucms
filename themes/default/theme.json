@@ -4,6 +4,7 @@
     "version": "1.0.0",
     "description": "Tema default untuk HibbuCMS",
     "author": "Hibbu Creative",
+    "preview": "assets/images/preview.png",
     "requires": {
         "cms_version": "^1.0.0"
     },

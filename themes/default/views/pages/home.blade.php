@@ -21,7 +21,8 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="card h-100 shadow-sm">
                             @if ($post->featured_image)
-                                <img src="{{ $post->featured_image }}" class="card-img-top" alt="{{ $post->title }}">
+                                <img src="{{ $post->featured_image }}" class="card-img-top" alt="{{ $post->title }}"
+                                    style="height: 200px; object-fit: cover;">
                             @endif
                             <div class="card-body">
                                 <h5 class="card-title">
@@ -31,7 +32,11 @@
                                 <p class="card-text text-muted">{{ Str::limit($post->excerpt ?? $post->content, 120) }}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <small class="text-muted">
-                                        {{ $post->published_at->format('d M Y') }}
+                                        @if ($post->published_at)
+                                            {{ $post->published_at->format('d M Y') }}
+                                        @else
+                                            Draft
+                                        @endif
                                     </small>
                                     @if ($post->category)
                                         <a href="{{ url('/blog?category=' . $post->category->slug) }}"

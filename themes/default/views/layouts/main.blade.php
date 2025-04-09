@@ -43,9 +43,9 @@
                         <a class="nav-link" href="{{ url('/blog') }}">Blog</a>
                     </li>
                 </ul>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
     <!-- Main Content -->
     <main class="container py-4">

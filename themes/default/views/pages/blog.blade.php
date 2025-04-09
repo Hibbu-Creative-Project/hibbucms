@@ -48,7 +48,11 @@
                                         </p>
                                         <div class="d-flex align-items-center gap-3">
                                             <small class="text-muted">
-                                                {{ $post->published_at->format('d M Y') }}
+                                                @if ($post->published_at)
+                                                    {{ $post->published_at->format('d M Y') }}
+                                                @else
+                                                    Draft
+                                                @endif
                                             </small>
                                             @if ($post->category)
                                                 <a href="{{ url('/blog?category=' . $post->category->slug) }}"

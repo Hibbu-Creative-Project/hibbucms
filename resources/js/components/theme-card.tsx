@@ -21,7 +21,9 @@ interface ThemeCardProps {
         version: string;
         author: string | null;
         is_active: boolean;
-        screenshot_url: string | null;
+        preview: string | null;
+        preview_url: string | null;
+        has_preview: boolean;
     };
 }
 
@@ -29,11 +31,11 @@ export function ThemeCard({ theme }: ThemeCardProps) {
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
     const handleActivate = () => {
-        router.post(`/themes/${theme.id}/activate`);
+        router.post(`/admin/themes/${theme.id}/activate`);
     };
 
     const handleDelete = () => {
-        router.delete(`/themes/${theme.id}`);
+        router.delete(`/admin/themes/${theme.id}`);
         setIsDeleteDialogOpen(false);
     };
 
@@ -41,9 +43,9 @@ export function ThemeCard({ theme }: ThemeCardProps) {
         <>
             <Card className="overflow-hidden">
                 <div className="aspect-video w-full bg-muted">
-                    {theme.screenshot_url ? (
+                    {theme.preview_url ? (
                         <img
-                            src={theme.screenshot_url}
+                            src={theme.preview_url}
                             alt={`${theme.name} screenshot`}
                             className="h-full w-full object-cover"
                         />

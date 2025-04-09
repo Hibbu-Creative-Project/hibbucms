@@ -15,7 +15,9 @@ interface Theme {
     version: string;
     author: string | null;
     is_active: boolean;
-    screenshot_url: string | null;
+    preview: string | null;
+    preview_url: string | null;
+    has_preview: boolean;
 }
 
 interface Props {
@@ -29,7 +31,7 @@ const breadcrumbs = [
     },
     {
         title: 'Themes',
-        href: '/themes',
+        href: '/admin/themes',
     },
 ];
 
@@ -39,7 +41,7 @@ export default function Index({ themes }: Props) {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleScan = () => {
-        router.post('/themes/scan');
+        router.post('/admin/themes/scan');
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +54,7 @@ export default function Index({ themes }: Props) {
         if (selectedFile) {
             const formData = new FormData();
             formData.append('theme', selectedFile);
-            router.post('/themes/upload', formData);
+            router.post('/admin/themes/upload', formData);
             setIsUploadDialogOpen(false);
             setSelectedFile(null);
             if (fileInputRef.current) {

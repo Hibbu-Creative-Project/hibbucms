@@ -9,9 +9,13 @@
             <header class="mb-4 text-center">
                 <h1 class="fw-bold mb-3">{{ $post->title }}</h1>
                 <div class="d-flex justify-content-center gap-3 text-muted">
-                    <time datetime="{{ $post->published_at->format('Y-m-d') }}">
-                        {{ $post->published_at->format('d F Y') }}
-                    </time>
+                    @if ($post->published_at)
+                        <time datetime="{{ $post->published_at->format('Y-m-d') }}">
+                            {{ $post->published_at->format('d F Y') }}
+                        </time>
+                    @else
+                        <span>Draft</span>
+                    @endif
                     @if ($post->category)
                         <span>•</span>
                         <a href="{{ url('/blog?category=' . $post->category->slug) }}"
@@ -95,7 +99,11 @@
                                         </p>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <small class="text-muted">
-                                                {{ $relatedPost->published_at->format('d M Y') }}
+                                                @if ($relatedPost->published_at)
+                                                    {{ $relatedPost->published_at->format('d M Y') }}
+                                                @else
+                                                    Draft
+                                                @endif
                                             </small>
                                             @if ($relatedPost->category)
                                                 <a href="{{ url('/blog?category=' . $relatedPost->category->slug) }}"

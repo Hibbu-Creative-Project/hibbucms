@@ -13,7 +13,13 @@ class ThemeController extends Controller
 {
     public function index()
     {
-        $themes = Theme::all();
+        $themes = Theme::all()->map(function ($theme) {
+            // Tambahkan preview URL jika ada
+            if ($theme->preview) {
+                $theme->preview_url = asset("themes/{$theme->folder_name}/{$theme->preview}");
+            }
+            return $theme;
+        });
 
         return Inertia::render('Admin/Themes/Index', [
             'themes' => $themes
@@ -48,6 +54,7 @@ class ThemeController extends Controller
                         'version' => $config['version'],
                         'author' => $config['author'] ?? null,
                         'settings' => $config['settings'] ?? null,
+                        'preview' => $config['preview'] ?? null,
                     ]
                 );
             }
@@ -142,6 +149,7 @@ class ThemeController extends Controller
                         'version' => $config['version'],
                         'author' => $config['author'] ?? null,
                         'settings' => $config['settings'] ?? null,
+                        'preview' => $config['preview'] ?? null,
                     ]
                 );
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
 
 class Theme extends Model
 {
@@ -13,7 +14,7 @@ class Theme extends Model
         'description',
         'version',
         'author',
-        'screenshot_url',
+        'preview',
         'is_active',
         'settings'
     ];
@@ -22,6 +23,29 @@ class Theme extends Model
         'is_active' => 'boolean',
         'settings' => 'array'
     ];
+
+    protected $appends = [
+        'preview_url',
+        'has_preview'
+    ];
+
+    public function getHasPreviewAttribute()
+    {
+        if (!$this->preview) {
+            return false;
+        }
+
+        $previewPath = base_path("themes/{$this->folder_name}/{$this->preview}");
+        return File::exists($previewPath);
+    }
+
+    public function getPreviewUrlAttribute()
+    {
+        if (!$this->has_preview) {
+            return null;
+        }
+        return url("themes/{$this->folder_name}/{$this->preview}");
+    }
 
     public static function getActive()
     {
@@ -47,6 +71,6 @@ class Theme extends Model
 
     public function getAssetPath($path)
     {
-        return "themes/{$this->folder_name}/assets/{$path}";
+        return url("themes/{$this->folder_name}/assets/{$path}");
     }
 }
