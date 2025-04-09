@@ -1,4 +1,5 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
+import { useState } from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { Button } from '@/components/ui/button';
 import {
@@ -9,7 +10,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Plus } from 'lucide-react';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 
@@ -31,6 +34,9 @@ interface Props {
         per_page: number;
         total: number;
     };
+    filters?: {
+        search: string;
+    };
 }
 
 const breadcrumbs = [
@@ -44,7 +50,18 @@ const breadcrumbs = [
     },
 ];
 
-export default function Index({ tags }: Props) {
+export default function Index({ tags, filters = { search: '' } }: Props) {
+    const [search, setSearch] = useState(filters.search);
+
+    const handleSearch = (value: string) => {
+        setSearch(value);
+        router.get(
+            '/tags',
+            { search: value },
+            { preserveState: true }
+        );
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Tags" />
@@ -53,29 +70,45 @@ export default function Index({ tags }: Props) {
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-2xl font-bold">Tags</h1>
                     <Link href="/tags/create">
-                        <Button>Create Tag</Button>
+                        <Button className="bg-white hover:bg-gray-200 text-black">
+                            <Plus className="mr-2 h-4 w-4" />
+                            Create Tag
+                        </Button>
                     </Link>
                 </div>
 
-                <div className="bg-white rounded-lg shadow">
+                <div className="rounded-lg p-4 mb-4">
+                    <div className="grid grid-cols-1 gap-4">
+                        <div>
+                            <Input
+                                placeholder="Cari tag..."
+                                value={search}
+                                onChange={(e) => handleSearch(e.target.value)}
+                                className="w-full text-gray-200 placeholder:text-gray-500"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="rounded-lg">
                     <Table>
                         <TableHeader>
-                            <TableRow>
-                                <TableHead>Name</TableHead>
-                                <TableHead>Slug</TableHead>
-                                <TableHead>Description</TableHead>
-                                <TableHead>Color</TableHead>
-                                <TableHead>Created At</TableHead>
-                                <TableHead>Actions</TableHead>
+                            <TableRow className="border-b">
+                                <TableHead className="text-gray-200">Nama</TableHead>
+                                <TableHead className="text-gray-200">Slug</TableHead>
+                                <TableHead className="text-gray-200">Deskripsi</TableHead>
+                                <TableHead className="text-gray-200">Warna</TableHead>
+                                <TableHead className="text-gray-200">Tanggal Dibuat</TableHead>
+                                <TableHead className="text-gray-200">Aksi</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {tags.data.map((tag) => (
-                                <TableRow key={tag.id}>
-                                    <TableCell>{tag.name}</TableCell>
-                                    <TableCell>{tag.slug}</TableCell>
-                                    <TableCell>{tag.description}</TableCell>
-                                    <TableCell>
+                                <TableRow key={tag.id} className="border-b border-gray-800 hover:bg-[#0c1015]">
+                                    <TableCell className="text-gray-200">{tag.name}</TableCell>
+                                    <TableCell className="text-gray-200">{tag.slug}</TableCell>
+                                    <TableCell className="text-gray-200">{tag.description}</TableCell>
+                                    <TableCell className="text-gray-200">
                                         <Badge
                                             style={{
                                                 backgroundColor: tag.color,
@@ -85,7 +118,7 @@ export default function Index({ tags }: Props) {
                                             {tag.color}
                                         </Badge>
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell className="text-gray-200">
                                         {format(new Date(tag.created_at), 'dd MMMM yyyy', {
                                             locale: id,
                                         })}
@@ -93,13 +126,15 @@ export default function Index({ tags }: Props) {
                                     <TableCell>
                                         <div className="flex space-x-2">
                                             <Link href={`/tags/${tag.id}/edit`}>
-                                                <Button variant="outline" size="sm">
+                                                <Button variant="outline" size="sm"
+                                                    className="border-gray-800 text-gray-200 hover:bg-[#0c1015] hover:text-white">
                                                     Edit
                                                 </Button>
                                             </Link>
                                             <Link href={`/tags/${tag.id}`}>
-                                                <Button variant="outline" size="sm">
-                                                    View
+                                                <Button variant="outline" size="sm"
+                                                    className="border-gray-800 text-gray-200 hover:bg-[#0c1015] hover:text-white">
+                                                    Lihat
                                                 </Button>
                                             </Link>
                                         </div>
@@ -121,8 +156,8 @@ export default function Index({ tags }: Props) {
                                         href={`/tags?page=${page}`}
                                         className={`px-3 py-1 rounded ${
                                             page === tags.current_page
-                                                ? 'bg-primary text-white'
-                                                : 'bg-gray-200'
+                                                ? 'bg-white text-black'
+                                                : 'bg-gray-800 text-gray-200 hover:bg-[#0c1015]'
                                         }`}
                                     >
                                         {page}

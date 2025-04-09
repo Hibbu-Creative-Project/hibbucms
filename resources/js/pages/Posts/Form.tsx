@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
     Select,
     SelectContent,
@@ -14,6 +13,8 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import RichTextEditor from '@/components/RichTextEditor';
+import { Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface Category {
     id: number;
@@ -60,6 +61,7 @@ const breadcrumbs = [
 ];
 
 export default function Form({ post, categories, tags, media }: Props) {
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [values, setValues] = useState({
         title: post?.title || '',
         excerpt: post?.excerpt || '',
@@ -70,11 +72,11 @@ export default function Form({ post, categories, tags, media }: Props) {
         tag_ids: post?.tag_ids?.map(id => id.toString()) || [],
     });
 
-    const [imagePreview, setImagePreview] = useState<string | null>(post?.featured_image_url || null);
     const [selectedMediaId, setSelectedMediaId] = useState<string | undefined>(post?.featured_image?.toString() || undefined);
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
+        setIsSubmitting(true);
         const formData = new FormData();
 
         formData.append('title', values.title);
@@ -92,9 +94,27 @@ export default function Form({ post, categories, tags, media }: Props) {
 
         if (post) {
             formData.append('_method', 'PUT');
-            router.post(`/posts/${post.id}`, formData);
+            router.post(`/posts/${post.id}`, formData, {
+                onSuccess: () => {
+                    toast.success('Post berhasil diperbarui');
+                    setIsSubmitting(false);
+                },
+                onError: () => {
+                    toast.error('Gagal memperbarui post');
+                    setIsSubmitting(false);
+                }
+            });
         } else {
-            router.post('/posts', formData);
+            router.post('/posts', formData, {
+                onSuccess: () => {
+                    toast.success('Post berhasil dibuat');
+                    setIsSubmitting(false);
+                },
+                onError: () => {
+                    toast.error('Gagal membuat post');
+                    setIsSubmitting(false);
+                }
+            });
         }
     };
 
@@ -102,11 +122,6 @@ export default function Form({ post, categories, tags, media }: Props) {
         const file = e.target.files?.[0];
         if (file) {
             setValues({ ...values, featured_image: file });
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImagePreview(reader.result as string);
-            };
-            reader.readAsDataURL(file);
         }
     };
 
@@ -119,15 +134,17 @@ export default function Form({ post, categories, tags, media }: Props) {
             <Head title={post ? 'Edit Post' : 'Create Post'} />
 
             <div className="p-4">
-                <form onSubmit={handleSubmit} encType="multipart/form-data">
+                <div className="flex justify-between items-center mb-4">
+                    <h1 className="text-2xl font-bold text-gray-200">{post ? 'Edit Post' : 'Buat Post Baru'}</h1>
+                </div>
+
+                <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-4">
                     <div className="grid gap-4 md:grid-cols-2">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Basic Information</CardTitle>
-                            </CardHeader>
-                            <CardContent className="grid gap-4">
+                        <div className="rounded-lg p-4 border ">
+                            <h2 className="text-lg font-semibold text-gray-200 mb-4">Informasi Dasar</h2>
+                            <div className="space-y-4">
                                 <div>
-                                    <Label htmlFor="title">Title</Label>
+                                    <Label htmlFor="title" className="text-gray-200">Judul</Label>
                                     <Input
                                         id="title"
                                         type="text"
@@ -138,10 +155,13 @@ export default function Form({ post, categories, tags, media }: Props) {
                                                 title: e.target.value,
                                             })
                                         }
+                                        placeholder="Masukkan judul post"
+                                        required
+                                        className=" text-gray-200 placeholder:text-gray-500"
                                     />
                                 </div>
                                 <div>
-                                    <Label htmlFor="excerpt">Excerpt</Label>
+                                    <Label htmlFor="excerpt" className="text-gray-200">Ringkasan</Label>
                                     <Textarea
                                         id="excerpt"
                                         value={values.excerpt}
@@ -151,10 +171,12 @@ export default function Form({ post, categories, tags, media }: Props) {
                                                 excerpt: e.target.value,
                                             })
                                         }
+                                        placeholder="Masukkan ringkasan post"
+                                        className="min-h-[100px]  text-gray-200 placeholder:text-gray-500"
                                     />
                                 </div>
                                 <div>
-                                    <Label htmlFor="category">Category</Label>
+                                    <Label htmlFor="category" className="text-gray-200">Kategori</Label>
                                     <Select
                                         value={values.category_id}
                                         onValueChange={(value) =>
@@ -164,14 +186,15 @@ export default function Form({ post, categories, tags, media }: Props) {
                                             })
                                         }
                                     >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select category" />
+                                        <SelectTrigger className=" text-gray-200">
+                                            <SelectValue placeholder="Pilih kategori" />
                                         </SelectTrigger>
-                                        <SelectContent>
+                                        <SelectContent className="">
                                             {categories.map((category) => (
                                                 <SelectItem
                                                     key={category.id}
                                                     value={category.id.toString()}
+                                                    className="text-gray-200 hover:bg-gray-800"
                                                 >
                                                     {category.name}
                                                 </SelectItem>
@@ -180,19 +203,45 @@ export default function Form({ post, categories, tags, media }: Props) {
                                     </Select>
                                 </div>
                                 <div>
-                                    <Label htmlFor="tags">Tags</Label>
+                                    <Label htmlFor="status" className="text-gray-200">Status</Label>
+                                    <Select
+                                        value={values.status}
+                                        onValueChange={(value: 'draft' | 'published') =>
+                                            setValues({
+                                                ...values,
+                                                status: value,
+                                            })
+                                        }
+                                    >
+                                        <SelectTrigger className=" text-gray-200">
+                                            <SelectValue placeholder="Pilih status" />
+                                        </SelectTrigger>
+                                        <SelectContent className="">
+                                            <SelectItem value="draft" className="text-gray-200 hover:bg-gray-800">Draft</SelectItem>
+                                            <SelectItem value="published" className="text-gray-200 hover:bg-gray-800">Published</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="rounded-lg p-4 border">
+                            <h2 className="text-lg font-semibold text-gray-200 mb-4">Tags & Media</h2>
+                            <div className="space-y-4">
+                                <div>
+                                    <Label htmlFor="tags" className="text-gray-200">Tags</Label>
                                     <div className="flex flex-wrap gap-2 mb-2">
                                         {tags.map((tag) => (
                                             <label
                                                 key={tag.id}
-                                                className="flex items-center space-x-2 p-2 border rounded"
+                                                className="flex items-center space-x-2 p-2 border  rounded cursor-pointer transition-colors"
                                                 style={{
                                                     backgroundColor: values.tag_ids.includes(tag.id.toString())
                                                         ? tag.color
                                                         : 'transparent',
                                                     color: values.tag_ids.includes(tag.id.toString())
                                                         ? getContrastColor(tag.color)
-                                                        : 'inherit',
+                                                        : '#e5e7eb',
                                                 }}
                                             >
                                                 <input
@@ -216,65 +265,54 @@ export default function Form({ post, categories, tags, media }: Props) {
                                         ))}
                                     </div>
                                 </div>
+
                                 <div>
-                                    <Label htmlFor="status">Status</Label>
-                                    <Select
-                                        value={values.status}
-                                        onValueChange={(value) =>
-                                            setValues({
-                                                ...values,
-                                                status: value as 'draft' | 'published',
-                                            })
-                                        }
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select status" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="draft">Draft</SelectItem>
-                                            <SelectItem value="published">Published</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                                <div>
-                                    <Label htmlFor="featured_image">Featured Image</Label>
+                                    <Label htmlFor="media" className="text-gray-200">Featured Image</Label>
                                     <Select
                                         value={selectedMediaId}
-                                        onValueChange={(value) => setSelectedMediaId(value)}
+                                        onValueChange={setSelectedMediaId}
                                     >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select featured image" />
+                                        <SelectTrigger className=" text-gray-200">
+                                            <SelectValue placeholder="Pilih gambar" />
                                         </SelectTrigger>
-                                        <SelectContent>
+                                        <SelectContent >
                                             {media.map((item) => (
-                                                <SelectItem key={item.id} value={item.id.toString()}>
+                                                <SelectItem
+                                                    key={item.id}
+                                                    value={item.id.toString()}
+                                                    className="text-gray-200 hover:bg-gray-800"
+                                                >
                                                     {item.name}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
                                     </Select>
                                 </div>
-                            </CardContent>
-                        </Card>
-
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Content</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <RichTextEditor
-                                    content={values.content}
-                                    onChange={(content) =>
-                                        setValues({ ...values, content })
-                                    }
-                                />
-                            </CardContent>
-                        </Card>
+                            </div>
+                        </div>
                     </div>
 
-                    <div className="mt-4 flex justify-end">
-                        <Button type="submit">
-                            {post ? 'Update' : 'Create'} Post
+                    <div className="rounded-lg p-4 border ">
+                        <h2 className="text-lg font-semibold text-gray-200 mb-4">Konten</h2>
+                        <RichTextEditor
+                            content={values.content}
+                            onChange={(content) =>
+                                setValues({
+                                    ...values,
+                                    content,
+                                })
+                            }
+                        />
+                    </div>
+
+                    <div className="flex justify-end space-x-2">
+                        <Button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="bg-white hover:bg-gray-200 text-black"
+                        >
+                            {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                            {post ? 'Update Post' : 'Buat Post'}
                         </Button>
                     </div>
                 </form>

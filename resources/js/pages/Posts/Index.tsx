@@ -1,4 +1,5 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
+import { useState } from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,8 +11,17 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
+import { Plus } from 'lucide-react';
 
 interface Post {
     id: number;
@@ -43,6 +53,11 @@ interface Props {
         per_page: number;
         total: number;
     };
+    filters: {
+        search: string;
+        status: string;
+        category: string;
+    };
 }
 
 const breadcrumbs = [
@@ -56,7 +71,38 @@ const breadcrumbs = [
     },
 ];
 
-export default function Index({ posts }: Props) {
+export default function Index({ posts, filters = { search: '', status: 'all', category: 'all' } }: Props) {
+    const [search, setSearch] = useState(filters.search);
+    const [status, setStatus] = useState(filters.status);
+    const [category, setCategory] = useState(filters.category);
+
+    const handleSearch = (value: string) => {
+        setSearch(value);
+        router.get(
+            '/posts',
+            { search: value, status, category },
+            { preserveState: true }
+        );
+    };
+
+    const handleStatusChange = (value: string) => {
+        setStatus(value);
+        router.get(
+            '/posts',
+            { search, status: value, category },
+            { preserveState: true }
+        );
+    };
+
+    const handleCategoryChange = (value: string) => {
+        setCategory(value);
+        router.get(
+            '/posts',
+            { search, status, category: value },
+            { preserveState: true }
+        );
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Posts" />
@@ -65,21 +111,67 @@ export default function Index({ posts }: Props) {
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-2xl font-bold">Posts</h1>
                     <Link href="/posts/create">
-                        <Button>Create Post</Button>
+                        <Button>
+                            <Plus className="mr-2 h-4 w-4" />
+                            Buat Post
+                        </Button>
                     </Link>
                 </div>
 
-                <div className="bg-white rounded-lg shadow">
+                <div className="rounded-lg shadow p-4 mb-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <Input
+                                placeholder="Cari post..."
+                                value={search}
+                                onChange={(e) => handleSearch(e.target.value)}
+                                className="w-full"
+                            />
+                        </div>
+                        <div>
+                            <Select value={status} onValueChange={handleStatusChange}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Filter berdasarkan status" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">Semua Status</SelectItem>
+                                    <SelectItem value="draft">Draft</SelectItem>
+                                    <SelectItem value="published">Published</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div>
+                            <Select value={category} onValueChange={handleCategoryChange}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Filter berdasarkan kategori" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">Semua Kategori</SelectItem>
+                                    {posts.data.map((post) => (
+                                        <SelectItem
+                                            key={post.category.id}
+                                            value={post.category.id.toString()}
+                                        >
+                                            {post.category.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="rounded-lg shadow">
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Title</TableHead>
-                                <TableHead>Category</TableHead>
+                                <TableHead>Judul</TableHead>
+                                <TableHead>Kategori</TableHead>
                                 <TableHead>Tags</TableHead>
                                 <TableHead>Status</TableHead>
-                                <TableHead>Published At</TableHead>
-                                <TableHead>Created At</TableHead>
-                                <TableHead>Actions</TableHead>
+                                <TableHead>Tanggal Publikasi</TableHead>
+                                <TableHead>Tanggal Dibuat</TableHead>
+                                <TableHead>Aksi</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -145,7 +237,7 @@ export default function Index({ posts }: Props) {
                                             </Link>
                                             <Link href={`/posts/${post.id}`}>
                                                 <Button variant="outline" size="sm">
-                                                    View
+                                                    Lihat
                                                 </Button>
                                             </Link>
                                         </div>
@@ -164,7 +256,7 @@ export default function Index({ posts }: Props) {
                                 (page) => (
                                     <Link
                                         key={page}
-                                        href={`/posts?page=${page}`}
+                                        href={`/posts?page=${page}&search=${search}&status=${status}&category=${category}`}
                                         className={`px-3 py-1 rounded ${
                                             page === posts.current_page
                                                 ? 'bg-primary text-white'
