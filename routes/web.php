@@ -9,6 +9,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\FrontendController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -41,6 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{theme}/activate', [App\Http\Controllers\Admin\ThemeController::class, 'activate'])->name('themes.activate');
         Route::post('/scan', [App\Http\Controllers\Admin\ThemeController::class, 'scan'])->name('themes.scan');
         Route::delete('/{theme}', [App\Http\Controllers\Admin\ThemeController::class, 'destroy'])->name('themes.destroy');
+        Route::post('/upload', [App\Http\Controllers\Admin\ThemeController::class, 'upload'])->name('themes.upload');
     });
 });
 
@@ -49,6 +51,11 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class)->except(['show']);
 });
+
+// Frontend Routes
+Route::get('/', [FrontendController::class, 'home'])->name('home');
+Route::get('/blog', [FrontendController::class, 'blog'])->name('blog');
+Route::get('/blog/{slug}', [FrontendController::class, 'post'])->name('blog.post');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

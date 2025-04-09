@@ -6,6 +6,7 @@ use App\Models\Theme;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\URL;
 
 class ThemeServiceProvider extends ServiceProvider
 {
@@ -50,7 +51,12 @@ class ThemeServiceProvider extends ServiceProvider
         $themePath = base_path("themes/{$theme->folder_name}/views");
 
         if (file_exists($themePath)) {
-            $this->app['view']->addLocation($themePath);
+            $this->loadViewsFrom($themePath, 'theme');
         }
+
+        // Register theme assets path
+        $this->publishes([
+            base_path("themes/{$theme->folder_name}/assets") => public_path("themes/{$theme->folder_name}/assets"),
+        ], 'theme-assets');
     }
 }
