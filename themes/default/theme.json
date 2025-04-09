@@ -1,0 +1,26 @@
+{
+    "name": "Default Theme",
+    "slug": "default",
+    "version": "1.0.0",
+    "description": "Tema default untuk HibbuCMS",
+    "author": "Hibbu Creative",
+    "requires": {
+        "cms_version": "^1.0.0"
+    },
+    "settings": {
+        "colors": {
+            "primary": "#007bff",
+            "secondary": "#6c757d",
+            "background": "#ffffff",
+            "text": "#212529"
+        },
+        "typography": {
+            "primary_font": "Inter",
+            "secondary_font": "Roboto"
+        },
+        "layout": {
+            "container_width": "1200px",
+            "sidebar_position": "right"
+        }
+    }
+}

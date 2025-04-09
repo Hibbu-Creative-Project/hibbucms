@@ -34,6 +34,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('posts', PostController::class);
     Route::post('posts/{post}/publish', [PostController::class, 'publish'])->name('posts.publish');
     Route::post('posts/{post}/unpublish', [PostController::class, 'unpublish'])->name('posts.unpublish');
+
+    // Theme Management
+    Route::prefix('themes')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\ThemeController::class, 'index'])->name('themes.index');
+        Route::post('/{theme}/activate', [App\Http\Controllers\Admin\ThemeController::class, 'activate'])->name('themes.activate');
+        Route::post('/scan', [App\Http\Controllers\Admin\ThemeController::class, 'scan'])->name('themes.scan');
+        Route::delete('/{theme}', [App\Http\Controllers\Admin\ThemeController::class, 'destroy'])->name('themes.destroy');
+    });
 });
 
 // User Routes
