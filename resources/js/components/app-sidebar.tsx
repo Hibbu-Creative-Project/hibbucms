@@ -10,7 +10,7 @@ import AppLogo from './app-logo';
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: '/admin/dashboard',
         icon: LayoutGrid,
     },
 ];
@@ -18,22 +18,22 @@ const mainNavItems: NavItem[] = [
 const contentNavItems: NavItem[] = [
     {
         title: 'Posts',
-        href: '/posts',
+        href: '/admin/posts',
         icon: FileText,
     },
     {
         title: 'Categories',
-        href: '/categories',
+        href: '/admin/categories',
         icon: FolderTree,
     },
     {
         title: 'Tags',
-        href: '/tags',
+        href: '/admin/tags',
         icon: Tag,
     },
     {
         title: 'Media',
-        href: '/media',
+        href: '/admin/media',
         icon: Image,
     },
 ];
@@ -41,17 +41,17 @@ const contentNavItems: NavItem[] = [
 const adminNavItems: NavItem[] = [
     {
         title: 'Users',
-        href: '/users',
+        href: '/admin/users',
         icon: Users,
     },
     {
         title: 'Roles',
-        href: '/roles',
+        href: '/admin/roles',
         icon: Shield,
     },
     {
         title: 'Themes',
-        href: '/themes',
+        href: '/admin/themes',
         icon: Paintbrush,
     },
     {
@@ -76,7 +76,7 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href="/dashboard" prefetch>
+                            <Link href="/admin/dashboard" prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>

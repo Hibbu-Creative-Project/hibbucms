@@ -15,7 +15,7 @@ Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Media Routes
@@ -47,7 +47,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // User Routes
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class)->except(['show']);
 });
