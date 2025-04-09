@@ -29,15 +29,15 @@ interface Props {
 const breadcrumbs = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: '/admin/dashboard',
     },
     {
         title: 'Media',
-        href: '/media',
+        href: '/admin/media',
     },
     {
         title: 'View',
-        href: '/media/view',
+        href: '/admin/media/view',
     },
 ];
 
@@ -59,7 +59,7 @@ export default function Show({ media }: Props) {
 
     const handleDelete = () => {
         if (confirm('Are you sure you want to delete this file?')) {
-            router.delete(`/media/${media.id}`);
+            router.delete(`/admin/media/${media.id}`);
         }
     };
 
@@ -73,7 +73,7 @@ export default function Show({ media }: Props) {
                     <div className="flex gap-2">
                         <Button
                             variant="outline"
-                            onClick={() => window.open(`/media/${media.id}/download`)}
+                            onClick={() => window.open(`/admin/media/${media.id}/download`)}
                         >
                             Download
                         </Button>

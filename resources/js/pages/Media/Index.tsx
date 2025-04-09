@@ -42,11 +42,11 @@ interface Props {
 const breadcrumbs = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: '/admin/dashboard',
     },
     {
         title: 'Media',
-        href: '/media',
+        href: '/admin/media',
     },
 ];
 
@@ -63,7 +63,7 @@ export default function Index({ media, filters }: Props) {
         });
 
         try {
-            router.post('/media', formData, {
+            router.post('/admin/media', formData, {
                 forceFormData: true,
                 preserveScroll: true,
                 onSuccess: () => {
@@ -106,7 +106,7 @@ export default function Index({ media, filters }: Props) {
 
     const handleSearch = (value: string) => {
         setSearch(value);
-        router.get('/media', { search: value, type }, {
+        router.get('/admin/media', { search: value, type }, {
             preserveState: true,
             replace: true,
         });
@@ -114,7 +114,7 @@ export default function Index({ media, filters }: Props) {
 
     const handleTypeFilter = (value: string) => {
         setType(value);
-        router.get('/media', { search, type: value }, {
+        router.get('/admin/media', { search, type: value }, {
             preserveState: true,
             replace: true,
         });
@@ -206,14 +206,14 @@ export default function Index({ media, filters }: Props) {
                                         <Button
                                             variant="outline"
                                             size="sm"
-                                            onClick={() => router.visit(`/media/${item.id}`)}
+                                            onClick={() => router.visit(`/admin/media/${item.id}`)}
                                         >
                                             View
                                         </Button>
                                         <Button
                                             variant="outline"
                                             size="sm"
-                                            onClick={() => window.open(`/media/${item.id}/download`)}
+                                            onClick={() => window.open(`/admin/media/${item.id}/download`)}
                                         >
                                             Download
                                         </Button>
@@ -242,7 +242,7 @@ export default function Index({ media, filters }: Props) {
                                         variant={page === media.current_page ? 'default' : 'outline'}
                                         size="sm"
                                         onClick={() =>
-                                            router.get('/media', { page, search, type }, { preserveState: true })
+                                            router.get('/admin/media', { page, search, type }, { preserveState: true })
                                         }
                                     >
                                         {page}

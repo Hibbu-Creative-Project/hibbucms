@@ -25,11 +25,11 @@ const breadcrumbs = [
     },
     {
         title: 'Categories',
-        href: '/categories',
+        href: '/admin/categories',
     },
     {
         title: 'Show',
-        href: '/categories/{id}',
+        href: '/admin/categories/{id}',
     },
 ];
 
@@ -42,10 +42,10 @@ export default function Show({ category }: Props) {
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-2xl font-bold">{category.name}</h1>
                     <div className="flex space-x-2">
-                        <Link href={`/categories/${category.id}/edit`}>
+                        <Link href={`/admin/categories/${category.id}/edit`}>
                             <Button variant="outline">Edit</Button>
                         </Link>
-                        <Link href="/categories">
+                        <Link href="/admin/categories">
                             <Button variant="outline">Back</Button>
                         </Link>
                     </div>

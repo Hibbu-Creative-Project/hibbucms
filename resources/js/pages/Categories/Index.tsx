@@ -41,7 +41,7 @@ const breadcrumbs = [
     },
     {
         title: 'Categories',
-        href: '/categories',
+        href: '/admin/categories',
     },
 ];
 
@@ -51,7 +51,7 @@ export default function Index({ categories, filters = { search: '' } }: Props) {
     const handleSearch = (value: string) => {
         setSearch(value);
         router.get(
-            '/categories',
+            '/admin/categories',
             { search: value },
             { preserveState: true }
         );
@@ -71,13 +71,13 @@ export default function Index({ categories, filters = { search: '' } }: Props) {
                     </TableCell>
                     <TableCell>
                         <div className="flex space-x-2">
-                            <Link href={`/categories/${category.id}/edit`}>
+                            <Link href={`/admin/categories/${category.id}/edit`}>
                                 <Button variant="outline" size="sm"
                                     className="border-gray-800 text-gray-200 hover:bg-[#0c1015] hover:text-white">
                                     Edit
                                 </Button>
                             </Link>
-                            <Link href={`/categories/${category.id}`}>
+                            <Link href={`/admin/categories/${category.id}`}>
                                 <Button variant="outline" size="sm"
                                     className="border-gray-800 text-gray-200 hover:bg-[#0c1015] hover:text-white">
                                     Lihat
@@ -98,7 +98,7 @@ export default function Index({ categories, filters = { search: '' } }: Props) {
             <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-2xl font-bold">Categories</h1>
-                    <Link href="/categories/create">
+                    <Link href="/admin/categories/create">
                         <Button className="bg-white hover:bg-gray-200 text-black">
                             <Plus className="mr-2 h-4 w-4" />
                             Create Category
@@ -129,7 +129,7 @@ export default function Index({ categories, filters = { search: '' } }: Props) {
                                     ? 'Tidak ada kategori yang sesuai dengan pencarian Anda'
                                     : 'Mulai dengan membuat kategori untuk mengorganisir konten Anda'}
                             </p>
-                            <Link href="/categories/create">
+                            <Link href="/admin/categories/create">
                                 <Button className="bg-white hover:bg-gray-100 text-black">
                                     <Plus className="mr-2 h-4 w-4" />
                                     Buat Kategori Pertama

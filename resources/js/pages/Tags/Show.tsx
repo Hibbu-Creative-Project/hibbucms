@@ -27,11 +27,11 @@ const breadcrumbs = [
     },
     {
         title: 'Tags',
-        href: '/tags',
+        href: '/admin/tags',
     },
     {
         title: 'Show',
-        href: '/tags/{id}',
+        href: '/admin/tags/{id}',
     },
 ];
 
@@ -44,10 +44,10 @@ export default function Show({ tag }: Props) {
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-2xl font-bold">{tag.name}</h1>
                     <div className="flex space-x-2">
-                        <Link href={`/tags/${tag.id}/edit`}>
+                        <Link href={`/admin/tags/${tag.id}/edit`}>
                             <Button variant="outline">Edit</Button>
                         </Link>
-                        <Link href="/tags">
+                        <Link href="/admin/tags">
                             <Button variant="outline">Back</Button>
                         </Link>
                     </div>

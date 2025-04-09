@@ -6,53 +6,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name') }} - @yield('title', 'Welcome')</title>
 
-    <!-- Fonts -->
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Highlight.js -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-
-    <!-- Theme Assets -->
-    <link rel="stylesheet" href="{{ theme_asset('css/style.css') }}">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
 
     @stack('styles')
 </head>
 
-<body class="bg-gray-50">
+<body class="bg-light">
     <!-- Header -->
-    <header class="bg-white shadow-sm">
-        <nav class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <a href="{{ url('/') }}" class="text-2xl font-bold text-gray-800">
-                    {{ config('app.name') }}
-                </a>
-                <div class="space-x-6">
-                    <a href="{{ url('/') }}" class="text-gray-600 hover:text-gray-900">Home</a>
-                    <a href="{{ url('/blog') }}" class="text-gray-600 hover:text-gray-900">Blog</a>
-                </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url('/') }}">{{ config('app.name') }}</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/blog') }}">Blog</a>
+                    </li>
+                </ul>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 py-8">
+    <main class="container py-4">
         @yield('content')
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t mt-12">
-        <div class="container mx-auto px-4 py-6">
-            <div class="text-center text-gray-600">
+    <footer class="bg-white border-top mt-4 py-4">
+        <div class="container">
+            <div class="text-center text-muted">
                 &copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
             </div>
         </div>
     </footer>
 
-    <!-- Theme Scripts -->
-    <script src="{{ theme_asset('js/main.js') }}"></script>
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     @stack('scripts')
 </body>

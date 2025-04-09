@@ -22,11 +22,11 @@ const breadcrumbs = [
     },
     {
         title: 'Categories',
-        href: '/categories',
+        href: '/admin/categories',
     },
     {
         title: 'Create',
-        href: '/categories/create',
+        href: '/admin/categories/create',
     },
 ];
 
@@ -39,9 +39,9 @@ export default function Form({ category }: Props) {
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         if (category) {
-            router.put(`/categories/${category.id}`, values);
+            router.put(`/admin/categories/${category.id}`, values);
         } else {
-            router.post('/categories', values);
+            router.post('/admin/categories', values);
         }
     };
 

@@ -50,15 +50,15 @@ interface Props {
 const breadcrumbs = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: '/admin/dashboard',
     },
     {
         title: 'Posts',
-        href: '/posts',
+        href: '/admin/posts',
     },
     {
         title: 'Create',
-        href: '/posts/create',
+        href: '/admin/posts/create',
     },
 ];
 
@@ -101,7 +101,7 @@ export default function Form({ post, categories, tags, media }: Props) {
 
         if (post) {
             formData.append('_method', 'PUT');
-            router.post(`/posts/${post.id}`, formData, {
+            router.post(`/admin/posts/${post.id}`, formData, {
                 onSuccess: () => {
                     toast.success('Post berhasil diperbarui');
                     setIsSubmitting(false);
@@ -112,7 +112,7 @@ export default function Form({ post, categories, tags, media }: Props) {
                 }
             });
         } else {
-            router.post('/posts', formData, {
+            router.post('/admin/posts', formData, {
                 onSuccess: () => {
                     toast.success('Post berhasil dibuat');
                     setIsSubmitting(false);

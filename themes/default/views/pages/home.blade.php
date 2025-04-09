@@ -4,37 +4,42 @@
 
 @section('content')
     <!-- Hero Section -->
-    <div class="card text-center py-8 px-4 mb-12">
-        <h1 class="text-4xl font-bold mb-4">Welcome to {{ config('app.name') }}</h1>
-        <p class="text-gray-600 text-lg mb-6">Discover our latest articles and insights</p>
-        <a href="{{ url('/blog') }}" class="btn btn-primary">Read Our Blog</a>
+    <div class="card text-center mb-4 border-0 bg-primary bg-opacity-10">
+        <div class="card-body py-5">
+            <h1 class="display-4 fw-bold mb-3">Selamat Datang di {{ config('app.name') }}</h1>
+            <p class="lead mb-4">Temukan artikel dan wawasan terbaru kami</p>
+            <a href="{{ url('/blog') }}" class="btn btn-primary">Baca Blog Kami</a>
+        </div>
     </div>
 
     <!-- Featured Posts -->
     @if ($posts->count() > 0)
-        <div class="mb-12">
-            <h2 class="text-2xl font-bold mb-6">Latest Posts</h2>
-            <div class="post-grid">
+        <div class="mb-5">
+            <h2 class="fw-bold mb-4">Postingan Terbaru</h2>
+            <div class="row g-4">
                 @foreach ($posts as $post)
-                    <div class="card post-card">
-                        @if ($post->featured_image)
-                            <img src="{{ $post->featured_image }}" alt="{{ $post->title }}" class="post-card-image">
-                        @endif
-                        <div class="post-content">
-                            <h3 class="post-title">
-                                <a href="{{ url('/blog/' . $post->slug) }}">{{ $post->title }}</a>
-                            </h3>
-                            <p class="post-excerpt">{{ Str::limit($post->excerpt ?? $post->content, 120) }}</p>
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm text-gray-600">
-                                    {{ $post->published_at->format('M d, Y') }}
-                                </span>
-                                @if ($post->category)
-                                    <a href="{{ url('/blog?category=' . $post->category->slug) }}"
-                                        class="text-sm text-primary">
-                                        {{ $post->category->name }}
-                                    </a>
-                                @endif
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm">
+                            @if ($post->featured_image)
+                                <img src="{{ $post->featured_image }}" class="card-img-top" alt="{{ $post->title }}">
+                            @endif
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="{{ url('/blog/' . $post->slug) }}"
+                                        class="text-decoration-none text-dark">{{ $post->title }}</a>
+                                </h5>
+                                <p class="card-text text-muted">{{ Str::limit($post->excerpt ?? $post->content, 120) }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">
+                                        {{ $post->published_at->format('d M Y') }}
+                                    </small>
+                                    @if ($post->category)
+                                        <a href="{{ url('/blog?category=' . $post->category->slug) }}"
+                                            class="badge bg-light text-primary text-decoration-none">
+                                            {{ $post->category->name }}
+                                        </a>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -45,15 +50,20 @@
 
     <!-- Categories Section -->
     @if ($categories->count() > 0)
-        <div class="mb-12">
-            <h2 class="text-2xl font-bold mb-6">Categories</h2>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div class="mb-5">
+            <h2 class="fw-bold mb-4">Kategori</h2>
+            <div class="row g-3">
                 @foreach ($categories as $category)
-                    <a href="{{ url('/blog?category=' . $category->slug) }}"
-                        class="card hover:shadow-md transition-shadow">
-                        <h3 class="font-semibold">{{ $category->name }}</h3>
-                        <p class="text-sm text-gray-600">{{ $category->posts_count }} posts</p>
-                    </a>
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <a href="{{ url('/blog?category=' . $category->slug) }}" class="text-decoration-none">
+                            <div class="card h-100 shadow-sm hover-shadow">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $category->name }}</h5>
+                                    <p class="card-text text-muted">{{ $category->posts_count }} postingan</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 @endforeach
             </div>
         </div>
@@ -62,13 +72,13 @@
     <!-- Tags Cloud -->
     @if ($tags->count() > 0)
         <div>
-            <h2 class="text-2xl font-bold mb-6">Popular Tags</h2>
-            <div class="flex flex-wrap gap-2">
+            <h2 class="fw-bold mb-4">Tag Populer</h2>
+            <div class="d-flex flex-wrap gap-2">
                 @foreach ($tags as $tag)
                     <a href="{{ url('/blog?tag=' . $tag->slug) }}"
-                        class="inline-block px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-sm">
+                        class="badge bg-light text-dark text-decoration-none p-2">
                         {{ $tag->name }}
-                        <span class="text-gray-600">({{ $tag->posts_count }})</span>
+                        <span class="text-muted">({{ $tag->posts_count }})</span>
                     </a>
                 @endforeach
             </div>

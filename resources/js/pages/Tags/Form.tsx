@@ -28,11 +28,11 @@ const breadcrumbs = [
     },
     {
         title: 'Tags',
-        href: '/tags',
+        href: '/admin/tags',
     },
     {
         title: 'Create',
-        href: '/tags/create',
+        href: '/admin/tags/create',
     },
 ];
 
@@ -46,9 +46,9 @@ export default function Form({ tag, errors }: Props) {
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         if (tag) {
-            put(`/tags/${tag.id}`);
+            put(`/admin/tags/${tag.id}`);
         } else {
-            post('/tags');
+            post('/admin/tags');
         }
     };
 
