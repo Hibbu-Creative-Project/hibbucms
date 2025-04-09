@@ -21,7 +21,13 @@ import {
 } from '@/components/ui/select';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
-import { Plus } from 'lucide-react';
+import { Plus, ImageIcon } from 'lucide-react';
+import ReactDOM from 'react-dom/client';
+
+interface Category {
+    id: number;
+    name: string;
+}
 
 interface Post {
     id: number;
@@ -30,12 +36,10 @@ interface Post {
     excerpt: string;
     content: string;
     featured_image: string;
+    featured_image_url?: string;
     status: 'draft' | 'published';
     published_at: string | null;
-    category: {
-        id: number;
-        name: string;
-    };
+    category: Category;
     tags: {
         id: number;
         name: string;
@@ -76,6 +80,13 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
     const [status, setStatus] = useState(filters.status);
     const [category, setCategory] = useState(filters.category);
 
+    // Mendapatkan unique categories dari posts
+    const uniqueCategories = Array.from(
+        new Map(
+            posts.data.map(post => [post.category.id, post.category])
+        ).values()
+    );
+
     const handleSearch = (value: string) => {
         setSearch(value);
         router.get(
@@ -101,6 +112,53 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
             { search, status, category: value },
             { preserveState: true }
         );
+    };
+
+    const getImageUrl = (post: Post): string | undefined => {
+        if (!post.featured_image) return undefined;
+
+        if (post.featured_image_url) {
+            try {
+                const url = new URL(post.featured_image_url);
+                if (url.origin === window.location.origin) {
+                    return url.pathname;
+                }
+                return post.featured_image_url;
+            } catch {
+                return post.featured_image_url;
+            }
+        }
+
+        if (post.featured_image.startsWith('http://') || post.featured_image.startsWith('https://')) {
+            try {
+                const url = new URL(post.featured_image);
+                if (url.origin === window.location.origin) {
+                    return url.pathname;
+                }
+                return post.featured_image;
+            } catch {
+                return post.featured_image;
+            }
+        }
+
+        return post.featured_image.startsWith('/') ? post.featured_image : `/${post.featured_image}`;
+    };
+
+    const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+        const target = e.target as HTMLImageElement;
+        target.onerror = null;
+        target.style.display = 'none';
+
+        const parent = target.parentElement;
+        if (parent) {
+            parent.classList.add('flex', 'items-center', 'justify-center');
+            const iconContainer = document.createElement('div');
+            iconContainer.className = 'w-6 h-6 text-gray-400';
+            parent.appendChild(iconContainer);
+
+            const root = ReactDOM.createRoot(iconContainer);
+            root.render(<ImageIcon />);
+        }
     };
 
     return (
@@ -142,17 +200,20 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                         </div>
                         <div>
                             <Select value={category} onValueChange={handleCategoryChange}>
-                                <SelectTrigger>
+                                <SelectTrigger className="text-gray-200">
                                     <SelectValue placeholder="Filter berdasarkan kategori" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="all">Semua Kategori</SelectItem>
-                                    {posts.data.map((post) => (
+                                    <SelectItem value="all" className="text-gray-200 hover:bg-gray-800">
+                                        Semua Kategori
+                                    </SelectItem>
+                                    {uniqueCategories.map((cat) => (
                                         <SelectItem
-                                            key={post.category.id}
-                                            value={post.category.id.toString()}
+                                            key={`category-${cat.id}`}
+                                            value={cat.id.toString()}
+                                            className="text-gray-200 hover:bg-gray-800"
                                         >
-                                            {post.category.name}
+                                            {cat.name}
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
@@ -178,18 +239,30 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                             {posts.data.map((post) => (
                                 <TableRow key={post.id}>
                                     <TableCell>
-                                        <div className="flex items-center space-x-2">
-                                            {post.featured_image && (
-                                                <img
-                                                    src={post.featured_image}
-                                                    alt={post.title}
-                                                    className="w-10 h-10 object-cover rounded"
-                                                />
-                                            )}
-                                            <span>{post.title}</span>
+                                        <div className="flex items-center space-x-3">
+                                            <div className="flex-shrink-0 w-16 h-12 rounded-md overflow-hidden bg-gray-800">
+                                                {post.featured_image ? (
+                                                    <img
+                                                        src={getImageUrl(post)}
+                                                        alt={post.title}
+                                                        className="w-full h-full object-cover"
+                                                        onError={handleImageError}
+                                                    />
+                                                ) : (
+                                                    <div className="w-full h-full flex items-center justify-center">
+                                                        <ImageIcon className="w-6 h-6 text-gray-400" />
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span className="font-medium text-gray-200">{post.title}</span>
+                                                <span className="text-sm text-gray-400 truncate max-w-[300px]">
+                                                    {post.excerpt}
+                                                </span>
+                                            </div>
                                         </div>
                                     </TableCell>
-                                    <TableCell>{post.category.name}</TableCell>
+                                    <TableCell className="text-gray-200">{post.category.name}</TableCell>
                                     <TableCell>
                                         <div className="flex flex-wrap gap-1">
                                             {post.tags.map((tag) => (
@@ -212,18 +285,23 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                                                     ? 'default'
                                                     : 'secondary'
                                             }
+                                            className={
+                                                post.status === 'published'
+                                                    ? 'bg-green-500 hover:bg-green-600'
+                                                    : 'bg-yellow-500 hover:bg-yellow-600'
+                                            }
                                         >
-                                            {post.status}
+                                            {post.status === 'published' ? 'Published' : 'Draft'}
                                         </Badge>
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell className="text-gray-200">
                                         {post.published_at
                                             ? format(new Date(post.published_at), 'dd MMMM yyyy', {
                                                   locale: id,
                                               })
                                             : '-'}
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell className="text-gray-200">
                                         {format(new Date(post.created_at), 'dd MMMM yyyy', {
                                             locale: id,
                                         })}
@@ -231,12 +309,14 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                                     <TableCell>
                                         <div className="flex space-x-2">
                                             <Link href={`/posts/${post.id}/edit`}>
-                                                <Button variant="outline" size="sm">
+                                                <Button variant="outline" size="sm"
+                                                    className="border-gray-800 text-gray-200 hover:bg-[#0c1015] hover:text-white">
                                                     Edit
                                                 </Button>
                                             </Link>
                                             <Link href={`/posts/${post.id}`}>
-                                                <Button variant="outline" size="sm">
+                                                <Button variant="outline" size="sm"
+                                                    className="border-gray-800 text-gray-200 hover:bg-[#0c1015] hover:text-white">
                                                     Lihat
                                                 </Button>
                                             </Link>
@@ -253,19 +333,28 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                     <div className="mt-4 flex justify-center">
                         <div className="flex space-x-2">
                             {Array.from({ length: posts.last_page }, (_, i) => i + 1).map(
-                                (page) => (
-                                    <Link
-                                        key={page}
-                                        href={`/posts?page=${page}&search=${search}&status=${status}&category=${category}`}
-                                        className={`px-3 py-1 rounded ${
-                                            page === posts.current_page
-                                                ? 'bg-primary text-white'
-                                                : 'bg-gray-200'
-                                        }`}
-                                    >
-                                        {page}
-                                    </Link>
-                                ),
+                                (page) => {
+                                    const queryParams = new URLSearchParams({
+                                        page: page.toString(),
+                                        search,
+                                        status,
+                                        category,
+                                    }).toString();
+
+                                    return (
+                                        <Link
+                                            key={`page-${page}`}
+                                            href={`/posts?${queryParams}`}
+                                            className={`px-3 py-1 rounded ${
+                                                page === posts.current_page
+                                                    ? 'bg-white text-black'
+                                                    : 'bg-gray-800 text-gray-200 hover:bg-[#0c1015]'
+                                            }`}
+                                        >
+                                            {page}
+                                        </Link>
+                                    );
+                                }
                             )}
                         </div>
                     </div>

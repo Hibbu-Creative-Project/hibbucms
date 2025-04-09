@@ -8,6 +8,7 @@ interface Props {
         excerpt: string;
         content: string;
         featured_image: string;
+        featured_image_url?: string;
         status: 'draft' | 'published';
         category_id: number;
         tag_ids: number[];
@@ -21,8 +22,13 @@ interface Props {
         name: string;
         color: string;
     }[];
+    media: {
+        id: number;
+        name: string;
+        url?: string;
+    }[];
 }
 
-export default function Edit({ post, categories, tags }: Props) {
-    return <Form post={post} categories={categories} tags={tags} />;
+export default function Edit({ post, categories, tags, media }: Props) {
+    return <Form post={post} categories={categories} tags={tags} media={media} />;
 }

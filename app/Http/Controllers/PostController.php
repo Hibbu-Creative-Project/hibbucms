@@ -27,7 +27,7 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Post::with(['user', 'category', 'tags']);
+        $query = Post::with(['user', 'category', 'tags', 'featuredImage']);
 
         // Filter by search term
         if ($request->has('search')) {
@@ -47,6 +47,12 @@ class PostController extends Controller
         }
 
         $posts = $query->latest()->paginate(10);
+
+        // Transform posts data to include featured image URL
+        $posts->through(function ($post) {
+            $post->featured_image = $post->featuredImage?->url;
+            return $post;
+        });
 
         return Inertia::render('Posts/Index', [
             'posts' => $posts,
@@ -84,6 +90,7 @@ class PostController extends Controller
             'content' => 'required|string',
             'excerpt' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
+            'featured_image' => 'nullable|file|image|max:10240',
             'featured_image_id' => 'nullable|exists:media,id',
             'status' => 'required|in:draft,published,scheduled',
             'published_at' => 'nullable|required_if:status,scheduled|date',
@@ -94,7 +101,14 @@ class PostController extends Controller
         $validated['user_id'] = auth()->id();
         $validated['slug'] = Str::slug($validated['title']);
 
-        if ($request->filled('featured_image_id')) {
+        if ($request->hasFile('featured_image')) {
+            try {
+                $media = Media::upload($request->file('featured_image'));
+                $validated['featured_image_id'] = $media->id;
+            } catch (\Exception $e) {
+                return back()->withErrors(['featured_image' => 'Gagal mengupload gambar: ' . $e->getMessage()]);
+            }
+        } elseif ($request->filled('featured_image_id')) {
             $validated['featured_image_id'] = $request->input('featured_image_id');
         }
 
@@ -125,14 +139,16 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        $post->load('tags');
+        $post->load(['tags', 'featuredImage']);
         $categories = Category::defaultOrder()->get()->toTree();
         $tags = Tag::all();
+        $media = Media::latest()->get();
 
         return Inertia::render('Posts/Edit', [
             'post' => $post,
             'categories' => $categories,
-            'tags' => $tags
+            'tags' => $tags,
+            'media' => $media
         ]);
     }
 
@@ -146,6 +162,7 @@ class PostController extends Controller
             'content' => 'required|string',
             'excerpt' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
+            'featured_image' => 'nullable|file|image|max:10240',
             'featured_image_id' => 'nullable|exists:media,id',
             'status' => 'required|in:draft,published,scheduled',
             'published_at' => 'nullable|required_if:status,scheduled|date',
@@ -155,7 +172,14 @@ class PostController extends Controller
 
         $validated['slug'] = Str::slug($validated['title']);
 
-        if ($request->filled('featured_image_id')) {
+        if ($request->hasFile('featured_image')) {
+            try {
+                $media = Media::upload($request->file('featured_image'));
+                $validated['featured_image_id'] = $media->id;
+            } catch (\Exception $e) {
+                return back()->withErrors(['featured_image' => 'Gagal mengupload gambar: ' . $e->getMessage()]);
+            }
+        } elseif ($request->filled('featured_image_id')) {
             $validated['featured_image_id'] = $request->input('featured_image_id');
         }
 

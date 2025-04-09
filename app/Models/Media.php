@@ -10,9 +10,12 @@ use Illuminate\Support\Str;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Media extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'user_id',
         'name',
@@ -54,10 +57,7 @@ class Media extends Model
 
     public function getUrlAttribute(): string
     {
-        if (!$this->path || !$this->disk) {
-            return '';
-        }
-        return Storage::disk($this->disk)->url($this->path);
+        return $this->path ? Storage::disk($this->disk)->url($this->path) : '';
     }
 
     public function getDimensionsAttribute(): ?array

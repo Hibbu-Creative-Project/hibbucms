@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
 
     protected $fillable = [
         'user_id',
@@ -58,7 +59,14 @@ class Post extends Model
 
     public function featuredImage(): BelongsTo
     {
-        return $this->belongsTo(Media::class, 'featured_image');
+        return $this->belongsTo(Media::class, 'featured_image_id');
+    }
+
+    protected $appends = ['featured_image_url'];
+
+    public function getFeaturedImageUrlAttribute(): ?string
+    {
+        return $this->featuredImage?->url;
     }
 
     public function scopePublished($query)

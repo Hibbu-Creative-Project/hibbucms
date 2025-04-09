@@ -1,35 +1,38 @@
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
-
-interface Post {
-    id: number;
-    title: string;
-    slug: string;
-    excerpt: string;
-    content: string;
-    featured_image: string;
-    status: 'draft' | 'published';
-    published_at: string | null;
-    category: {
-        id: number;
-        name: string;
-    };
-    tags: {
-        id: number;
-        name: string;
-        color: string;
-    }[];
-    created_at: string;
-    updated_at: string;
-}
+import { ImageIcon, Calendar, User, Clock, ArrowLeft, Edit2 } from 'lucide-react';
 
 interface Props {
-    post: Post;
+    post: {
+        id: number;
+        title: string;
+        slug: string;
+        excerpt: string;
+        content: string;
+        featured_image_url?: string;
+        status: 'draft' | 'published';
+        published_at: string | null;
+        created_at: string;
+        updated_at: string;
+        category: {
+            id: number;
+            name: string;
+        };
+        tags: {
+            id: number;
+            name: string;
+            color: string;
+        }[];
+        user: {
+            id: number;
+            name: string;
+            avatar_url?: string;
+        };
+    };
 }
 
 const breadcrumbs = [
@@ -42,157 +45,120 @@ const breadcrumbs = [
         href: '/posts',
     },
     {
-        title: 'Show',
-        href: '/posts/{id}',
+        title: 'Detail Post',
+        href: '#',
     },
 ];
+
+function getContrastColor(hexColor: string): string {
+    const color = hexColor.replace('#', '');
+    const r = parseInt(color.substr(0, 2), 16);
+    const g = parseInt(color.substr(2, 2), 16);
+    const b = parseInt(color.substr(4, 2), 16);
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    return brightness > 128 ? '#000000' : '#FFFFFF';
+}
 
 export default function Show({ post }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Post: ${post.title}`} />
 
-            <div className="p-4">
-                <div className="flex justify-between items-center mb-4">
-                    <h1 className="text-2xl font-bold">{post.title}</h1>
-                    <div className="flex space-x-2">
-                        <Link href={`/posts/${post.id}/edit`}>
-                            <Button variant="outline">Edit</Button>
+            <div className="p-4 max-w-5xl mx-auto">
+                {/* Header */}
+                <div className="flex justify-between items-start mb-8">
+                    <div>
+                        <Link href="/posts" className="inline-flex items-center text-gray-400 hover:text-gray-200 mb-4">
+                            <ArrowLeft className="w-4 h-4 mr-2" />
+                            Kembali ke daftar post
                         </Link>
-                        <Link href="/posts">
-                            <Button variant="outline">Back</Button>
-                        </Link>
+                        <h1 className="text-3xl font-bold text-gray-200 mb-4">{post.title}</h1>
+
+                        <div className="flex flex-wrap gap-4 text-gray-400 mb-4">
+                            <div className="flex items-center">
+                                <User className="w-4 h-4 mr-2" />
+                                {post.user.name}
+                            </div>
+                            <div className="flex items-center">
+                                <Calendar className="w-4 h-4 mr-2" />
+                                {post.published_at
+                                    ? format(new Date(post.published_at), 'dd MMMM yyyy', { locale: id })
+                                    : 'Belum dipublikasi'}
+                            </div>
+                            <div className="flex items-center">
+                                <Clock className="w-4 h-4 mr-2" />
+                                Diperbarui {format(new Date(post.updated_at), 'dd MMMM yyyy', { locale: id })}
+                            </div>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 mb-4">
+                            <Badge variant={post.status === 'published' ? 'default' : 'secondary'}
+                                className={post.status === 'published' ? 'bg-green-500' : 'bg-yellow-500'}>
+                                {post.status === 'published' ? 'Published' : 'Draft'}
+                            </Badge>
+                            <Badge variant="outline" className="border-gray-700">
+                                {post.category.name}
+                            </Badge>
+                            {post.tags.map((tag) => (
+                                <Badge
+                                    key={tag.id}
+                                    style={{
+                                        backgroundColor: tag.color,
+                                        color: getContrastColor(tag.color),
+                                    }}
+                                >
+                                    {tag.name}
+                                </Badge>
+                            ))}
+                        </div>
                     </div>
+
+                    <Link href={`/posts/${post.id}/edit`}>
+                        <Button variant="outline" className="border-gray-700 text-gray-200 hover:bg-gray-800">
+                            <Edit2 className="w-4 h-4 mr-2" />
+                            Edit Post
+                        </Button>
+                    </Link>
                 </div>
 
-                <div className="grid gap-4">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Post Information</CardTitle>
-                        </CardHeader>
-                        <CardContent className="grid gap-4">
-                            <div>
-                                <h3 className="font-medium">Title</h3>
-                                <p>{post.title}</p>
-                            </div>
-                            <div>
-                                <h3 className="font-medium">Slug</h3>
-                                <p>{post.slug}</p>
-                            </div>
-                            <div>
-                                <h3 className="font-medium">Excerpt</h3>
-                                <p>{post.excerpt}</p>
-                            </div>
-                            <div>
-                                <h3 className="font-medium">Category</h3>
-                                <p>{post.category.name}</p>
-                            </div>
-                            <div>
-                                <h3 className="font-medium">Tags</h3>
-                                <div className="flex flex-wrap gap-1">
-                                    {post.tags.map((tag) => (
-                                        <Badge
-                                            key={tag.id}
-                                            style={{
-                                                backgroundColor: tag.color,
-                                                color: getContrastColor(tag.color),
-                                            }}
-                                        >
-                                            {tag.name}
-                                        </Badge>
-                                    ))}
-                                </div>
-                            </div>
-                            <div>
-                                <h3 className="font-medium">Status</h3>
-                                <Badge
-                                    variant={
-                                        post.status === 'published'
-                                            ? 'default'
-                                            : 'secondary'
-                                    }
-                                >
-                                    {post.status}
-                                </Badge>
-                            </div>
-                            <div>
-                                <h3 className="font-medium">Published At</h3>
-                                <p>
-                                    {post.published_at
-                                        ? format(
-                                              new Date(post.published_at),
-                                              'dd MMMM yyyy HH:mm',
-                                              {
-                                                  locale: id,
-                                              },
-                                          )
-                                        : '-'}
-                                </p>
-                            </div>
-                            <div>
-                                <h3 className="font-medium">Created At</h3>
-                                <p>
-                                    {format(new Date(post.created_at), 'dd MMMM yyyy HH:mm', {
-                                        locale: id,
-                                    })}
-                                </p>
-                            </div>
-                            <div>
-                                <h3 className="font-medium">Updated At</h3>
-                                <p>
-                                    {format(new Date(post.updated_at), 'dd MMMM yyyy HH:mm', {
-                                        locale: id,
-                                    })}
-                                </p>
-                            </div>
-                        </CardContent>
-                    </Card>
+                {/* Featured Image */}
+                {post.featured_image_url ? (
+                    <div className="relative w-full h-[400px] rounded-lg overflow-hidden mb-8">
+                        <img
+                            src={post.featured_image_url}
+                            alt={post.title}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.style.display = 'none';
+                                const parent = target.parentElement;
+                                if (parent) {
+                                    parent.classList.add('flex', 'items-center', 'justify-center', 'bg-gray-800');
+                                    const icon = document.createElement('div');
+                                    icon.className = 'text-gray-400';
+                                    icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';
+                                    parent.appendChild(icon);
+                                }
+                            }}
+                        />
+                    </div>
+                ) : (
+                    <div className="w-full h-[400px] rounded-lg bg-gray-800 flex items-center justify-center mb-8">
+                        <ImageIcon className="w-12 h-12 text-gray-600" />
+                    </div>
+                )}
 
-                    {post.featured_image && (
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Featured Image</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <img
-                                    src={post.featured_image}
-                                    alt={post.title}
-                                    className="w-full h-auto rounded-lg"
-                                />
-                            </CardContent>
-                        </Card>
+                {/* Content */}
+                <div className="space-y-6">
+                    {post.excerpt && (
+                        <div className="text-lg text-gray-400 border-l-4 border-gray-700 pl-4">
+                            {post.excerpt}
+                        </div>
                     )}
 
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Content</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div
-                                className="prose max-w-none"
-                                dangerouslySetInnerHTML={{ __html: post.content }}
-                            />
-                        </CardContent>
-                    </Card>
+                    <div className="prose prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: post.content }} />
                 </div>
             </div>
         </AppLayout>
     );
-}
-
-// Helper function to get contrasting text color based on background color
-function getContrastColor(hexColor: string): string {
-    // Remove the hash if it exists
-    const color = hexColor.replace('#', '');
-
-    // Convert hex to RGB
-    const r = parseInt(color.substr(0, 2), 16);
-    const g = parseInt(color.substr(2, 2), 16);
-    const b = parseInt(color.substr(4, 2), 16);
-
-    // Calculate the brightness
-    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-
-    // Return black or white based on brightness
-    return brightness > 128 ? '#000000' : '#FFFFFF';
 }
