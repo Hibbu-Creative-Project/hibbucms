@@ -41,6 +41,7 @@ interface Props {
     };
     categories: Category[];
     tags: Tag[];
+    media: { id: number; name: string }[];
 }
 
 const breadcrumbs = [
@@ -58,7 +59,7 @@ const breadcrumbs = [
     },
 ];
 
-export default function Form({ post, categories, tags }: Props) {
+export default function Form({ post, categories, tags, media }: Props) {
     const [values, setValues] = useState({
         title: post?.title || '',
         excerpt: post?.excerpt || '',
@@ -70,6 +71,7 @@ export default function Form({ post, categories, tags }: Props) {
     });
 
     const [imagePreview, setImagePreview] = useState<string | null>(post?.featured_image_url || null);
+    const [selectedMediaId, setSelectedMediaId] = useState<string | undefined>(post?.featured_image?.toString() || undefined);
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
@@ -84,8 +86,8 @@ export default function Form({ post, categories, tags }: Props) {
             formData.append('tags[]', tagId);
         });
 
-        if (values.featured_image) {
-            formData.append('featured_image', values.featured_image);
+        if (selectedMediaId) {
+            formData.append('featured_image_id', selectedMediaId);
         }
 
         if (post) {
@@ -234,23 +236,23 @@ export default function Form({ post, categories, tags }: Props) {
                                         </SelectContent>
                                     </Select>
                                 </div>
-                                <div className="space-y-2">
+                                <div>
                                     <Label htmlFor="featured_image">Featured Image</Label>
-                                    <Input
-                                        id="featured_image"
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={handleFileChange}
-                                    />
-                                    {imagePreview && (
-                                        <div className="mt-2">
-                                            <img
-                                                src={imagePreview}
-                                                alt="Preview"
-                                                className="max-w-xs rounded-lg border border-gray-200"
-                                            />
-                                        </div>
-                                    )}
+                                    <Select
+                                        value={selectedMediaId}
+                                        onValueChange={(value) => setSelectedMediaId(value)}
+                                    >
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select featured image" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {media.map((item) => (
+                                                <SelectItem key={item.id} value={item.id.toString()}>
+                                                    {item.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
                                 </div>
                             </CardContent>
                         </Card>

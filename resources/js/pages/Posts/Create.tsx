@@ -11,11 +11,17 @@ interface Tag {
     color: string;
 }
 
+interface Media {
+    id: number;
+    name: string;
+}
+
 interface Props {
     categories: Category[];
     tags: Tag[];
+    media: Media[];
 }
 
-export default function Create({ categories, tags }: Props) {
-    return <Form categories={categories} tags={tags} />;
+export default function Create({ categories, tags, media }: Props) {
+    return <Form categories={categories} tags={tags} media={media} />;
 }

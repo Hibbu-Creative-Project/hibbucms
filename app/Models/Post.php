@@ -19,7 +19,7 @@ class Post extends Model
         'slug',
         'excerpt',
         'content',
-        'featured_image',
+        'featured_image_id',
         'status',
         'published_at',
     ];
@@ -54,6 +54,11 @@ class Post extends Model
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    public function featuredImage(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'featured_image');
     }
 
     public function scopePublished($query)

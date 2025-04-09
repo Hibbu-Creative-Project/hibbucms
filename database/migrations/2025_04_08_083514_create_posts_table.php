@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('excerpt')->nullable();
             $table->longText('content');
-            $table->string('featured_image')->nullable();
+            $table->foreignId('featured_image_id')->nullable()->constrained('media')->onDelete('set null');
             $table->enum('status', ['draft', 'published', 'scheduled'])->default('draft');
             $table->timestamp('published_at')->nullable();
             $table->timestamps();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
+use App\Models\Media;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
@@ -42,10 +43,12 @@ class PostController extends Controller
     {
         $categories = Category::defaultOrder()->get()->toTree();
         $tags = Tag::all();
+        $media = Media::latest()->get();
 
         return Inertia::render('Posts/Create', [
             'categories' => $categories,
-            'tags' => $tags
+            'tags' => $tags,
+            'media' => $media
         ]);
     }
 
@@ -59,7 +62,7 @@ class PostController extends Controller
             'content' => 'required|string',
             'excerpt' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
-            'featured_image' => 'nullable|image|max:2048',
+            'featured_image_id' => 'nullable|exists:media,id',
             'status' => 'required|in:draft,published,scheduled',
             'published_at' => 'nullable|required_if:status,scheduled|date',
             'tags' => 'nullable|array',
@@ -69,9 +72,8 @@ class PostController extends Controller
         $validated['user_id'] = auth()->id();
         $validated['slug'] = Str::slug($validated['title']);
 
-        if ($request->hasFile('featured_image')) {
-            $validated['featured_image'] = $request->file('featured_image')
-                ->store('featured-images', 'public');
+        if ($request->filled('featured_image_id')) {
+            $validated['featured_image_id'] = $request->input('featured_image_id');
         }
 
         $post = Post::create($validated);
@@ -122,7 +124,7 @@ class PostController extends Controller
             'content' => 'required|string',
             'excerpt' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
-            'featured_image' => 'nullable|image|max:2048',
+            'featured_image_id' => 'nullable|exists:media,id',
             'status' => 'required|in:draft,published,scheduled',
             'published_at' => 'nullable|required_if:status,scheduled|date',
             'tags' => 'nullable|array',
@@ -131,14 +133,8 @@ class PostController extends Controller
 
         $validated['slug'] = Str::slug($validated['title']);
 
-        if ($request->hasFile('featured_image')) {
-            // Delete old image
-            if ($post->featured_image) {
-                Storage::disk('public')->delete($post->featured_image);
-            }
-
-            $validated['featured_image'] = $request->file('featured_image')
-                ->store('featured-images', 'public');
+        if ($request->filled('featured_image_id')) {
+            $validated['featured_image_id'] = $request->input('featured_image_id');
         }
 
         $post->update($validated);
@@ -156,8 +152,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        if ($post->featured_image) {
-            Storage::disk('public')->delete($post->featured_image);
+        if ($post->featured_image_id) {
+            Storage::disk('public')->delete($post->featured_image_id);
         }
 
         $post->delete();

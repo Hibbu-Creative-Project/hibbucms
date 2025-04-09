@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, FileText, Tag, FolderTree, Settings, Users, Shield, Image } from 'lucide-react';
+import { BookOpen, LayoutGrid, FileText, Tag, FolderTree, Settings, Users, Shield, Image } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -58,13 +58,8 @@ const adminNavItems: NavItem[] = [
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
-    },
-    {
         title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits',
+        href: 'https://laravel.com/docs',
         icon: BookOpen,
     },
 ];
@@ -85,9 +80,12 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
+                <div className="px-4 text-xs font-semibold text-muted-foreground">Platform</div>
                 <NavMain items={mainNavItems} />
+
                 <div className="mt-2 px-4 text-xs font-semibold text-muted-foreground">Content Management</div>
                 <NavMain items={contentNavItems} />
+
                 <div className="mt-2 px-4 text-xs font-semibold text-muted-foreground">Administration</div>
                 <NavMain items={adminNavItems} />
             </SidebarContent>
