@@ -92,28 +92,28 @@ export default function Index({ roles, filters }: Props) {
             <div className="flex flex-col gap-4 p-4">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-200 mb-1">Peran</h1>
-                        <p className="text-gray-400">Kelola peran dan izin pengguna</p>
+                        <h1 className="text-2xl font-bold mb-1">Peran</h1>
+                        <p>Kelola peran dan izin pengguna</p>
                     </div>
                     <Link href="/roles/create">
-                        <Button className="bg-white hover:bg-gray-100 text-black">
+                        <Button>
                             <ShieldPlus className="mr-2 h-4 w-4" />
                             Tambah Peran
                         </Button>
                     </Link>
                 </div>
 
-                <div className="rounded-lg border border-gray-800 bg-[#0c1015]">
-                    <div className="p-4 border-b border-gray-800">
+                <div className="rounded-lg shadow border">
+                    <div className="p-4">
                         <div className="flex items-center gap-2">
                             <div className="relative flex-1 max-w-sm">
-                                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+                                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
                                 <Input
                                     type="text"
                                     placeholder="Cari peran..."
                                     value={search}
                                     onChange={(e) => handleSearch(e.target.value)}
-                                    className="pl-9 bg-gray-900 border-gray-800 text-gray-200"
+                                    className="pl-9"
                                 />
                             </div>
                         </div>
@@ -122,14 +122,14 @@ export default function Index({ roles, filters }: Props) {
                     {roles.data.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-12 px-4">
                             <Shield className="h-12 w-12 text-gray-400 mb-4" />
-                            <h3 className="text-lg font-medium text-gray-200 mb-1">Belum ada peran</h3>
-                            <p className="text-gray-400 text-center mb-4">
+                            <h3 className="text-lg font-medium mb-1">Belum ada peran</h3>
+                            <p className="text-center mb-4">
                                 {search
                                     ? 'Tidak ada peran yang sesuai dengan pencarian Anda'
                                     : 'Mulai dengan membuat peran baru untuk mengatur akses pengguna'}
                             </p>
                             <Link href="/roles/create">
-                                <Button className="bg-white hover:bg-gray-100 text-black">
+                                <Button>
                                     <ShieldPlus className="mr-2 h-4 w-4" />
                                     Buat Peran Pertama
                                 </Button>
@@ -138,24 +138,24 @@ export default function Index({ roles, filters }: Props) {
                     ) : (
                         <Table>
                             <TableHeader>
-                                <TableRow className="hover:bg-gray-900">
-                                    <TableHead className="text-gray-400">Peran</TableHead>
-                                    <TableHead className="text-gray-400">Izin</TableHead>
-                                    <TableHead className="text-gray-400">Pengguna</TableHead>
-                                    <TableHead className="text-gray-400 w-[100px]">Aksi</TableHead>
+                                <TableRow>
+                                    <TableHead>Peran</TableHead>
+                                    <TableHead>Izin</TableHead>
+                                    <TableHead>Pengguna</TableHead>
+                                    <TableHead className="w-[100px]">Aksi</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {roles.data.map((role) => (
-                                    <TableRow key={role.id} className="hover:bg-gray-900">
+                                    <TableRow key={role.id}>
                                         <TableCell>
                                             <div className="flex items-center gap-3">
                                                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-gray-200">
                                                     <Shield className="h-5 w-5" />
                                                 </div>
                                                 <div>
-                                                    <div className="font-medium text-gray-200">{role.name}</div>
-                                                    <div className="text-sm text-gray-400">
+                                                    <div className="font-medium">{role.name}</div>
+                                                    <div className="text-sm">
                                                         Dibuat {new Date(role.created_at).toLocaleDateString('id-ID', {
                                                             day: 'numeric',
                                                             month: 'long',

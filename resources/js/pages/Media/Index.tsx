@@ -171,16 +171,16 @@ export default function Index({ media, filters }: Props) {
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                     {media.data.length === 0 ? (
                         <div className="col-span-full">
-                            <div className="flex flex-col items-center justify-center py-12 px-4 border border-gray-800 rounded-lg">
+                            <div className="flex flex-col items-center justify-center py-12 px-4 border rounded-lg">
                                 <ImageIcon className="h-12 w-12 text-gray-400 mb-4" />
-                                <h3 className="text-lg font-medium text-gray-200 mb-1">Belum ada media</h3>
-                                <p className="text-gray-400 text-center mb-4">
+                                <h3 className="text-lg font-medium mb-1">Belum ada media</h3>
+                                <p className="text-center mb-4">
                                     {search || type
                                         ? 'Tidak ada media yang sesuai dengan filter Anda'
                                         : 'Mulai dengan mengunggah file media pertama Anda'}
                                 </p>
                                 <div {...getRootProps()} className="cursor-pointer">
-                                    <Button className="bg-white hover:bg-gray-100 text-black">
+                                    <Button>
                                         <Plus className="mr-2 h-4 w-4" />
                                         Unggah Media
                                     </Button>

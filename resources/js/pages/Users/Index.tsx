@@ -19,7 +19,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
-import { MoreHorizontal, Plus, Search, UserPlus2, Mail, Shield, Trash2, Eye, Edit2 } from 'lucide-react';
+import { MoreHorizontal, Search, UserPlus2, Mail, Shield, Trash2, Eye, Edit2 } from 'lucide-react';
 import { Pagination } from '@/components/ui/pagination';
 import { toast } from 'sonner';
 
@@ -96,28 +96,28 @@ export default function Index({ users, filters }: Props) {
             <div className="flex flex-col gap-4 p-4">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-200 mb-1">Pengguna</h1>
-                        <p className="text-gray-400">Kelola pengguna dan hak akses mereka</p>
+                        <h1 className="text-2xl font-bold mb-1">Pengguna</h1>
+                        <p>Kelola pengguna dan hak akses mereka</p>
                     </div>
                     <Link href="/users/create">
-                        <Button className="bg-white hover:bg-gray-100 text-black">
+                        <Button>
                             <UserPlus2 className="mr-2 h-4 w-4" />
                             Tambah Pengguna
                         </Button>
                     </Link>
                 </div>
 
-                <div className="rounded-lg border border-gray-800 bg-[#0c1015]">
-                    <div className="p-4 border-b border-gray-800">
+                <div className="rounded-lg shadow border">
+                    <div className="p-4">
                         <div className="flex items-center gap-2">
                             <div className="relative flex-1 max-w-sm">
-                                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+                                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
                                 <Input
                                     type="text"
                                     placeholder="Cari pengguna..."
                                     value={search}
                                     onChange={(e) => handleSearch(e.target.value)}
-                                    className="pl-9 bg-gray-900 border-gray-800 text-gray-200"
+                                    className="pl-9"
                                 />
                             </div>
                         </div>
@@ -125,16 +125,16 @@ export default function Index({ users, filters }: Props) {
 
                     <Table>
                         <TableHeader>
-                            <TableRow className="hover:bg-gray-900">
-                                <TableHead className="text-gray-400">Pengguna</TableHead>
-                                <TableHead className="text-gray-400">Email</TableHead>
-                                <TableHead className="text-gray-400">Peran</TableHead>
-                                <TableHead className="text-gray-400 w-[100px]">Aksi</TableHead>
+                            <TableRow>
+                                <TableHead>Pengguna</TableHead>
+                                <TableHead>Email</TableHead>
+                                <TableHead>Peran</TableHead>
+                                <TableHead className="w-[100px]">Aksi</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {users.data.map((user) => (
-                                <TableRow key={user.id} className="hover:bg-gray-900">
+                                <TableRow key={user.id}>
                                     <TableCell className="font-medium">
                                         <div className="flex items-center gap-3">
                                             {user.avatar ? (
@@ -149,14 +149,14 @@ export default function Index({ users, filters }: Props) {
                                                 </div>
                                             )}
                                             <div>
-                                                <div className="font-medium text-gray-200">{user.name}</div>
-                                                <div className="text-sm text-gray-400">Bergabung {new Date(user.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+                                                <div className="font-medium">{user.name}</div>
+                                                <div className="text-sm">Bergabung {new Date(user.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
                                             </div>
                                         </div>
                                     </TableCell>
                                     <TableCell>
-                                        <div className="flex items-center gap-2 text-gray-200">
-                                            <Mail className="h-4 w-4 text-gray-400" />
+                                        <div className="flex items-center gap-2">
+                                            <Mail className="h-4 w-4" />
                                             {user.email}
                                         </div>
                                     </TableCell>
@@ -178,7 +178,7 @@ export default function Index({ users, filters }: Props) {
                                             <DropdownMenuTrigger asChild>
                                                 <Button
                                                     variant="ghost"
-                                                    className="h-8 w-8 p-0 text-gray-400 hover:text-gray-200"
+                                                    className="h-8 w-8 p-0"
                                                 >
                                                     <MoreHorizontal className="h-4 w-4" />
                                                 </Button>
@@ -187,7 +187,7 @@ export default function Index({ users, filters }: Props) {
                                                 <DropdownMenuItem asChild>
                                                     <Link
                                                         href={`/users/${user.id}`}
-                                                        className="flex w-full items-center text-gray-200 hover:text-gray-100"
+                                                        className="flex w-full items-center"
                                                     >
                                                         <Eye className="mr-2 h-4 w-4" />
                                                         Lihat
@@ -196,7 +196,7 @@ export default function Index({ users, filters }: Props) {
                                                 <DropdownMenuItem asChild>
                                                     <Link
                                                         href={`/users/${user.id}/edit`}
-                                                        className="flex w-full items-center text-gray-200 hover:text-gray-100"
+                                                        className="flex w-full items-center"
                                                     >
                                                         <Edit2 className="mr-2 h-4 w-4" />
                                                         Edit
@@ -205,7 +205,7 @@ export default function Index({ users, filters }: Props) {
                                                 <DropdownMenuSeparator />
                                                 <DropdownMenuItem
                                                     onClick={() => handleDelete(user.id)}
-                                                    className="flex items-center text-red-500 hover:text-red-400"
+                                                    className="flex items-center"
                                                 >
                                                     <Trash2 className="mr-2 h-4 w-4" />
                                                     Hapus

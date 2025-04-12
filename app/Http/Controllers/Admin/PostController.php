@@ -59,8 +59,8 @@ class PostController extends Controller
             'posts' => $posts,
             'filters' => [
                 'search' => $request->input('search', ''),
-                'status' => $request->input('status', ''),
-                'category' => $request->input('category', '')
+                'status' => $request->input('status', 'all'),
+                'category' => $request->input('category', 'all')
             ]
         ]);
     }

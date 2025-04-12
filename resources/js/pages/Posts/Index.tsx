@@ -176,7 +176,7 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                     </Link>
                 </div>
 
-                <div className="rounded-lg shadow p-4 mb-4">
+                <div className="rounded-lg shadow border p-4 mb-4">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <Input
@@ -200,18 +200,15 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                         </div>
                         <div>
                             <Select value={category} onValueChange={handleCategoryChange}>
-                                <SelectTrigger className="text-gray-200">
+                                <SelectTrigger>
                                     <SelectValue placeholder="Filter berdasarkan kategori" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="all" className="text-gray-200 hover:bg-gray-800">
-                                        Semua Kategori
-                                    </SelectItem>
+                                    <SelectItem value="all">Semua Kategori</SelectItem>
                                     {uniqueCategories.map((cat) => (
                                         <SelectItem
                                             key={`category-${cat.id}`}
                                             value={cat.id.toString()}
-                                            className="text-gray-200 hover:bg-gray-800"
                                         >
                                             {cat.name}
                                         </SelectItem>
@@ -222,18 +219,18 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                     </div>
                 </div>
 
-                <div className="rounded-lg shadow">
+                <div className="rounded-lg shadow border">
                     {posts.data.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center py-12 px-4 border border-gray-800 rounded-lg">
+                        <div className="flex flex-col items-center justify-center py-12 px-4 rounded-lg">
                             <FileText className="h-12 w-12 text-gray-400 mb-4" />
-                            <h3 className="text-lg font-medium text-gray-200 mb-1">Belum ada post</h3>
-                            <p className="text-gray-400 text-center mb-4">
-                                {search || status !== 'all' || category !== 'all'
+                            <h3 className="text-lg font-medium mb-1">Belum ada post</h3>
+                            <p className="text-center mb-4">
+                                {(search || status !== 'all' || category !== 'all') && (status || category || search)
                                     ? 'Tidak ada post yang sesuai dengan filter Anda'
                                     : 'Mulai dengan membuat post baru untuk blog Anda'}
                             </p>
                             <Link href="/admin/posts/create">
-                                <Button className="bg-white hover:bg-gray-100 text-black">
+                                <Button>
                                     <Plus className="mr-2 h-4 w-4" />
                                     Buat Post Pertama
                                 </Button>

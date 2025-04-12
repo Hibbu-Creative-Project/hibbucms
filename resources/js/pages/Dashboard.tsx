@@ -70,33 +70,33 @@ export default function Dashboard({
                 <Head title="Dashboard" />
 
                 <div className="p-4">
-                    <div className="flex flex-col items-center justify-center py-12 px-4 border border-gray-800 rounded-lg">
+                    <div className="flex flex-col items-center justify-center py-12 px-4 border rounded-lg">
                         <FileText className="h-12 w-12 text-gray-400 mb-4" />
-                        <h3 className="text-lg font-medium text-gray-200 mb-1">Selamat Datang di HibbuCMS</h3>
-                        <p className="text-gray-400 text-center mb-8 max-w-md">
+                        <h3 className="text-lg font-medium mb-1">Selamat Datang di HibbuCMS</h3>
+                        <p className="text-center mb-8 max-w-md">
                             Mulai dengan membuat konten pertama Anda. Anda dapat membuat post, kategori, tag, atau mengunggah media.
                         </p>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <Link href="/posts/create">
-                                <Button className="w-full bg-white hover:bg-gray-100 text-black">
+                                <Button className="w-full">
                                     <FileText className="mr-2 h-4 w-4" />
                                     Buat Post
                                 </Button>
                             </Link>
                             <Link href="/categories/create">
-                                <Button className="w-full bg-white hover:bg-gray-100 text-black">
+                                <Button className="w-full">
                                     <FolderTree className="mr-2 h-4 w-4" />
                                     Buat Kategori
                                 </Button>
                             </Link>
                             <Link href="/tags/create">
-                                <Button className="w-full bg-white hover:bg-gray-100 text-black">
+                                <Button className="w-full">
                                     <Tag className="mr-2 h-4 w-4" />
                                     Buat Tag
                                 </Button>
                             </Link>
                             <Link href="/media">
-                                <Button className="w-full bg-white hover:bg-gray-100 text-black">
+                                <Button className="w-full">
                                     <Image className="mr-2 h-4 w-4" />
                                     Upload Media
                                 </Button>

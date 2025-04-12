@@ -99,14 +99,14 @@ export default function Index({ categories, filters = { search: '' } }: Props) {
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-2xl font-bold">Categories</h1>
                     <Link href="/admin/categories/create">
-                        <Button className="bg-white hover:bg-gray-200 text-black">
+                        <Button>
                             <Plus className="mr-2 h-4 w-4" />
                             Create Category
                         </Button>
                     </Link>
                 </div>
 
-                <div className="rounded-lg p-4 mb-4">
+                <div className="rounded-lg shadow border p-4 mb-4">
                     <div className="grid grid-cols-1 gap-4">
                         <div>
                             <Input
@@ -119,18 +119,18 @@ export default function Index({ categories, filters = { search: '' } }: Props) {
                     </div>
                 </div>
 
-                <div className="rounded-lg">
+                <div className="rounded-lg shadow border">
                     {categories.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center py-12 px-4 border border-gray-800 rounded-lg">
+                        <div className="flex flex-col items-center justify-center py-12 px-4 rounded-lg">
                             <FolderTree className="h-12 w-12 text-gray-400 mb-4" />
-                            <h3 className="text-lg font-medium text-gray-200 mb-1">Belum ada kategori</h3>
-                            <p className="text-gray-400 text-center mb-4">
+                            <h3 className="text-lg font-medium mb-1">Belum ada kategori</h3>
+                            <p className="text-center mb-4">
                                 {search
                                     ? 'Tidak ada kategori yang sesuai dengan pencarian Anda'
                                     : 'Mulai dengan membuat kategori untuk mengorganisir konten Anda'}
                             </p>
                             <Link href="/admin/categories/create">
-                                <Button className="bg-white hover:bg-gray-100 text-black">
+                                <Button>
                                     <Plus className="mr-2 h-4 w-4" />
                                     Buat Kategori Pertama
                                 </Button>
