@@ -20,7 +20,7 @@ class RoleController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return Inertia::render('Roles/Index', [
+        return Inertia::render('Admin/Roles/Index', [
             'roles' => $roles,
             'filters' => request()->only('search'),
         ]);
@@ -30,7 +30,7 @@ class RoleController extends Controller
     {
         $permissions = Permission::orderBy('group')->get();
 
-        return Inertia::render('Roles/Create', [
+        return Inertia::render('Admin/Roles/Create', [
             'permissions' => $permissions,
         ]);
     }
@@ -57,7 +57,7 @@ class RoleController extends Controller
     {
         $permissions = Permission::orderBy('group')->get();
 
-        return Inertia::render('Roles/Edit', [
+        return Inertia::render('Admin/Roles/Edit', [
             'role' => $role->load('permissions'),
             'permissions' => $permissions,
         ]);

@@ -150,7 +150,7 @@ export default function Index({ roles, filters }: Props) {
                                     <TableRow key={role.id}>
                                         <TableCell>
                                             <div className="flex items-center gap-3">
-                                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-gray-200">
+                                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-400 text-gray-200">
                                                     <Shield className="h-5 w-5" />
                                                 </div>
                                                 <div>
@@ -171,7 +171,6 @@ export default function Index({ roles, filters }: Props) {
                                                     <Badge
                                                         key={permission.id}
                                                         variant="secondary"
-                                                        className="bg-gray-800 text-gray-200"
                                                     >
                                                         <Lock className="h-3 w-3 mr-1" />
                                                         {permission.name}
@@ -180,7 +179,6 @@ export default function Index({ roles, filters }: Props) {
                                                 {role.permissions.length > 3 && (
                                                     <Badge
                                                         variant="secondary"
-                                                        className="bg-gray-800 text-gray-200"
                                                     >
                                                         +{role.permissions.length - 3}
                                                     </Badge>
@@ -188,8 +186,8 @@ export default function Index({ roles, filters }: Props) {
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            <div className="flex items-center gap-2 text-gray-200">
-                                                <Users2 className="h-4 w-4 text-gray-400" />
+                                            <div className="flex items-center gap-2">
+                                                <Users2 className="h-4 w-4" />
                                                 {role.users_count} pengguna
                                             </div>
                                         </TableCell>
@@ -207,7 +205,7 @@ export default function Index({ roles, filters }: Props) {
                                                     <DropdownMenuItem asChild>
                                                         <Link
                                                             href={`/roles/${role.id}/edit`}
-                                                            className="flex w-full items-center text-gray-200 hover:text-gray-100"
+                                                            className="flex w-full items-center"
                                                         >
                                                             <Edit2 className="mr-2 h-4 w-4" />
                                                             Edit

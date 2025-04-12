@@ -141,10 +141,10 @@ export default function Index({ users, filters }: Props) {
                                                 <img
                                                     src={`/storage/${user.avatar}`}
                                                     alt={user.name}
-                                                    className="h-10 w-10 rounded-full object-cover ring-2 ring-gray-800"
+                                                    className="h-10 w-10 rounded-full object-cover ring-2"
                                                 />
                                             ) : (
-                                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-gray-200 ring-2 ring-gray-700">
+                                                <div className="flex h-10 w-10 items-center justify-center rounded-full ring-2 ">
                                                     {user.name.charAt(0).toUpperCase()}
                                                 </div>
                                             )}

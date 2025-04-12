@@ -37,7 +37,7 @@ class UserController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return Inertia::render('Users/Index', [
+        return Inertia::render('Admin/Users/Index', [
             'users' => $users,
             'filters' => request()->only(['search']),
         ]);
@@ -48,7 +48,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Users/Create', [
+        return Inertia::render('Admin/Users/Create', [
             'roles' => Role::all(),
         ]);
     }
@@ -80,7 +80,7 @@ class UserController extends Controller
     {
         $user->load('roles');
 
-        return Inertia::render('Users/Show', [
+        return Inertia::render('Admin/Users/Show', [
             'user' => $user,
         ]);
     }
@@ -92,7 +92,7 @@ class UserController extends Controller
     {
         $user->load('roles');
 
-        return Inertia::render('Users/Edit', [
+        return Inertia::render('Admin/Users/Edit', [
             'user' => $user,
             'roles' => Role::all(),
         ]);

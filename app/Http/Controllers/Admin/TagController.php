@@ -27,7 +27,7 @@ class TagController extends Controller
             ->latest()
             ->paginate(10);
 
-        return Inertia::render('Tags/Index', [
+        return Inertia::render('Admin/Tags/Index', [
             'tags' => $tags
         ]);
     }
@@ -37,7 +37,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Tags/Create');
+        return Inertia::render('Admin/Tags/Create');
     }
 
     /**
@@ -68,7 +68,7 @@ class TagController extends Controller
             $query->latest()->with('user')->paginate(10);
         }]);
 
-        return Inertia::render('Tags/Show', [
+        return Inertia::render('Admin/Tags/Show', [
             'tag' => $tag
         ]);
     }
@@ -78,7 +78,7 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
-        return Inertia::render('Tags/Edit', [
+        return Inertia::render('Admin/Tags/Edit', [
             'tag' => $tag
         ]);
     }

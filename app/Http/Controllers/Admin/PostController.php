@@ -55,7 +55,7 @@ class PostController extends Controller
             return $post;
         });
 
-        return Inertia::render('Posts/Index', [
+        return Inertia::render('Admin/Posts/Index', [
             'posts' => $posts,
             'filters' => [
                 'search' => $request->input('search', ''),
@@ -74,7 +74,7 @@ class PostController extends Controller
         $tags = Tag::all();
         $media = Media::latest()->get();
 
-        return Inertia::render('Posts/Create', [
+        return Inertia::render('Admin/Posts/Create', [
             'categories' => $categories,
             'tags' => $tags,
             'media' => $media
@@ -130,7 +130,7 @@ class PostController extends Controller
     {
         $post->load(['user', 'category', 'tags']);
 
-        return Inertia::render('Posts/Show', [
+        return Inertia::render('Admin/Posts/Show', [
             'post' => $post
         ]);
     }
@@ -145,7 +145,7 @@ class PostController extends Controller
         $tags = Tag::all();
         $media = Media::latest()->get();
 
-        return Inertia::render('Posts/Edit', [
+        return Inertia::render('Admin/Posts/Edit', [
             'post' => $post,
             'categories' => $categories,
             'tags' => $tags,

@@ -49,7 +49,7 @@ class MediaController extends Controller
             ];
         });
 
-        return Inertia::render('Media/Index', [
+        return Inertia::render('Admin/Media/Index', [
             'media' => $media,
             'filters' => $request->only(['search', 'type']),
         ]);
@@ -127,7 +127,7 @@ class MediaController extends Controller
             $media->load('user');
         }
 
-        return Inertia::render('Media/Show', [
+        return Inertia::render('Admin/Media/Show', [
             'media' => [
                 'id' => $media->id,
                 'name' => $media->name ?: $media->file_name,
