@@ -7,7 +7,7 @@ use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleController;
-
+use App\Http\Controllers\Admin\PageController;
 
 Route::get('/admin', function () {
     return redirect()->route('dashboard');
@@ -38,6 +38,11 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     // User Routes
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class)->except(['show']);
+
+    // Page Routes
+    Route::resource('pages', PageController::class);
+    Route::post('pages/{page}/publish', [PageController::class, 'publish'])->name('pages.publish');
+    Route::post('pages/{page}/unpublish', [PageController::class, 'unpublish'])->name('pages.unpublish');
 
 
     // Theme Management
