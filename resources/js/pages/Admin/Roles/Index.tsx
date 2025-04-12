@@ -49,11 +49,11 @@ interface Props {
 const breadcrumbs = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: '/admin/dashboard',
     },
     {
         title: 'Roles',
-        href: '/roles',
+        href: '/admin/roles',
     },
 ];
 
@@ -63,7 +63,7 @@ export default function Index({ roles, filters }: Props) {
     const handleSearch = (value: string) => {
         setSearch(value);
         router.get(
-            '/roles',
+            '/admin/roles',
             { search: value },
             {
                 preserveState: true,
@@ -74,7 +74,7 @@ export default function Index({ roles, filters }: Props) {
 
     const handleDelete = (id: number) => {
         if (confirm('Apakah Anda yakin ingin menghapus peran ini?')) {
-            router.delete(`/roles/${id}`, {
+            router.delete(`/admin/roles/${id}`, {
                 onSuccess: () => {
                     toast.success('Peran berhasil dihapus');
                 },
@@ -95,7 +95,7 @@ export default function Index({ roles, filters }: Props) {
                         <h1 className="text-2xl font-bold mb-1">Peran</h1>
                         <p>Kelola peran dan izin pengguna</p>
                     </div>
-                    <Link href="/roles/create">
+                    <Link href="/admin/roles/create">
                         <Button>
                             <ShieldPlus className="mr-2 h-4 w-4" />
                             Tambah Peran
@@ -128,7 +128,7 @@ export default function Index({ roles, filters }: Props) {
                                     ? 'Tidak ada peran yang sesuai dengan pencarian Anda'
                                     : 'Mulai dengan membuat peran baru untuk mengatur akses pengguna'}
                             </p>
-                            <Link href="/roles/create">
+                            <Link href="/admin/roles/create">
                                 <Button>
                                     <ShieldPlus className="mr-2 h-4 w-4" />
                                     Buat Peran Pertama
@@ -204,7 +204,7 @@ export default function Index({ roles, filters }: Props) {
                                                 <DropdownMenuContent align="end" className="w-40">
                                                     <DropdownMenuItem asChild>
                                                         <Link
-                                                            href={`/roles/${role.id}/edit`}
+                                                            href={`/admin/roles/${role.id}/edit`}
                                                             className="flex w-full items-center"
                                                         >
                                                             <Edit2 className="mr-2 h-4 w-4" />
@@ -242,7 +242,7 @@ export default function Index({ roles, filters }: Props) {
                                     return (
                                         <Link
                                             key={`page-${page}`}
-                                            href={`/roles?${queryParams}`}
+                                            href={`/admin/roles?${queryParams}`}
                                             className={`px-3 py-1 rounded ${
                                                 page === roles.current_page
                                                     ? 'bg-white text-black'

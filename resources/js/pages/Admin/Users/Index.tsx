@@ -46,11 +46,11 @@ interface Props {
 const breadcrumbs = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: '/admin/dashboard',
     },
     {
         title: 'Users',
-        href: '/users',
+        href: '/admin/users',
     },
 ];
 
@@ -67,7 +67,7 @@ export default function Index({ users, filters }: Props) {
     const handleSearch = (value: string) => {
         setSearch(value);
         router.get(
-            '/users',
+            '/admin/users',
             { search: value },
             {
                 preserveState: true,
@@ -78,7 +78,7 @@ export default function Index({ users, filters }: Props) {
 
     const handleDelete = (id: number) => {
         if (confirm('Apakah Anda yakin ingin menghapus pengguna ini?')) {
-            router.delete(`/users/${id}`, {
+            router.delete(`/admin/users/${id}`, {
                 onSuccess: () => {
                     toast.success('Pengguna berhasil dihapus');
                 },
@@ -99,7 +99,7 @@ export default function Index({ users, filters }: Props) {
                         <h1 className="text-2xl font-bold mb-1">Pengguna</h1>
                         <p>Kelola pengguna dan hak akses mereka</p>
                     </div>
-                    <Link href="/users/create">
+                    <Link href="/admin/users/create">
                         <Button>
                             <UserPlus2 className="mr-2 h-4 w-4" />
                             Tambah Pengguna
@@ -186,7 +186,7 @@ export default function Index({ users, filters }: Props) {
                                             <DropdownMenuContent align="end" className="w-40">
                                                 <DropdownMenuItem asChild>
                                                     <Link
-                                                        href={`/users/${user.id}`}
+                                                        href={`/admin/users/${user.id}`}
                                                         className="flex w-full items-center"
                                                     >
                                                         <Eye className="mr-2 h-4 w-4" />
@@ -195,7 +195,7 @@ export default function Index({ users, filters }: Props) {
                                                 </DropdownMenuItem>
                                                 <DropdownMenuItem asChild>
                                                     <Link
-                                                        href={`/users/${user.id}/edit`}
+                                                        href={`/admin/users/${user.id}/edit`}
                                                         className="flex w-full items-center"
                                                     >
                                                         <Edit2 className="mr-2 h-4 w-4" />

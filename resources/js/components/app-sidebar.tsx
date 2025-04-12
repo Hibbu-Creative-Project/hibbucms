@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarRail } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, LayoutGrid, FileText, Tag, FolderTree, Settings, Users, Shield, Image, Paintbrush } from 'lucide-react';
+import { BookOpen, LayoutGrid, File, FileText, Settings, Users, Shield, Image, Paintbrush } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -15,33 +15,37 @@ const mainNavItems: NavItem[] = [
     },
 ];
 
-const contentNavItems: NavItem[] = [
+const contentNavItems = [
     {
         title: 'Pages',
         href: '/admin/pages',
-        icon: FileText,
+        icon: File,
     },
     {
         title: 'Posts',
         href: '/admin/posts',
         icon: FileText,
-    },
-    {
-        title: 'Categories',
-        href: '/admin/categories',
-        icon: FolderTree,
-    },
-    {
-        title: 'Tags',
-        href: '/admin/tags',
-        icon: Tag,
+        items: [
+            {
+                title: 'All Posts',
+                href: '/admin/posts',
+            },
+            {
+                title: 'Categories',
+                href: '/admin/categories',
+            },
+            {
+                title: 'Tags',
+                href: '/admin/tags',
+            },
+        ],
     },
     {
         title: 'Media',
         href: '/admin/media',
         icon: Image,
     },
-];
+] as NavItem[];
 
 const adminNavItems: NavItem[] = [
     {

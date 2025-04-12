@@ -1,3 +1,5 @@
+import { LucideIcon } from "lucide-react";
+
 export interface Page {
   id: number;
   title: string;
@@ -14,4 +16,16 @@ export interface Page {
   };
   created_at: string;
   updated_at: string;
+}
+
+export interface NavSubItem {
+    title: string;
+    href: string;
+}
+
+export interface NavItem {
+    title: string;
+    href: string;
+    icon?: LucideIcon;
+    items?: NavSubItem[];
 }
