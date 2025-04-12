@@ -2,7 +2,7 @@ import { Head, router } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Button } from '@/components/ui/button';
 import { ThemeCard } from '@/components/theme-card';
-import { FileText, Plus, Upload } from 'lucide-react';
+import { FileText, Plus, Upload, Palette } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -67,106 +67,124 @@ export default function Index({ themes }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Themes" />
 
-            <div className="p-4">
-                <div className="flex justify-between items-center mb-4">
-                    <h1 className="text-2xl font-bold">Themes</h1>
-                    <div className="flex gap-2">
-                        <Dialog open={isUploadDialogOpen} onOpenChange={setIsUploadDialogOpen}>
-                            <DialogTrigger asChild>
-                                <Button>
-                                    <Upload className="mr-2 h-4 w-4" />
-                                    Upload Theme
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                                <DialogHeader>
-                                    <DialogTitle>Upload Theme</DialogTitle>
-                                    <DialogDescription>
-                                        Upload a theme in ZIP format. The ZIP file should contain a theme.json file and all necessary theme files.
-                                    </DialogDescription>
-                                </DialogHeader>
-                                <div className="grid gap-4 py-4">
-                                    <div className="grid gap-2">
-                                        <Label htmlFor="theme">Theme File (ZIP)</Label>
-                                        <Input
-                                            id="theme"
-                                            type="file"
-                                            accept=".zip"
-                                            ref={fileInputRef}
-                                            onChange={handleFileChange}
-                                        />
-                                    </div>
-                                </div>
-                                <DialogFooter>
-                                    <Button variant="outline" onClick={() => setIsUploadDialogOpen(false)}>
-                                        Cancel
-                                    </Button>
-                                    <Button onClick={handleUpload} disabled={!selectedFile}>
-                                        Upload Theme
-                                    </Button>
-                                </DialogFooter>
-                            </DialogContent>
-                        </Dialog>
-                        <Button onClick={handleScan}>
-                            <Plus className="mr-2 h-4 w-4" />
-                            Scan for Themes
-                        </Button>
+            <div className="p-6">
+                {/* Header Section */}
+                <div className="mb-8">
+                    <div className="flex items-center gap-3 mb-2">
+                        <Palette className="h-8 w-8 text-primary" />
+                        <h1 className="text-3xl font-bold tracking-tight">Themes</h1>
                     </div>
+                    <p className="text-muted-foreground">Kelola dan sesuaikan tampilan situs Anda dengan tema yang menarik.</p>
                 </div>
 
-                <div className="rounded-lg shadow">
+                {/* Actions Section */}
+                <div className="flex justify-end gap-3 mb-6">
+                    <Dialog open={isUploadDialogOpen} onOpenChange={setIsUploadDialogOpen}>
+                        <DialogTrigger asChild>
+                            <Button variant="outline" className="shadow-sm">
+                                <Upload className="mr-2 h-4 w-4" />
+                                Upload Theme
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                                <DialogTitle className="flex items-center gap-2">
+                                    <Upload className="h-5 w-5" />
+                                    Upload Theme
+                                </DialogTitle>
+                                <DialogDescription className="text-sm text-muted-foreground pt-2">
+                                    Upload tema dalam format ZIP. File ZIP harus berisi file theme.json dan semua file tema yang diperlukan.
+                                </DialogDescription>
+                            </DialogHeader>
+                            <div className="grid gap-4 py-4">
+                                <div className="grid gap-2">
+                                    <Label htmlFor="theme" className="text-sm font-medium">Theme File (ZIP)</Label>
+                                    <Input
+                                        id="theme"
+                                        type="file"
+                                        accept=".zip"
+                                        ref={fileInputRef}
+                                        onChange={handleFileChange}
+                                        className="cursor-pointer"
+                                    />
+                                </div>
+                            </div>
+                            <DialogFooter className="gap-2">
+                                <Button variant="outline" onClick={() => setIsUploadDialogOpen(false)}>
+                                    Batal
+                                </Button>
+                                <Button onClick={handleUpload} disabled={!selectedFile} className="min-w-[100px]">
+                                    {selectedFile ? 'Upload' : 'Pilih File'}
+                                </Button>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
+                    <Button onClick={handleScan} variant="default" className="shadow-sm">
+                        <Plus className="mr-2 h-4 w-4" />
+                        Scan Themes
+                    </Button>
+                </div>
+
+                {/* Content Section */}
+                <div className="rounded-xl border bg-card shadow-sm">
                     {themes.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center py-12 px-4 border border-gray-800 rounded-lg">
-                            <FileText className="h-12 w-12 text-gray-400 mb-4" />
-                            <h3 className="text-lg font-medium text-gray-200 mb-1">No themes found</h3>
-                            <p className="text-gray-400 text-center mb-4">
-                                Add new themes by uploading a ZIP file or placing them in the themes directory
+                        <div className="flex flex-col items-center justify-center py-16 px-4">
+                            <div className="rounded-full bg-muted p-4 mb-4">
+                                <FileText className="h-8 w-8 text-muted-foreground" />
+                            </div>
+                            <h3 className="text-xl font-semibold mb-2">Belum ada tema</h3>
+                            <p className="text-muted-foreground text-center max-w-md mb-6">
+                                Tambahkan tema baru dengan mengunggah file ZIP atau letakkan langsung di direktori tema
                             </p>
-                            <div className="flex gap-2">
+                            <div className="flex gap-3">
                                 <Dialog open={isUploadDialogOpen} onOpenChange={setIsUploadDialogOpen}>
                                     <DialogTrigger asChild>
-                                        <Button className="bg-white hover:bg-gray-100 text-black">
+                                        <Button className="shadow-sm">
                                             <Upload className="mr-2 h-4 w-4" />
                                             Upload Theme
                                         </Button>
                                     </DialogTrigger>
                                     <DialogContent>
                                         <DialogHeader>
-                                            <DialogTitle>Upload Theme</DialogTitle>
-                                            <DialogDescription>
-                                                Upload a theme in ZIP format. The ZIP file should contain a theme.json file and all necessary theme files.
+                                            <DialogTitle className="flex items-center gap-2">
+                                                <Upload className="h-5 w-5" />
+                                                Upload Theme
+                                            </DialogTitle>
+                                            <DialogDescription className="text-sm text-muted-foreground pt-2">
+                                                Upload tema dalam format ZIP. File ZIP harus berisi file theme.json dan semua file tema yang diperlukan.
                                             </DialogDescription>
                                         </DialogHeader>
                                         <div className="grid gap-4 py-4">
                                             <div className="grid gap-2">
-                                                <Label htmlFor="theme-empty">Theme File (ZIP)</Label>
+                                                <Label htmlFor="theme-empty" className="text-sm font-medium">Theme File (ZIP)</Label>
                                                 <Input
                                                     id="theme-empty"
                                                     type="file"
                                                     accept=".zip"
                                                     ref={fileInputRef}
                                                     onChange={handleFileChange}
+                                                    className="cursor-pointer"
                                                 />
                                             </div>
                                         </div>
-                                        <DialogFooter>
+                                        <DialogFooter className="gap-2">
                                             <Button variant="outline" onClick={() => setIsUploadDialogOpen(false)}>
-                                                Cancel
+                                                Batal
                                             </Button>
-                                            <Button onClick={handleUpload} disabled={!selectedFile}>
-                                                Upload Theme
+                                            <Button onClick={handleUpload} disabled={!selectedFile} className="min-w-[100px]">
+                                                {selectedFile ? 'Upload' : 'Pilih File'}
                                             </Button>
                                         </DialogFooter>
                                     </DialogContent>
                                 </Dialog>
-                                <Button onClick={handleScan} variant="outline">
+                                <Button onClick={handleScan} variant="outline" className="shadow-sm">
                                     <Plus className="mr-2 h-4 w-4" />
-                                    Scan for Themes
+                                    Scan Themes
                                 </Button>
                             </div>
                         </div>
                     ) : (
-                        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 p-4">
+                        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 p-6">
                             {themes.map((theme) => (
                                 <ThemeCard key={theme.id} theme={theme} />
                             ))}
