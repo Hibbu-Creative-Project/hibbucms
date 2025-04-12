@@ -77,25 +77,25 @@ export default function Dashboard({
                             Mulai dengan membuat konten pertama Anda. Anda dapat membuat post, kategori, tag, atau mengunggah media.
                         </p>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <Link href="/posts/create">
+                            <Link href="/admin/posts/create">
                                 <Button className="w-full">
                                     <FileText className="mr-2 h-4 w-4" />
                                     Buat Post
                                 </Button>
                             </Link>
-                            <Link href="/categories/create">
+                            <Link href="/admin/categories/create">
                                 <Button className="w-full">
                                     <FolderTree className="mr-2 h-4 w-4" />
                                     Buat Kategori
                                 </Button>
                             </Link>
-                            <Link href="/tags/create">
+                            <Link href="/admin/tags/create">
                                 <Button className="w-full">
                                     <Tag className="mr-2 h-4 w-4" />
                                     Buat Tag
                                 </Button>
                             </Link>
-                            <Link href="/media">
+                            <Link href="/admin/media">
                                 <Button className="w-full">
                                     <Image className="mr-2 h-4 w-4" />
                                     Upload Media

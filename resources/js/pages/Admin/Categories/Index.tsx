@@ -60,11 +60,11 @@ export default function Index({ categories, filters = { search: '' } }: Props) {
     const renderCategories = (categories: Category[]): ReactElement[] => {
         return categories.map((category) => (
             <Fragment key={category.id}>
-                <TableRow className="border-b border-gray-800 hover:bg-[#0c1015]">
-                    <TableCell className="text-gray-200">{category.name}</TableCell>
-                    <TableCell className="text-gray-200">{category.slug}</TableCell>
-                    <TableCell className="text-gray-200">{category.description}</TableCell>
-                    <TableCell className="text-gray-200">
+                <TableRow>
+                    <TableCell>{category.name}</TableCell>
+                    <TableCell>{category.slug}</TableCell>
+                    <TableCell>{category.description}</TableCell>
+                    <TableCell>
                         {format(new Date(category.created_at), 'dd MMMM yyyy', {
                             locale: id,
                         })}
@@ -72,14 +72,12 @@ export default function Index({ categories, filters = { search: '' } }: Props) {
                     <TableCell>
                         <div className="flex space-x-2">
                             <Link href={`/admin/categories/${category.id}/edit`}>
-                                <Button variant="outline" size="sm"
-                                    className="border-gray-800 text-gray-200 hover:bg-[#0c1015] hover:text-white">
+                                <Button variant="outline" size="sm">
                                     Edit
                                 </Button>
                             </Link>
                             <Link href={`/admin/categories/${category.id}`}>
-                                <Button variant="outline" size="sm"
-                                    className="border-gray-800 text-gray-200 hover:bg-[#0c1015] hover:text-white">
+                                <Button variant="outline" size="sm">
                                     Lihat
                                 </Button>
                             </Link>
@@ -140,11 +138,11 @@ export default function Index({ categories, filters = { search: '' } }: Props) {
                         <Table>
                             <TableHeader>
                                 <TableRow className="border-b">
-                                    <TableHead className="text-gray-200">Nama</TableHead>
-                                    <TableHead className="text-gray-200">Slug</TableHead>
-                                    <TableHead className="text-gray-200">Deskripsi</TableHead>
-                                    <TableHead className="text-gray-200">Tanggal Dibuat</TableHead>
-                                    <TableHead className="text-gray-200">Aksi</TableHead>
+                                    <TableHead>Nama</TableHead>
+                                    <TableHead>Slug</TableHead>
+                                    <TableHead>Deskripsi</TableHead>
+                                    <TableHead>Tanggal Dibuat</TableHead>
+                                    <TableHead>Aksi</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>

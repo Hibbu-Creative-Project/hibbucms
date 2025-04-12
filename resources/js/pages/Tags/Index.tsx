@@ -111,21 +111,21 @@ export default function Index({ tags, filters = { search: '' } }: Props) {
                         <Table>
                             <TableHeader>
                                 <TableRow className="border-b">
-                                    <TableHead className="text-gray-200">Nama</TableHead>
-                                    <TableHead className="text-gray-200">Slug</TableHead>
-                                    <TableHead className="text-gray-200">Deskripsi</TableHead>
-                                    <TableHead className="text-gray-200">Warna</TableHead>
-                                    <TableHead className="text-gray-200">Tanggal Dibuat</TableHead>
-                                    <TableHead className="text-gray-200">Aksi</TableHead>
+                                    <TableHead>Nama</TableHead>
+                                    <TableHead>Slug</TableHead>
+                                    <TableHead>Deskripsi</TableHead>
+                                    <TableHead>Warna</TableHead>
+                                    <TableHead>Tanggal Dibuat</TableHead>
+                                    <TableHead>Aksi</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {tags.data.map((tag) => (
-                                    <TableRow key={tag.id} className="border-b border-gray-800 hover:bg-[#0c1015]">
-                                        <TableCell className="text-gray-200">{tag.name}</TableCell>
-                                        <TableCell className="text-gray-200">{tag.slug}</TableCell>
-                                        <TableCell className="text-gray-200">{tag.description}</TableCell>
-                                        <TableCell className="text-gray-200">
+                                    <TableRow key={tag.id}>
+                                        <TableCell>{tag.name}</TableCell>
+                                        <TableCell>{tag.slug}</TableCell>
+                                        <TableCell>{tag.description}</TableCell>
+                                        <TableCell>
                                             <Badge
                                                 style={{
                                                     backgroundColor: tag.color,
@@ -135,7 +135,7 @@ export default function Index({ tags, filters = { search: '' } }: Props) {
                                                 {tag.color}
                                             </Badge>
                                         </TableCell>
-                                        <TableCell className="text-gray-200">
+                                        <TableCell>
                                             {format(new Date(tag.created_at), 'dd MMMM yyyy', {
                                                 locale: id,
                                             })}
@@ -143,14 +143,12 @@ export default function Index({ tags, filters = { search: '' } }: Props) {
                                         <TableCell>
                                             <div className="flex space-x-2">
                                                 <Link href={`/admin/tags/${tag.id}/edit`}>
-                                                    <Button variant="outline" size="sm"
-                                                        className="border-gray-800 text-gray-200 hover:bg-[#0c1015] hover:text-white">
+                                                    <Button variant="outline" size="sm">
                                                         Edit
                                                     </Button>
                                                 </Link>
                                                 <Link href={`/admin/tags/${tag.id}`}>
-                                                    <Button variant="outline" size="sm"
-                                                        className="border-gray-800 text-gray-200 hover:bg-[#0c1015] hover:text-white">
+                                                    <Button variant="outline" size="sm">
                                                         Lihat
                                                     </Button>
                                                 </Link>
