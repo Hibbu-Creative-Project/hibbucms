@@ -19,7 +19,6 @@ import {
     Strikethrough,
     Code,
 } from 'lucide-react';
-import { Button } from './ui/button';
 import { Toggle } from './ui/toggle';
 import { Separator } from './ui/separator';
 
@@ -153,10 +152,10 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
 
     return (
         <div className="border rounded-lg overflow-hidden">
-            <div className="bg-gray-900 border-b border-gray-800 p-2 flex flex-wrap gap-1 items-center">
+            <div className="border-b p-2 flex flex-wrap gap-1 items-center">
                 {toolbarItems.map((item, index) => {
                     if (item.type === 'separator') {
-                        return <Separator orientation="vertical" className="h-6 bg-gray-700" key={index} />;
+                        return <Separator orientation="vertical" className="h-6 " key={index} />;
                     }
 
                     return (
@@ -165,7 +164,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
                             pressed={item.isActive()}
                             onPressedChange={() => item.action()}
                             title={item.title}
-                            className="h-8 w-8 p-0 data-[state=on]:bg-gray-700"
+                            className="h-8 w-8 p-0 data-[state=on]:bg-gray-700 data-[state=on]:text-gray-50 data-[state=off]:text-gray-400 data-[state=off]:hover:bg-gray-700 data-[state=off]:hover:text-gray-50 transition-colors rounded-md flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-gray-500"
                         >
                             {item.icon}
                         </Toggle>

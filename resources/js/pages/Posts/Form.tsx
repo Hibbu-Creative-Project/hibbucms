@@ -135,7 +135,7 @@ export default function Form({ post, categories, tags, media }: Props) {
 
             <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
-                    <h1 className="text-2xl font-bold text-gray-200">{post ? 'Edit Post' : 'Buat Post Baru'}</h1>
+                    <h1 className="text-2xl font-bold">{post ? 'Edit Post' : 'Buat Post Baru'}</h1>
                 </div>
 
                 <div className="flex gap-4">
@@ -155,7 +155,6 @@ export default function Form({ post, categories, tags, media }: Props) {
                                     }
                                     placeholder="Masukkan judul post"
                                     required
-                                    className="text-xl font-semibold text-gray-200 placeholder:text-gray-500 border-0 p-0 focus-visible:ring-0"
                                 />
                             </div>
 
@@ -172,7 +171,7 @@ export default function Form({ post, categories, tags, media }: Props) {
                             </div>
 
                             <div>
-                                <Label htmlFor="excerpt" className="text-gray-200 mb-2 block">Ringkasan</Label>
+                                <Label htmlFor="excerpt" className=" mb-2 block">Ringkasan</Label>
                                 <Textarea
                                     id="excerpt"
                                     value={values.excerpt}
@@ -183,7 +182,7 @@ export default function Form({ post, categories, tags, media }: Props) {
                                         })
                                     }
                                     placeholder="Masukkan ringkasan post"
-                                    className="min-h-[100px] text-gray-200 placeholder:text-gray-500"
+                                    className="min-h-[100px]  placeholder:text-gray-500"
                                 />
                             </div>
                         </div>
@@ -200,7 +199,6 @@ export default function Form({ post, categories, tags, media }: Props) {
                                         handleSubmit(e as unknown as FormEvent);
                                     }}
                                     disabled={isSubmitting}
-                                    className="bg-white hover:bg-gray-200 text-black"
                                 >
                                     {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                                     {post ? 'Update Post' : 'Buat Post'}
@@ -215,19 +213,19 @@ export default function Form({ post, categories, tags, media }: Props) {
                                         })
                                     }
                                 >
-                                    <SelectTrigger className="w-32 text-gray-200">
+                                    <SelectTrigger className="w-32 ">
                                         <SelectValue placeholder="Status" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="draft" className="text-gray-200 hover:bg-gray-800">Draft</SelectItem>
-                                        <SelectItem value="published" className="text-gray-200 hover:bg-gray-800">Published</SelectItem>
+                                        <SelectItem value="draft" className=" hover:bg-gray-800">Draft</SelectItem>
+                                        <SelectItem value="published" className=" hover:bg-gray-800">Published</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
                         </div>
 
                         <div className="rounded-lg p-4 border space-y-4">
-                            <h3 className="font-semibold text-gray-200">Kategori</h3>
+                            <h3 className="font-semibold ">Kategori</h3>
                             <Select
                                 value={values.category_id}
                                 onValueChange={(value) =>
@@ -237,7 +235,7 @@ export default function Form({ post, categories, tags, media }: Props) {
                                     })
                                 }
                             >
-                                <SelectTrigger className="text-gray-200">
+                                <SelectTrigger className="">
                                     <SelectValue placeholder="Pilih kategori" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -245,7 +243,7 @@ export default function Form({ post, categories, tags, media }: Props) {
                                         <SelectItem
                                             key={category.id}
                                             value={category.id.toString()}
-                                            className="text-gray-200 hover:bg-gray-800"
+                                            className=" hover:bg-gray-800"
                                         >
                                             {category.name}
                                         </SelectItem>
@@ -255,20 +253,13 @@ export default function Form({ post, categories, tags, media }: Props) {
                         </div>
 
                         <div className="rounded-lg p-4 border space-y-4">
-                            <h3 className="font-semibold text-gray-200">Tags</h3>
+                            <h3 className="font-semibold ">Tags</h3>
                             <div className="flex flex-wrap gap-2">
                                 {tags.map((tag) => (
                                     <label
                                         key={tag.id}
                                         className="flex items-center space-x-2 p-2 border rounded cursor-pointer transition-colors"
-                                        style={{
-                                            backgroundColor: values.tag_ids.includes(tag.id.toString())
-                                                ? tag.color
-                                                : 'transparent',
-                                            color: values.tag_ids.includes(tag.id.toString())
-                                                ? getContrastColor(tag.color)
-                                                : '#e5e7eb',
-                                        }}
+
                                     >
                                         <input
                                             type="checkbox"
@@ -293,7 +284,7 @@ export default function Form({ post, categories, tags, media }: Props) {
                         </div>
 
                         <div className="rounded-lg p-4 border space-y-4">
-                            <h3 className="font-semibold text-gray-200">Featured Image</h3>
+                            <h3 className="font-semibold ">Featured Image</h3>
                             <MediaPicker
                                 media={media}
                                 selectedMediaId={selectedMediaId}
@@ -313,21 +304,4 @@ export default function Form({ post, categories, tags, media }: Props) {
             </div>
         </AppLayout>
     );
-}
-
-// Helper function to get contrasting text color based on background color
-function getContrastColor(hexColor: string): string {
-    // Remove the hash if it exists
-    const color = hexColor.replace('#', '');
-
-    // Convert hex to RGB
-    const r = parseInt(color.substr(0, 2), 16);
-    const g = parseInt(color.substr(2, 2), 16);
-    const b = parseInt(color.substr(4, 2), 16);
-
-    // Calculate the brightness
-    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-
-    // Return black or white based on brightness
-    return brightness > 128 ? '#000000' : '#FFFFFF';
 }

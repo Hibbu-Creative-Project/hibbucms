@@ -257,7 +257,7 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                                     <TableRow key={post.id}>
                                         <TableCell>
                                             <div className="flex items-center space-x-3">
-                                                <div className="flex-shrink-0 w-16 h-12 rounded-md overflow-hidden bg-gray-800">
+                                                <div className="flex-shrink-0 w-16 h-12 rounded-md overflow-hidden">
                                                     {post.featured_image ? (
                                                         <img
                                                             src={getImageUrl(post)}
@@ -267,19 +267,19 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                                                         />
                                                     ) : (
                                                         <div className="w-full h-full flex items-center justify-center">
-                                                            <ImageIcon className="w-6 h-6 text-gray-400" />
+                                                            <ImageIcon className="w-6 h-6" />
                                                         </div>
                                                     )}
                                                 </div>
                                                 <div className="flex flex-col">
-                                                    <span className="font-medium text-gray-200">{post.title}</span>
-                                                    <span className="text-sm text-gray-400 truncate max-w-[300px]">
+                                                    <span className="font-medium">{post.title}</span>
+                                                    <span className="text-sm truncate max-w-[300px]">
                                                         {post.excerpt}
                                                     </span>
                                                 </div>
                                             </div>
                                         </TableCell>
-                                        <TableCell className="text-gray-200">{post.category.name}</TableCell>
+                                        <TableCell>{post.category.name}</TableCell>
                                         <TableCell>
                                             <div className="flex flex-wrap gap-1">
                                                 {post.tags.map((tag) => (
@@ -311,14 +311,14 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                                                 {post.status === 'published' ? 'Published' : 'Draft'}
                                             </Badge>
                                         </TableCell>
-                                        <TableCell className="text-gray-200">
+                                        <TableCell>
                                             {post.published_at
                                                 ? format(new Date(post.published_at), 'dd MMMM yyyy', {
                                                       locale: id,
                                                   })
                                                 : '-'}
                                         </TableCell>
-                                        <TableCell className="text-gray-200">
+                                        <TableCell>
                                             {format(new Date(post.created_at), 'dd MMMM yyyy', {
                                                 locale: id,
                                             })}
@@ -327,13 +327,13 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                                             <div className="flex space-x-2">
                                                 <Link href={`/admin/posts/${post.id}/edit`}>
                                                     <Button variant="outline" size="sm"
-                                                        className="border-gray-800 text-gray-200 hover:bg-[#0c1015] hover:text-white">
+                                                        className="hover:bg-[#0c1015] hover:text-white">
                                                         Edit
                                                     </Button>
                                                 </Link>
                                                 <Link href={`/admin/posts/${post.id}`}>
                                                     <Button variant="outline" size="sm"
-                                                        className="border-gray-800 text-gray-200 hover:bg-[#0c1015] hover:text-white">
+                                                        className="hover:bg-[#0c1015] hover:text-white">
                                                         Lihat
                                                     </Button>
                                                 </Link>
