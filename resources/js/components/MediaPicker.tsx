@@ -24,7 +24,6 @@ export default function MediaPicker({ media, selectedMediaId, onSelect, onUpload
     const [isOpen, setIsOpen] = useState(false);
     const [activeTab, setActiveTab] = useState('upload');
     const [previewUrl, setPreviewUrl] = useState<string | undefined>(featuredImageUrl);
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     useEffect(() => {
         // Cleanup old preview URL when component unmounts or when new file is selected
@@ -46,7 +45,6 @@ export default function MediaPicker({ media, selectedMediaId, onSelect, onUpload
             // Create new preview
             const newPreviewUrl = URL.createObjectURL(file);
             setPreviewUrl(newPreviewUrl);
-            setSelectedFile(file);
             onUpload(file);
             setIsOpen(false);
         }
@@ -58,7 +56,6 @@ export default function MediaPicker({ media, selectedMediaId, onSelect, onUpload
             URL.revokeObjectURL(previewUrl);
         }
         setPreviewUrl(url);
-        setSelectedFile(null);
         onSelect(mediaId);
         setIsOpen(false);
     };
@@ -75,7 +72,6 @@ export default function MediaPicker({ media, selectedMediaId, onSelect, onUpload
             // Create new preview
             const newPreviewUrl = URL.createObjectURL(file);
             setPreviewUrl(newPreviewUrl);
-            setSelectedFile(file);
             onUpload(file);
             setIsOpen(false);
         }
@@ -144,7 +140,7 @@ export default function MediaPicker({ media, selectedMediaId, onSelect, onUpload
                                 >
                                     <Label htmlFor="file-upload" className="cursor-pointer">
                                         <UploadIcon className="mx-auto h-12 w-12 text-gray-400" />
-                                        <span className="mt-2 block text-sm font-medium text-gray-200">
+                                        <span className="mt-2 block text-sm font-medium">
                                             Klik untuk upload atau drag & drop
                                         </span>
                                         <span className="mt-1 block text-xs text-gray-400">

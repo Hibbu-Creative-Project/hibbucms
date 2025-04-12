@@ -181,10 +181,7 @@ class Media extends Model
 
         // Resize if width is greater than 2000px
         if ($image->width() > 2000) {
-            $image->resize(2000, null, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
+            $image->scale(width: 2000);
         }
 
         // Optimize quality
