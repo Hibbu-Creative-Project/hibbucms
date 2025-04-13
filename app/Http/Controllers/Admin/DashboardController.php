@@ -7,7 +7,6 @@ use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\Media;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Carbon\Carbon;
 

@@ -1,8 +1,9 @@
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { FileText, FolderTree, Tag, Image, ArrowUp, ArrowDown, Plus } from 'lucide-react';
+import { FileText, FolderTree, Tag, Image, ArrowUp, ArrowDown, Plus, Calendar, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 
 interface Stats {
     posts: {
@@ -122,17 +123,30 @@ export default function Dashboard({
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{stats.posts.total}</div>
-                            <div className="text-xs text-muted-foreground">
-                                {stats.posts.published} Published, {stats.posts.draft} Draft
+                            <div className="mt-2">
+                                <Progress
+                                    value={(stats.posts.published / stats.posts.total) * 100}
+                                    className="h-2"
+                                />
                             </div>
-                            <div className="mt-1 flex items-center text-xs">
+                            <div className="grid grid-cols-2 gap-2 mt-2">
+                                <div className="text-xs">
+                                    <span className="text-green-500">●</span> Published
+                                    <div className="font-semibold">{stats.posts.published}</div>
+                                </div>
+                                <div className="text-xs">
+                                    <span className="text-yellow-500">●</span> Draft
+                                    <div className="font-semibold">{stats.posts.draft}</div>
+                                </div>
+                            </div>
+                            <div className="mt-3 flex items-center text-xs">
                                 {stats.posts.trend > 0 ? (
                                     <ArrowUp className="h-4 w-4 text-green-500" />
                                 ) : (
                                     <ArrowDown className="h-4 w-4 text-red-500" />
                                 )}
                                 <span className={stats.posts.trend > 0 ? 'text-green-500' : 'text-red-500'}>
-                                    {Math.abs(stats.posts.trend)}% from last month
+                                    {Math.abs(stats.posts.trend)}% dari bulan lalu
                                 </span>
                             </div>
                         </CardContent>
@@ -145,14 +159,17 @@ export default function Dashboard({
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{stats.categories.total}</div>
-                            <div className="mt-1 flex items-center text-xs">
+                            <div className="text-xs text-muted-foreground mt-1">
+                                Digunakan untuk mengorganisir konten
+                            </div>
+                            <div className="mt-3 flex items-center text-xs">
                                 {stats.categories.trend > 0 ? (
                                     <ArrowUp className="h-4 w-4 text-green-500" />
                                 ) : (
                                     <ArrowDown className="h-4 w-4 text-red-500" />
                                 )}
                                 <span className={stats.categories.trend > 0 ? 'text-green-500' : 'text-red-500'}>
-                                    {Math.abs(stats.categories.trend)}% from last month
+                                    {Math.abs(stats.categories.trend)}% dari bulan lalu
                                 </span>
                             </div>
                         </CardContent>
@@ -165,14 +182,17 @@ export default function Dashboard({
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{stats.tags.total}</div>
-                            <div className="mt-1 flex items-center text-xs">
+                            <div className="text-xs text-muted-foreground mt-1">
+                                Membantu dalam pencarian konten
+                            </div>
+                            <div className="mt-3 flex items-center text-xs">
                                 {stats.tags.trend > 0 ? (
                                     <ArrowUp className="h-4 w-4 text-green-500" />
                                 ) : (
                                     <ArrowDown className="h-4 w-4 text-red-500" />
                                 )}
                                 <span className={stats.tags.trend > 0 ? 'text-green-500' : 'text-red-500'}>
-                                    {Math.abs(stats.tags.trend)}% from last month
+                                    {Math.abs(stats.tags.trend)}% dari bulan lalu
                                 </span>
                             </div>
                         </CardContent>
@@ -185,14 +205,17 @@ export default function Dashboard({
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{stats.media.total}</div>
-                            <div className="mt-1 flex items-center text-xs">
+                            <div className="text-xs text-muted-foreground mt-1">
+                                File media yang diunggah
+                            </div>
+                            <div className="mt-3 flex items-center text-xs">
                                 {stats.media.trend > 0 ? (
                                     <ArrowUp className="h-4 w-4 text-green-500" />
                                 ) : (
                                     <ArrowDown className="h-4 w-4 text-red-500" />
                                 )}
                                 <span className={stats.media.trend > 0 ? 'text-green-500' : 'text-red-500'}>
-                                    {Math.abs(stats.media.trend)}% from last month
+                                    {Math.abs(stats.media.trend)}% dari bulan lalu
                                 </span>
                             </div>
                         </CardContent>
@@ -221,18 +244,28 @@ export default function Dashboard({
                             ) : (
                             <div className="space-y-4">
                                 {recentPosts.map(post => (
-                                    <div key={post.id} className="flex items-center">
+                                    <div key={post.id} className="flex items-center p-3 hover:bg-gray-50 rounded-lg transition-colors">
                                         <div className="space-y-1">
                                             <p className="text-sm font-medium leading-none">{post.title}</p>
-                                            <p className="text-sm text-muted-foreground">
-                                                by {post.author.name} • {new Date(post.created_at).toLocaleDateString()}
-                                            </p>
+                                            <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                                                <span className="flex items-center">
+                                                    <Calendar className="h-3 w-3 mr-1" />
+                                                    {new Date(post.created_at).toLocaleDateString('id-ID')}
+                                                </span>
+                                                <span>•</span>
+                                                <span className="flex items-center">
+                                                    <Clock className="h-3 w-3 mr-1" />
+                                                    {new Date(post.created_at).toLocaleTimeString('id-ID')}
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div className="ml-auto">
-                                            <span className={`text-xs ${
-                                                post.status === 'published' ? 'text-green-500' : 'text-yellow-500'
+                                        <div className="ml-auto flex items-center">
+                                            <span className={`px-2 py-1 rounded-full text-xs ${
+                                                post.status === 'published'
+                                                    ? 'bg-green-100 text-green-700'
+                                                    : 'bg-yellow-100 text-yellow-700'
                                             }`}>
-                                                {post.status}
+                                                {post.status === 'published' ? 'Dipublikasi' : 'Draft'}
                                             </span>
                                         </div>
                                     </div>
