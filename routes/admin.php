@@ -11,7 +11,7 @@ use App\Http\Controllers\Admin\PageController;
 
 Route::get('/admin', function () {
     return redirect()->route('dashboard');
-})->name('admin.dashboard');
+});
 
 
 Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
