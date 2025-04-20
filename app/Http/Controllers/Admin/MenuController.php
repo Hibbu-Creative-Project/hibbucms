@@ -150,21 +150,70 @@ class MenuController extends Controller
             'items.*.parent_id' => 'nullable|exists:menu_items,id',
         ]);
 
-        foreach ($request->items as $item) {
-            // Pastikan parent_id adalah null atau ada di database
-            $parentId = $item['parent_id'];
-            if ($parentId !== null) {
-                // Validasi parent_id
-                $parentExists = $menu->items()->where('id', $parentId)->exists();
-                if (!$parentExists) {
-                    $parentId = null;
-                }
-            }
+        \Log::info('Reordering menu items request:', $request->all());
 
-            $menu->items()->where('id', $item['id'])->update([
-                'order' => $item['order'],
-                'parent_id' => $parentId,
-            ]);
+        foreach ($request->items as $item) {
+            try {
+                // Log the item being processed
+                \Log::info('Processing item:', $item);
+
+                // Ambil item menu untuk pemrosesan
+                $menuItem = MenuItem::find($item['id']);
+
+                if (!$menuItem) {
+                    \Log::error('Menu item not found:', ['id' => $item['id']]);
+                    continue;
+                }
+
+                // Catat status awal
+                \Log::info('Original state:', [
+                    'id' => $menuItem->id,
+                    'parent_id' => $menuItem->parent_id,
+                    'order' => $menuItem->order
+                ]);
+
+                // Pastikan parent_id adalah null atau ada di database
+                $parentId = $item['parent_id'];
+
+                // Jika parent_id null, pastikan untuk mengubah parent_id menjadi null
+                if ($parentId === null) {
+                    \Log::info('Setting parent_id to null for item:', ['id' => $item['id']]);
+                    $menuItem->parent_id = null;
+                    $menuItem->order = $item['order'];
+                    $menuItem->save();
+                } else {
+                    // Validasi parent_id ada
+                    $parentExists = MenuItem::where('id', $parentId)
+                        ->where('menu_id', $menu->id)
+                        ->exists();
+
+                    if (!$parentExists) {
+                        \Log::warning('Parent does not exist, setting parent_id to null:', [
+                            'item_id' => $item['id'],
+                            'parent_id' => $parentId
+                        ]);
+                        $parentId = null;
+                    }
+
+                    $menuItem->parent_id = $parentId;
+                    $menuItem->order = $item['order'];
+                    $menuItem->save();
+                }
+
+                // Log hasil akhir update
+                \Log::info('Updated item:', [
+                    'id' => $menuItem->id,
+                    'new_parent_id' => $menuItem->parent_id,
+                    'new_order' => $menuItem->order
+                ]);
+
+            } catch (\Exception $e) {
+                \Log::error('Error updating menu item:', [
+                    'item' => $item,
+                    'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]);
+            }
         }
 
         return redirect()->back()

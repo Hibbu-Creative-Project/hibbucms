@@ -262,6 +262,7 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
 
         // Item yang dipindahkan
         let movedItem: MenuItem | null = null;
+        let parentItem: MenuItem | null = null;
 
         // Jika dari main list
         if (fromListId === 'main') {
@@ -270,7 +271,7 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
           // Jika dari child list, cari parent item berdasarkan parentId
           const parentId = evt.from.dataset.parentId;
           if (parentId) {
-            const parentItem = menuItems.find(item => item.id.toString() === parentId);
+            parentItem = menuItems.find(item => item.id.toString() === parentId) || null;
             if (parentItem && parentItem.children && oldIndex < parentItem.children.length) {
               movedItem = parentItem.children[oldIndex];
             }
@@ -300,6 +301,29 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
             parent_id: null,
             order: newIndex
           };
+
+          // Update state lokal saat submenu menjadi menu utama
+          if (fromListId !== 'main' && parentItem) {
+            // Buat salinan dari menuItems
+            const updatedMenuItems = [...menuItems];
+
+            // Hapus item dari children parent
+            const parentIndex = updatedMenuItems.findIndex(item => item.id === parentItem!.id);
+            if (parentIndex !== -1) {
+              updatedMenuItems[parentIndex].children = updatedMenuItems[parentIndex].children.filter(
+                child => child.id !== movedItem!.id
+              );
+            }
+
+            // Tambahkan item ke menu utama dengan parent_id null
+            const updatedItem = {...movedItem, parent_id: null};
+
+            // Sisipkan di posisi yang tepat (newIndex)
+            updatedMenuItems.splice(newIndex, 0, updatedItem);
+
+            // Update state
+            setMenuItems(updatedMenuItems);
+          }
         }
 
         if (updateData) {
@@ -322,6 +346,7 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
     <div
       key={item.id}
       className="flex flex-col border rounded-md bg-card hover:bg-accent/50 transition-colors mb-2"
+      data-id={item.id.toString()}
     >
       <div className="flex items-center gap-2 p-3">
         <div className="text-muted-foreground cursor-move">
@@ -445,11 +470,49 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
           scroll={true}
           scrollSensitivity={30}
           bubbleScroll={true}
+          onAdd={(evt) => {
+            try {
+              // Cek jika item dari main list dipindahkan ke child list
+              const newIndex = evt.newIndex !== undefined ? evt.newIndex : 0;
+              const itemId = evt.item.getAttribute('data-id');
+              const toParentId = item.id.toString();
+
+              console.log('onAdd event triggered in child list', {
+                itemId,
+                toParentId,
+                newIndex,
+                from: evt.from.dataset.listId,
+                to: evt.to.dataset.listId
+              });
+
+              if (itemId && evt.from.dataset.listId === 'main') {
+                // Item dari main list, kirim update ke server
+                router.post(route('admin.menus.items.reorder', activeMenu), {
+                  items: [{
+                    id: itemId,
+                    parent_id: toParentId,
+                    order: newIndex
+                  }]
+                }, {
+                  preserveScroll: true,
+                  onSuccess: () => {
+                    // Force reload data untuk memastikan UI terupdate
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 100);
+                  }
+                });
+              }
+            } catch (error) {
+              console.error('Error handling onAdd for child list:', error);
+            }
+          }}
         >
           {item.children && item.children.map((child) => (
             <div
               key={child.id}
               className="flex items-center gap-2 p-3 border rounded-md bg-card hover:bg-accent/50 transition-colors"
+              data-id={child.id.toString()}
             >
               <div className="text-muted-foreground cursor-move">
                 <GripVertical className="h-5 w-5" />
@@ -739,6 +802,79 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
                             handle=".cursor-move"
                             className="space-y-2"
                             onEnd={handleMoveItem}
+                            onAdd={(evt) => {
+                              // Jika ada submenu yang dipindahkan ke menu utama
+                              try {
+                                const newIndex = evt.newIndex !== undefined ? evt.newIndex : 0;
+                                // Cari item yang dipindahkan (dari dataset)
+                                const itemId = evt.item.getAttribute('data-id');
+                                const fromParentId = evt.from.dataset.parentId;
+
+                                console.log('onAdd event triggered in main list', {
+                                  itemId,
+                                  fromParentId,
+                                  newIndex,
+                                  from: evt.from.dataset.listId,
+                                  to: evt.to.dataset.listId
+                                });
+
+                                if (itemId && fromParentId) {
+                                  // Cari item dalam hierarki menu
+                                  const newMenuItems = [...menuItems];
+                                  const parentIndex = newMenuItems.findIndex(item => item.id.toString() === fromParentId);
+
+                                  console.log('Parent found:', parentIndex, newMenuItems[parentIndex]);
+
+                                  if (parentIndex !== -1 && newMenuItems[parentIndex].children) {
+                                    // Cari item dalam children
+                                    const childIndex = newMenuItems[parentIndex].children.findIndex(
+                                      child => child.id.toString() === itemId
+                                    );
+
+                                    console.log('Child found:', childIndex, newMenuItems[parentIndex].children[childIndex]);
+
+                                    if (childIndex !== -1) {
+                                      // Ambil item dan hapus dari children
+                                      const movedItem = {...newMenuItems[parentIndex].children[childIndex], parent_id: null};
+                                      newMenuItems[parentIndex].children = newMenuItems[parentIndex].children.filter(
+                                        child => child.id.toString() !== itemId
+                                      );
+
+                                      // Masukkan ke menu utama
+                                      newMenuItems.splice(newIndex, 0, movedItem);
+
+                                      console.log('Updated menu items:', newMenuItems);
+
+                                      // Update state dengan timer untuk mengatasi race condition
+                                      setTimeout(() => {
+                                        setMenuItems(newMenuItems);
+                                      }, 50);
+
+                                      // Kirim ke backend dengan delay untuk memastikan state terupdate dulu
+                                      setTimeout(() => {
+                                        router.post(route('admin.menus.items.reorder', activeMenu), {
+                                          items: [{
+                                            id: movedItem.id,
+                                            parent_id: null,
+                                            order: newIndex
+                                          }]
+                                        }, {
+                                          preserveScroll: true,
+                                          onSuccess: () => {
+                                            // Refresh data dari server setelah update
+                                            setTimeout(() => {
+                                              window.location.reload();
+                                            }, 100);
+                                          }
+                                        });
+                                      }, 100);
+                                    }
+                                  }
+                                }
+                              } catch (error) {
+                                console.error('Error handling onAdd for main list:', error);
+                              }
+                            }}
                             emptyInsertThreshold={10}
                             forceFallback={true}
                             delay={100}
