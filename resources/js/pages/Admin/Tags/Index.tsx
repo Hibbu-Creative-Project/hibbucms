@@ -42,11 +42,10 @@ interface Props {
 const breadcrumbs = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: route('admin.dashboard'),
     },
     {
-        title: 'Tags',
-        href: '/admin/tags',
+        title: 'Tags'
     },
 ];
 
@@ -56,7 +55,7 @@ export default function Index({ tags, filters = { search: '' } }: Props) {
     const handleSearch = (value: string) => {
         setSearch(value);
         router.get(
-            '/admin/tags',
+            route('admin.tags.index'),
             { search: value },
             { preserveState: true }
         );
@@ -69,7 +68,7 @@ export default function Index({ tags, filters = { search: '' } }: Props) {
             <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-2xl font-bold">Tags</h1>
-                    <Link href="/admin/tags/create">
+                    <Link href={route('admin.tags.create')}>
                         <Button>
                             <Plus className="mr-2 h-4 w-4" />
                             Create Tag
@@ -100,7 +99,7 @@ export default function Index({ tags, filters = { search: '' } }: Props) {
                                     ? 'Tidak ada tag yang sesuai dengan pencarian Anda'
                                     : 'Mulai dengan membuat tag untuk mengkategorikan konten Anda'}
                             </p>
-                            <Link href="/admin/tags/create">
+                            <Link href={route('admin.tags.create')}>
                                 <Button>
                                     <Plus className="mr-2 h-4 w-4" />
                                     Buat Tag Pertama
@@ -142,12 +141,12 @@ export default function Index({ tags, filters = { search: '' } }: Props) {
                                         </TableCell>
                                         <TableCell>
                                             <div className="flex space-x-2">
-                                                <Link href={`/admin/tags/${tag.id}/edit`}>
+                                                <Link href={route('admin.tags.edit', tag.id)}>
                                                     <Button variant="outline" size="sm">
                                                         Edit
                                                     </Button>
                                                 </Link>
-                                                <Link href={`/admin/tags/${tag.id}`}>
+                                                <Link href={route('admin.tags.show', tag.id)}>
                                                     <Button variant="outline" size="sm">
                                                         Lihat
                                                     </Button>
@@ -169,7 +168,7 @@ export default function Index({ tags, filters = { search: '' } }: Props) {
                                 (page) => (
                                     <Link
                                         key={page}
-                                        href={`/admin/tags?page=${page}`}
+                                        href={route('admin.tags.index', { page })}
                                         className={`px-3 py-1 rounded ${
                                             page === tags.current_page
                                                 ? 'bg-white text-black'

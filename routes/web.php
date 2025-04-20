@@ -6,10 +6,17 @@ use App\Http\Controllers\FrontendController;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\File;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
-    return Inertia::render('welcome');
-})->name('home');
+    return view('welcome');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
 // Frontend Routes
 Route::get('/', [FrontendController::class, 'home'])->name('home');

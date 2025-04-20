@@ -1,3 +1,5 @@
+import AppLayout from '@/layouts/app-layout';
+import { Head } from '@inertiajs/react';
 import Form from './Form';
 
 interface Props {
@@ -8,6 +10,28 @@ interface Props {
     };
 }
 
+const breadcrumbs = [
+    {
+        title: 'Dashboard',
+        href: route('admin.dashboard'),
+    },
+    {
+        title: 'Categories',
+        href: route('admin.categories.index'),
+    },
+    {
+        title: 'Edit',
+    },
+];
+
 export default function Edit({ category }: Props) {
-    return <Form category={category} />;
+    return (
+        <AppLayout breadcrumbs={breadcrumbs}>
+            <Head title="Edit Category" />
+
+            <div className="p-4">
+                <Form category={category} />
+            </div>
+        </AppLayout>
+    );
 }

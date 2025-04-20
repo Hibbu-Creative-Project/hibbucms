@@ -67,11 +67,10 @@ interface Props {
 const breadcrumbs = [
     {
         title: 'Dashboard',
-        href: '/admin/dashboard',
+        href: route('admin.dashboard'),
     },
     {
         title: 'Posts',
-        href: '/admin/posts',
     },
 ];
 
@@ -90,7 +89,7 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
     const handleSearch = (value: string) => {
         setSearch(value);
         router.get(
-            '/admin/posts',
+            route('admin.posts.index'),
             { search: value, status, category },
             { preserveState: true }
         );
@@ -99,7 +98,7 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
     const handleStatusChange = (value: string) => {
         setStatus(value);
         router.get(
-            '/admin/posts',
+            route('admin.posts.index'),
             { search, status: value, category },
             { preserveState: true }
         );
@@ -108,7 +107,7 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
     const handleCategoryChange = (value: string) => {
         setCategory(value);
         router.get(
-            '/admin/posts',
+            route('admin.posts.index'),
             { search, status, category: value },
             { preserveState: true }
         );
@@ -168,7 +167,7 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
             <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-2xl font-bold">Posts</h1>
-                    <Link href="/admin/posts/create">
+                    <Link href={route('admin.posts.create')}>
                         <Button>
                             <Plus className="mr-2 h-4 w-4" />
                             Buat Post
@@ -229,7 +228,7 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                                     ? 'Tidak ada post yang sesuai dengan filter Anda'
                                     : 'Mulai dengan membuat post baru untuk blog Anda'}
                             </p>
-                            <Link href="/admin/posts/create">
+                            <Link href={route('admin.posts.create')}>
                                 <Button>
                                     <Plus className="mr-2 h-4 w-4" />
                                     Buat Post Pertama
@@ -322,13 +321,13 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                                         </TableCell>
                                         <TableCell>
                                             <div className="flex space-x-2">
-                                                <Link href={`/admin/posts/${post.id}/edit`}>
+                                                <Link href={route('admin.posts.edit', post.id)}>
                                                     <Button variant="outline" size="sm"
                                                         className="hover:bg-[#0c1015] hover:text-white">
                                                         Edit
                                                     </Button>
                                                 </Link>
-                                                <Link href={`/admin/posts/${post.id}`}>
+                                                <Link href={route('admin.posts.show', post.id)}>
                                                     <Button variant="outline" size="sm"
                                                         className="hover:bg-[#0c1015] hover:text-white">
                                                         Lihat
@@ -359,7 +358,7 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                                     return (
                                         <Link
                                             key={`page-${page}`}
-                                            href={`/admin/posts?${queryParams}`}
+                                            href={`${route('admin.posts.index')}?${queryParams}`}
                                             className={`px-3 py-1 rounded ${
                                                 page === posts.current_page
                                                     ? 'bg-white text-black'

@@ -21,15 +21,14 @@ interface Props {
 const breadcrumbs = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: route('admin.dashboard'),
     },
     {
         title: 'Categories',
-        href: '/admin/categories',
+        href: route('admin.categories.index'),
     },
     {
         title: 'Show',
-        href: '/admin/categories/{id}',
     },
 ];
 
@@ -42,10 +41,10 @@ export default function Show({ category }: Props) {
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-2xl font-bold">{category.name}</h1>
                     <div className="flex space-x-2">
-                        <Link href={`/admin/categories/${category.id}/edit`}>
+                        <Link href={route('admin.categories.edit', category.id)}>
                             <Button variant="outline">Edit</Button>
                         </Link>
-                        <Link href="/admin/categories">
+                        <Link href={route('admin.categories.index')}>
                             <Button variant="outline">Back</Button>
                         </Link>
                     </div>

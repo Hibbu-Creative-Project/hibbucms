@@ -1,6 +1,5 @@
-import { Head, router } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import { FormEvent, useState } from 'react';
-import AppLayout from '@/layouts/app-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -47,20 +46,6 @@ interface Props {
     media: { id: number; name: string; url?: string }[];
 }
 
-const breadcrumbs = [
-    {
-        title: 'Dashboard',
-        href: '/admin/dashboard',
-    },
-    {
-        title: 'Posts',
-        href: '/admin/posts',
-    },
-    {
-        title: 'Create',
-        href: '/admin/posts/create',
-    },
-];
 
 export default function Form({ post, categories, tags, media }: Props) {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -130,9 +115,6 @@ export default function Form({ post, categories, tags, media }: Props) {
     };
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={post ? 'Edit Post' : 'Create Post'} />
-
             <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-2xl font-bold">{post ? 'Edit Post' : 'Buat Post Baru'}</h1>
@@ -302,6 +284,5 @@ export default function Form({ post, categories, tags, media }: Props) {
                     </div>
                 </div>
             </div>
-        </AppLayout>
     );
 }

@@ -37,11 +37,10 @@ interface Props {
 const breadcrumbs = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: route('admin.dashboard'),
     },
     {
-        title: 'Categories',
-        href: '/admin/categories',
+        title: 'Categories'
     },
 ];
 
@@ -51,7 +50,7 @@ export default function Index({ categories, filters = { search: '' } }: Props) {
     const handleSearch = (value: string) => {
         setSearch(value);
         router.get(
-            '/admin/categories',
+            route('admin.categories.index'),
             { search: value },
             { preserveState: true }
         );
@@ -71,12 +70,12 @@ export default function Index({ categories, filters = { search: '' } }: Props) {
                     </TableCell>
                     <TableCell>
                         <div className="flex space-x-2">
-                            <Link href={`/admin/categories/${category.id}/edit`}>
+                            <Link href={route('admin.categories.edit', category.id)}>
                                 <Button variant="outline" size="sm">
                                     Edit
                                 </Button>
                             </Link>
-                            <Link href={`/admin/categories/${category.id}`}>
+                            <Link href={route('admin.categories.show', category.id)}>
                                 <Button variant="outline" size="sm">
                                     Lihat
                                 </Button>
@@ -96,7 +95,7 @@ export default function Index({ categories, filters = { search: '' } }: Props) {
             <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-2xl font-bold">Categories</h1>
-                    <Link href="/admin/categories/create">
+                    <Link href={route('admin.categories.create')}>
                         <Button>
                             <Plus className="mr-2 h-4 w-4" />
                             Create Category
@@ -127,7 +126,7 @@ export default function Index({ categories, filters = { search: '' } }: Props) {
                                     ? 'Tidak ada kategori yang sesuai dengan pencarian Anda'
                                     : 'Mulai dengan membuat kategori untuk mengorganisir konten Anda'}
                             </p>
-                            <Link href="/admin/categories/create">
+                            <Link href={route('admin.categories.create')}>
                                 <Button>
                                     <Plus className="mr-2 h-4 w-4" />
                                     Buat Kategori Pertama

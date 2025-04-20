@@ -23,15 +23,14 @@ interface Props {
 const breadcrumbs = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: route('admin.dashboard'),
     },
     {
         title: 'Tags',
-        href: '/admin/tags',
+        href: route('admin.tags.index'),
     },
     {
-        title: 'Show',
-        href: '/admin/tags/{id}',
+        title: 'Show'
     },
 ];
 
@@ -44,10 +43,10 @@ export default function Show({ tag }: Props) {
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-2xl font-bold">{tag.name}</h1>
                     <div className="flex space-x-2">
-                        <Link href={`/admin/tags/${tag.id}/edit`}>
+                        <Link href={route('admin.tags.edit', tag.id)}>
                             <Button variant="outline">Edit</Button>
                         </Link>
-                        <Link href="/admin/tags">
+                        <Link href={route('admin.tags.index')}>
                             <Button variant="outline">Back</Button>
                         </Link>
                     </div>

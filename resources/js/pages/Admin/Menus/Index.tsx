@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -20,351 +20,184 @@ import {
   GripVertical,
 } from "lucide-react"
 import AppLayout from "@/layouts/app-layout"
-import { Head } from "@inertiajs/react"
-export const placeholderMenus = [
-    {
-      id: "main-menu",
-      name: "Main Navigation",
-      location: "header",
-      items: [
-        {
-          id: "menu-item-1",
-          type: "home",
-          label: "Home",
-          url: "/",
-          children: [],
-        },
-        {
-          id: "menu-item-2",
-          type: "page",
-          label: "About Us",
-          url: "/about",
-          children: [],
-        },
-        {
-          id: "menu-item-3",
-          type: "page",
-          label: "Services",
-          url: "/services",
-          children: [
-            {
-              id: "menu-item-3-1",
-              type: "page",
-              label: "Web Design",
-              url: "/services/web-design",
-              children: [],
-            },
-            {
-              id: "menu-item-3-2",
-              type: "page",
-              label: "Development",
-              url: "/services/development",
-              children: [],
-            },
-          ],
-        },
-        {
-          id: "menu-item-4",
-          type: "page",
-          label: "Blog",
-          url: "/blog",
-          children: [],
-        },
-        {
-          id: "menu-item-5",
-          type: "page",
-          label: "Contact",
-          url: "/contact",
-          children: [],
-        },
-      ],
-    },
-    {
-      id: "footer-menu",
-      name: "Footer Navigation",
-      location: "footer",
-      items: [
-        {
-          id: "menu-item-6",
-          type: "page",
-          label: "Privacy Policy",
-          url: "/privacy",
-          children: [],
-        },
-        {
-          id: "menu-item-7",
-          type: "page",
-          label: "Terms of Service",
-          url: "/terms",
-          children: [],
-        },
-        {
-          id: "menu-item-8",
-          type: "page",
-          label: "FAQ",
-          url: "/faq",
-          children: [],
-        },
-      ],
-    },
-    {
-      id: "mobile-menu",
-      name: "Mobile Navigation",
-      location: "mobile",
-      items: [
-        {
-          id: "menu-item-9",
-          type: "home",
-          label: "Home",
-          url: "/",
-          children: [],
-        },
-        {
-          id: "menu-item-10",
-          type: "page",
-          label: "About",
-          url: "/about",
-          children: [],
-        },
-        {
-          id: "menu-item-11",
-          type: "page",
-          label: "Services",
-          url: "/services",
-          children: [],
-        },
-        {
-          id: "menu-item-12",
-          type: "page",
-          label: "Blog",
-          url: "/blog",
-          children: [],
-        },
-        {
-          id: "menu-item-13",
-          type: "page",
-          label: "Contact",
-          url: "/contact",
-          children: [],
-        },
-      ],
-    },
-  ]
+import { Head, useForm, router } from "@inertiajs/react"
 
-// Placeholder data for pages
-export const placeholderPages = [
-    {
-      id: "1",
-      title: "Home",
-      status: "published",
-      lastUpdated: "2023-04-15",
-      author: "John Doe",
-    },
-    {
-      id: "2",
-      title: "About Us",
-      status: "published",
-      lastUpdated: "2023-04-10",
-      author: "Jane Smith",
-    },
-    {
-      id: "3",
-      title: "Services",
-      status: "published",
-      lastUpdated: "2023-04-05",
-      author: "John Doe",
-    },
-    {
-      id: "4",
-      title: "Contact",
-      status: "published",
-      lastUpdated: "2023-04-01",
-      author: "Jane Smith",
-    },
-    {
-      id: "5",
-      title: "Privacy Policy",
-      status: "published",
-      lastUpdated: "2023-03-28",
-      author: "John Doe",
-    },
-    {
-      id: "6",
-      title: "Terms of Service",
-      status: "published",
-      lastUpdated: "2023-03-25",
-      author: "Jane Smith",
-    },
-    {
-      id: "7",
-      title: "FAQ",
-      status: "draft",
-      lastUpdated: "2023-03-20",
-      author: "John Doe",
-    },
-    {
-      id: "8",
-      title: "Careers",
-      status: "draft",
-      lastUpdated: "2023-03-15",
-      author: "Jane Smith",
-    },
-  ]
+interface MenuItem {
+  id: string | number;
+  title: string;
+  url: string;
+  type: 'custom' | 'page' | 'post' | 'home';
+  target?: '_self' | '_blank';
+  order: number;
+  parent_id?: number | null;
+  children: MenuItem[];
+}
 
-  // Placeholder data for posts
-export const placeholderPosts = [
-    {
-      id: "1",
-      title: "Getting Started with Next.js",
-      excerpt: "Learn how to build modern web applications with Next.js, the React framework for production.",
-      content:
-        "Next.js gives you the best developer experience with all the features you need for production: hybrid static & server rendering, TypeScript support, smart bundling, route pre-fetching, and more. No config needed.",
-      status: "published",
-      category: "Tutorial",
-      tags: ["nextjs", "react", "javascript"],
-      date: "2023-04-15",
-      author: "John Doe",
-      featuredImage: "/placeholder.svg?height=100&width=100",
-    },
-    {
-      id: "2",
-      title: "Introduction to Tailwind CSS",
-      excerpt: "Discover how Tailwind CSS can help you build beautiful websites without writing custom CSS.",
-      content:
-        "Tailwind CSS is a utility-first CSS framework packed with classes like flex, pt-4, text-center and rotate-90 that can be composed to build any design, directly in your markup.",
-      status: "published",
-      category: "Tutorial",
-      tags: ["css", "tailwind", "design"],
-      date: "2023-04-10",
-      author: "Jane Smith",
-      featuredImage: "/placeholder.svg?height=100&width=100",
-    },
-    {
-      id: "3",
-      title: "Building a REST API with Node.js",
-      excerpt: "Learn how to create a RESTful API using Node.js, Express, and MongoDB.",
-      content:
-        "In this tutorial, we'll build a complete REST API from scratch using Node.js, Express, and MongoDB. You'll learn how to structure your project, handle requests, and connect to a database.",
-      status: "draft",
-      category: "Tutorial",
-      tags: ["nodejs", "express", "mongodb", "api"],
-      date: "2023-04-05",
-      author: "John Doe",
-      featuredImage: "/placeholder.svg?height=100&width=100",
-    },
-    {
-      id: "4",
-      title: "The Future of Web Development",
-      excerpt: "Explore the latest trends and technologies shaping the future of web development.",
-      content:
-        "The web development landscape is constantly evolving with new frameworks, tools, and methodologies. In this article, we explore emerging trends like WebAssembly, Edge Computing, and AI-driven development that are set to revolutionize how we build for the web.",
-      status: "published",
-      category: "Opinion",
-      tags: ["future", "trends", "webdev"],
-      date: "2023-04-01",
-      author: "Jane Smith",
-      featuredImage: "/placeholder.svg?height=100&width=100",
-    },
-    {
-      id: "5",
-      title: "Optimizing Website Performance",
-      excerpt: "Learn how to improve your website's speed and performance for better user experience.",
-      content:
-        "Website performance is crucial for user experience and SEO. This guide covers essential techniques for optimizing load times, reducing bundle sizes, and implementing caching strategies.",
-      status: "published",
-      category: "Tutorial",
-      tags: ["performance", "optimization", "web"],
-      date: "2023-03-28",
-      author: "John Doe",
-      featuredImage: "/placeholder.svg?height=100&width=100",
-    },
-    {
-      id: "6",
-      title: "Introduction to TypeScript",
-      excerpt: "Discover how TypeScript can improve your JavaScript development experience.",
-      content:
-        "TypeScript adds static typing to JavaScript, helping you catch errors early and making your code more maintainable. This introduction covers the basics and shows you how to get started.",
-      status: "draft",
-      category: "Tutorial",
-      tags: ["typescript", "javascript", "programming"],
-      date: "2023-03-25",
-      author: "Jane Smith",
-      featuredImage: "/placeholder.svg?height=100&width=100",
-    },
-    {
-      id: "7",
-      title: "Responsive Design Best Practices",
-      excerpt: "Learn how to create websites that look great on any device.",
-      content:
-        "Responsive design is essential in today's multi-device world. This article covers best practices for creating flexible layouts, responsive images, and mobile-friendly navigation.",
-      status: "published",
-      category: "Design",
-      tags: ["responsive", "design", "css"],
-      date: "2023-03-20",
-      author: "John Doe",
-      featuredImage: "/placeholder.svg?height=100&width=100",
-    },
-    {
-      id: "8",
-      title: "Getting Started with React Hooks",
-      excerpt: "Explore how React Hooks can simplify your functional components.",
-      content:
-        "React Hooks allow you to use state and other React features without writing a class. This tutorial introduces useState, useEffect, and other built-in hooks with practical examples.",
-      status: "published",
-      category: "Tutorial",
-      tags: ["react", "hooks", "javascript"],
-      date: "2023-03-15",
-      author: "Jane Smith",
-      featuredImage: "/placeholder.svg?height=100&width=100",
-    },
-  ]
+interface Menu {
+  id: string | number;
+  name: string;
+  location: string;
+  description?: string;
+  is_active: boolean;
+  items: MenuItem[];
+}
 
-export default function MenuBuilderPage() {
-  const [activeMenu, setActiveMenu] = useState("main-menu")
-  const [menuItems, setMenuItems] = useState(placeholderMenus.find((menu) => menu.id === activeMenu)?.items || [])
+interface Page {
+  id: string | number;
+  title: string;
+  slug: string;
+}
+
+interface Post {
+  id: string | number;
+  title: string;
+  slug: string;
+}
+
+interface Props {
+  menus: Menu[];
+  pages: Page[];
+  posts: Post[];
+}
+
+export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: Props) {
+  const [activeMenu, setActiveMenu] = useState<string | number>(initialMenus[0]?.id || '')
+  const [menuItems, setMenuItems] = useState<MenuItem[]>(initialMenus.find(menu => menu.id === activeMenu)?.items || [])
+  const [customLink, setCustomLink] = useState({
+    title: '',
+    url: ''
+  })
+
+  const { data, setData, post, put, processing } = useForm({
+    name: initialMenus.find(menu => menu.id === activeMenu)?.name || '',
+    location: initialMenus.find(menu => menu.id === activeMenu)?.location || 'header',
+    description: initialMenus.find(menu => menu.id === activeMenu)?.description || '',
+    is_active: Boolean(initialMenus.find(menu => menu.id === activeMenu)?.is_active)
+  })
+
+  useEffect(() => {
+    const selectedMenu = initialMenus.find(menu => menu.id.toString() === activeMenu.toString())
+    if (selectedMenu) {
+      setMenuItems(selectedMenu.items || [])
+      setData({
+        name: selectedMenu.name,
+        location: selectedMenu.location,
+        description: selectedMenu.description || '',
+        is_active: Boolean(selectedMenu.is_active)
+      })
+    }
+  }, [initialMenus, activeMenu, setData])
+
+  const handleMenuChange = (menuId: string) => {
+    setActiveMenu(menuId)
+  }
+
+  const addMenuItem = (type: string, item: Page | Post | { title: string; url: string }) => {
+    if (type === 'custom' && (!customLink.title || !customLink.url)) {
+      alert('Mohon isi judul dan URL untuk link kustom')
+      return
+    }
+
+    const url = type === 'custom' ? customLink.url :
+               type === 'page' ? `/pages/${(item as Page).slug}` :
+               type === 'post' ? `/posts/${(item as Post).slug}` : '/'
+
+    const title = type === 'custom' ? customLink.title : (item as Page | Post).title
+
+    router.post(route('admin.menus.items.store', activeMenu), {
+      title,
+      url,
+      type,
+      target: '_self',
+      order: menuItems.length
+    }, {
+      preserveScroll: true
+    })
+
+    if (type === 'custom') {
+      setCustomLink({ title: '', url: '' })
+    }
+  }
+
+  const removeMenuItem = (id: string | number) => {
+    router.delete(route('admin.menus.items.destroy', id), {
+      preserveScroll: true
+    })
+  }
+
+  const moveItemUp = (index: number) => {
+    if (index === 0) return
+    const items = [...menuItems]
+    const itemsToUpdate = [
+      {
+        id: items[index].id,
+        order: items[index - 1].order,
+        parent_id: items[index].parent_id || null
+      },
+      {
+        id: items[index - 1].id,
+        order: items[index].order,
+        parent_id: items[index - 1].parent_id || null
+      }
+    ]
+
+    router.post(route('admin.menus.items.reorder', activeMenu), {
+      items: itemsToUpdate
+    }, {
+      preserveScroll: true
+    })
+  }
+
+  const moveItemDown = (index: number) => {
+    if (index === menuItems.length - 1) return
+    const items = [...menuItems]
+    const itemsToUpdate = [
+      {
+        id: items[index].id,
+        order: items[index + 1].order,
+        parent_id: items[index].parent_id || null
+      },
+      {
+        id: items[index + 1].id,
+        order: items[index].order,
+        parent_id: items[index + 1].parent_id || null
+      }
+    ]
+
+    router.post(route('admin.menus.items.reorder', activeMenu), {
+      items: itemsToUpdate
+    }, {
+      preserveScroll: true
+    })
+  }
+
+  const handleCreateMenu = () => {
+    post(route('admin.menus.store'))
+  }
+
+  const handleUpdateMenu = () => {
+    put(route('admin.menus.update', activeMenu))
+  }
+
+  const handleUpdateMenuItem = (id: string | number, itemData: { title?: string; url?: string; target?: '_self' | '_blank' }) => {
+    const item = menuItems.find(item => item.id === id);
+    if (!item) return;
+
+    // Jika hanya mengubah target, kita tetap perlu kirim type
+    const updatedData = {
+      ...itemData,
+      type: item.type
+    };
+
+    router.put(route('admin.menus.items.update', id), updatedData, {
+      preserveScroll: true
+    });
+  }
 
   const breadcrumbs = [
     { title: "Admin", href: "/admin" },
     { title: "Menu Builder", href: "/admin/menus" }
   ]
-
-  const handleMenuChange = (menuId: string) => {
-    setActiveMenu(menuId)
-    setMenuItems(placeholderMenus.find((menu) => menu.id === menuId)?.items || [])
-  }
-
-  const addMenuItem = (type: string, item: any) => {
-    const newItem = {
-      id: `menu-item-${Date.now()}`,
-      type,
-      label: type === "custom" ? "New Link" : item.title || item.name,
-      url: type === "custom" ? "#" : `/${type}/${item.id}`,
-      children: [],
-    }
-    setMenuItems([...menuItems, newItem])
-  }
-
-  const removeMenuItem = (id: string) => {
-    setMenuItems(menuItems.filter((item) => item.id !== id))
-  }
-
-  const moveItemUp = (index: number) => {
-    if (index === 0) return
-    const newItems = [...menuItems]
-    const temp = newItems[index]
-    newItems[index] = newItems[index - 1]
-    newItems[index - 1] = temp
-    setMenuItems(newItems)
-  }
-
-  const moveItemDown = (index: number) => {
-    if (index === menuItems.length - 1) return
-    const newItems = [...menuItems]
-    const temp = newItems[index]
-    newItems[index] = newItems[index + 1]
-    newItems[index + 1] = temp
-    setMenuItems(newItems)
-  }
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
@@ -372,59 +205,63 @@ export default function MenuBuilderPage() {
         <div className="p-4">
             <div className="flex justify-between items-center mb-6">
             <div>
-                <h1 className="text-2xl font-bold">Menus</h1>
-                <p className="text-muted-foreground">Create and organize navigation menus for your site</p>
+            <h1 className="text-2xl font-bold">Menu</h1>
+            <p className="text-muted-foreground">Buat dan atur navigasi untuk situs Anda</p>
             </div>
-                <Button>Save Menu</Button>
+          <Button onClick={handleUpdateMenu} disabled={processing}>Simpan Menu</Button>
             </div>
+
             <div className="grid gap-6 md:grid-cols-12">
             <div className="md:col-span-4 space-y-6">
                 <Card>
                 <CardHeader>
-                    <CardTitle>Menu Settings</CardTitle>
+                <CardTitle>Pengaturan Menu</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="space-y-2">
-                    <Label htmlFor="menu-select">Select Menu to Edit</Label>
-                    <Select value={activeMenu} onValueChange={handleMenuChange}>
+                  <Label htmlFor="menu-select">Pilih Menu untuk Diedit</Label>
+                  <Select value={activeMenu.toString()} onValueChange={handleMenuChange}>
                         <SelectTrigger>
-                        <SelectValue placeholder="Select menu" />
+                      <SelectValue placeholder="Pilih menu" />
                         </SelectTrigger>
                         <SelectContent>
-                        {placeholderMenus.map((menu) => (
-                            <SelectItem key={menu.id} value={menu.id}>
+                      {initialMenus.map((menu) => (
+                        <SelectItem key={menu.id} value={menu.id.toString()}>
                             {menu.name}
                             </SelectItem>
                         ))}
                         </SelectContent>
                     </Select>
                     </div>
+
                     <div className="space-y-2">
-                    <Label htmlFor="menu-name">Menu Name</Label>
+                  <Label htmlFor="menu-name">Nama Menu</Label>
                     <Input
                         id="menu-name"
-                        defaultValue={placeholderMenus.find((menu) => menu.id === activeMenu)?.name || ""}
-                        onChange={(e) => console.log("Menu name changed:", e.target.value)}
+                    value={data.name}
+                    onChange={e => setData('name', e.target.value)}
                     />
                     </div>
+
                     <div className="space-y-2">
-                    <Label htmlFor="menu-location">Display Location</Label>
-                    <Select defaultValue="header">
+                  <Label htmlFor="menu-location">Lokasi Tampilan</Label>
+                  <Select value={data.location} onValueChange={(value) => setData('location', value)}>
                         <SelectTrigger>
-                        <SelectValue placeholder="Select location" />
+                      <SelectValue placeholder="Pilih lokasi" />
                         </SelectTrigger>
                         <SelectContent>
-                        <SelectItem value="header">Header Navigation</SelectItem>
-                        <SelectItem value="footer">Footer Navigation</SelectItem>
-                        <SelectItem value="sidebar">Sidebar Navigation</SelectItem>
-                        <SelectItem value="mobile">Mobile Navigation</SelectItem>
+                      <SelectItem value="header">Navigasi Header</SelectItem>
+                      <SelectItem value="footer">Navigasi Footer</SelectItem>
+                      <SelectItem value="sidebar">Navigasi Sidebar</SelectItem>
+                      <SelectItem value="mobile">Navigasi Mobile</SelectItem>
                         </SelectContent>
                     </Select>
                     </div>
+
                     <div className="pt-2">
-                    <Button variant="outline" className="w-full">
+                  <Button variant="outline" className="w-full" onClick={handleCreateMenu} disabled={processing}>
                         <Plus className="mr-2 h-4 w-4" />
-                        Create New Menu
+                    Buat Menu Baru
                     </Button>
                     </div>
                 </CardContent>
@@ -432,17 +269,18 @@ export default function MenuBuilderPage() {
 
                 <Tabs defaultValue="pages">
                 <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger value="pages">Pages</TabsTrigger>
-                    <TabsTrigger value="posts">Posts</TabsTrigger>
-                    <TabsTrigger value="custom">Custom Links</TabsTrigger>
+                <TabsTrigger value="pages">Halaman</TabsTrigger>
+                <TabsTrigger value="posts">Artikel</TabsTrigger>
+                <TabsTrigger value="custom">Link Kustom</TabsTrigger>
                 </TabsList>
+
                 <TabsContent value="pages" className="border rounded-md mt-2">
                     <div className="p-4 space-y-4">
                     <div className="relative">
-                        <Input placeholder="Search pages..." />
+                    <Input placeholder="Cari halaman..." />
                     </div>
                     <div className="space-y-2 max-h-[300px] overflow-y-auto">
-                        {placeholderPages.map((page) => (
+                    {pages.map((page) => (
                         <div key={page.id} className="flex items-center justify-between p-2 border rounded-md">
                             <div className="text-sm">{page.title}</div>
                             <Button size="sm" variant="ghost" onClick={() => addMenuItem("page", page)}>
@@ -453,13 +291,14 @@ export default function MenuBuilderPage() {
                     </div>
                     </div>
                 </TabsContent>
+
                 <TabsContent value="posts" className="border rounded-md mt-2">
                     <div className="p-4 space-y-4">
                     <div className="relative">
-                        <Input placeholder="Search posts..." />
+                    <Input placeholder="Cari artikel..." />
                     </div>
                     <div className="space-y-2 max-h-[300px] overflow-y-auto">
-                        {placeholderPosts.map((post) => (
+                    {posts.map((post) => (
                         <div key={post.id} className="flex items-center justify-between p-2 border rounded-md">
                             <div className="text-sm">{post.title}</div>
                             <Button size="sm" variant="ghost" onClick={() => addMenuItem("post", post)}>
@@ -470,14 +309,16 @@ export default function MenuBuilderPage() {
                     </div>
                     </div>
                 </TabsContent>
+
                 <TabsContent value="custom" className="border rounded-md mt-2">
                     <div className="p-4 space-y-4">
                     <div className="space-y-2">
-                        <Label htmlFor="link-text">Link Text</Label>
+                    <Label htmlFor="link-text">Teks Link</Label>
                         <Input
                         id="link-text"
-                        placeholder="Menu Item Text"
-                        onChange={(e) => console.log("Link text changed:", e.target.value)}
+                      placeholder="Teks Menu Item"
+                      value={customLink.title}
+                      onChange={(e) => setCustomLink(prev => ({ ...prev, title: e.target.value }))}
                         />
                     </div>
                     <div className="space-y-2">
@@ -485,12 +326,16 @@ export default function MenuBuilderPage() {
                         <Input
                         id="link-url"
                         placeholder="https://example.com"
-                        onChange={(e) => console.log("URL changed:", e.target.value)}
+                      value={customLink.url}
+                      onChange={(e) => setCustomLink(prev => ({ ...prev, url: e.target.value }))}
                         />
                     </div>
-                    <Button onClick={() => addMenuItem("custom", { title: "New Link" })}>
+                  <Button
+                    onClick={() => addMenuItem("custom", customLink)}
+                    disabled={!customLink.title || !customLink.url}
+                  >
                         <Plus className="mr-2 h-4 w-4" />
-                        Add to Menu
+                    Tambah ke Menu
                     </Button>
                     </div>
                 </TabsContent>
@@ -500,12 +345,16 @@ export default function MenuBuilderPage() {
             <div className="md:col-span-8">
                 <Card>
                 <CardHeader>
-                    <CardTitle>Menu Structure</CardTitle>
+                <CardTitle>Struktur Menu</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    {menuItems.length === 0 ? (
+                {!activeMenu ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    Silakan pilih menu dari dropdown di panel kiri.
+                  </div>
+                ) : menuItems.length === 0 ? (
                     <div className="text-center py-8 text-muted-foreground">
-                        Your menu is empty. Add items from the left panel.
+                    Menu Anda kosong. Tambahkan item dari panel kiri.
                     </div>
                     ) : (
                     <div className="space-y-2">
@@ -518,30 +367,23 @@ export default function MenuBuilderPage() {
                             <GripVertical className="h-5 w-5" />
                             </div>
                             <Accordion type="single" collapsible className="flex-1">
-                            <AccordionItem value={item.id} className="border-none">
+                          <AccordionItem value={item.id.toString()} className="border-none">
                                 <div className="flex items-center">
                                 {item.type === "page" && <FileText className="h-4 w-4 mr-2 text-muted-foreground" />}
                                 {item.type === "post" && <FileText className="h-4 w-4 mr-2 text-muted-foreground" />}
                                 {item.type === "custom" && <LinkIcon className="h-4 w-4 mr-2 text-muted-foreground" />}
                                 {item.type === "home" && <Home className="h-4 w-4 mr-2 text-muted-foreground" />}
-                                <span className="font-medium">{item.label}</span>
+                              <span className="font-medium">{item.title}</span>
                                 <AccordionTrigger className="ml-auto" />
                                 </div>
                                 <AccordionContent>
                                 <div className="space-y-3 pt-2">
                                     <div className="space-y-1">
-                                    <Label htmlFor={`item-${item.id}-label`}>Navigation Label</Label>
+                                  <Label htmlFor={`item-${item.id}-label`}>Label Navigasi</Label>
                                     <Input
                                         id={`item-${item.id}-label`}
-                                        defaultValue={item.label}
-                                        onChange={(e) => {
-                                        const updatedItems = [...menuItems]
-                                        const itemIndex = updatedItems.findIndex((i) => i.id === item.id)
-                                        if (itemIndex !== -1) {
-                                            updatedItems[itemIndex] = { ...updatedItems[itemIndex], label: e.target.value }
-                                            setMenuItems(updatedItems)
-                                        }
-                                        }}
+                                    defaultValue={item.title}
+                                    onChange={(e) => handleUpdateMenuItem(item.id, { title: e.target.value })}
                                     />
                                     </div>
                                     <div className="space-y-1">
@@ -549,23 +391,17 @@ export default function MenuBuilderPage() {
                                     <Input
                                         id={`item-${item.id}-url`}
                                         defaultValue={item.url}
-                                        onChange={(e) => {
-                                        const updatedItems = [...menuItems]
-                                        const itemIndex = updatedItems.findIndex((i) => i.id === item.id)
-                                        if (itemIndex !== -1) {
-                                            updatedItems[itemIndex] = { ...updatedItems[itemIndex], url: e.target.value }
-                                            setMenuItems(updatedItems)
-                                        }
-                                        }}
+                                    onChange={(e) => handleUpdateMenuItem(item.id, { url: e.target.value })}
                                     />
                                     </div>
                                     <div className="flex items-center gap-2">
-                                    <Button variant="outline" size="sm">
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleUpdateMenuItem(item.id, { target: item.target === '_blank' ? '_self' : '_blank' })}
+                                  >
                                         <ExternalLink className="h-3.5 w-3.5 mr-1" />
-                                        Open in new tab
-                                    </Button>
-                                    <Button variant="outline" size="sm">
-                                        Add submenu item
+                                    {item.target === '_blank' ? 'Buka di tab yang sama' : 'Buka di tab baru'}
                                     </Button>
                                     </div>
                                 </div>

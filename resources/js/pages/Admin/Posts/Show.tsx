@@ -38,15 +38,14 @@ interface Props {
 const breadcrumbs = [
     {
         title: 'Dashboard',
-        href: '/admin/dashboard',
+        href: route('admin.dashboard'),
     },
     {
         title: 'Posts',
-        href: '/admin/posts',
+        href: route('admin.posts.index'),
     },
     {
-        title: 'Detail Post',
-        href: '#',
+        title: 'Detail Post'
     },
 ];
 
@@ -68,7 +67,7 @@ export default function Show({ post }: Props) {
                 {/* Header */}
                 <div className="flex justify-between items-start mb-8">
                     <div>
-                        <Link href="/admin/posts" className="inline-flex items-center text-gray-400 hover:text-gray-200 mb-4">
+                        <Link href={route('admin.posts.index')} className="inline-flex items-center text-gray-400 hover:text-gray-200 mb-4">
                             <ArrowLeft className="w-4 h-4 mr-2" />
                             Kembali ke daftar post
                         </Link>
@@ -113,7 +112,7 @@ export default function Show({ post }: Props) {
                         </div>
                     </div>
 
-                    <Link href={`/admin/posts/${post.id}/edit`}>
+                    <Link href={route('admin.posts.edit', post.id)}>
                         <Button variant="outline" className="border-gray-700 text-gray-200 hover:bg-gray-800">
                             <Edit2 className="w-4 h-4 mr-2" />
                             Edit Post

@@ -1,6 +1,5 @@
-import { Head, router } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import { FormEvent, useState } from 'react';
-import AppLayout from '@/layouts/app-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,21 +14,6 @@ interface Props {
     };
 }
 
-const breadcrumbs = [
-    {
-        title: 'Dashboard',
-        href: '/dashboard',
-    },
-    {
-        title: 'Categories',
-        href: '/admin/categories',
-    },
-    {
-        title: 'Create',
-        href: '/admin/categories/create',
-    },
-];
-
 export default function Form({ category }: Props) {
     const [values, setValues] = useState({
         name: category?.name || '',
@@ -39,17 +23,14 @@ export default function Form({ category }: Props) {
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         if (category) {
-            router.put(`/admin/categories/${category.id}`, values);
+            router.put(route('admin.categories.update', category.id), values);
         } else {
-            router.post('/admin/categories', values);
+            router.post(route('admin.categories.store'), values);
         }
     };
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={category ? 'Edit Category' : 'Create Category'} />
-
-            <div className="p-4">
+        <div className="p-4">
                 <form onSubmit={handleSubmit}>
                     <Card>
                         <CardHeader>
@@ -95,6 +76,5 @@ export default function Form({ category }: Props) {
                     </div>
                 </form>
             </div>
-        </AppLayout>
     );
 }

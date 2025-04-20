@@ -9,51 +9,112 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\ThemeController;
+
 Route::get('/admin', function () {
-    return redirect()->route('dashboard');
+    return redirect()->route('admin.dashboard');
 });
 
-
 Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     // Media Routes
-    Route::get('media', [MediaController::class, 'index'])->name('media.index');
-    Route::post('media', [MediaController::class, 'store'])->name('media.store');
-    Route::get('media/{id}', [MediaController::class, 'show'])->name('media.show');
-    Route::delete('media/{id}', [MediaController::class, 'destroy'])->name('media.destroy');
-    Route::get('media/{id}/download', [MediaController::class, 'download'])->name('media.download');
+    Route::get('media', [MediaController::class, 'index'])->name('admin.media.index');
+    Route::post('media', [MediaController::class, 'store'])->name('admin.media.store');
+    Route::get('media/{id}', [MediaController::class, 'show'])->name('admin.media.show');
+    Route::delete('media/{id}', [MediaController::class, 'destroy'])->name('admin.media.destroy');
+    Route::get('media/{id}/download', [MediaController::class, 'download'])->name('admin.media.download');
 
     // Category Routes
-    Route::resource('categories', CategoryController::class);
+    Route::resource('categories', CategoryController::class)->names([
+        'index' => 'admin.categories.index',
+        'create' => 'admin.categories.create',
+        'store' => 'admin.categories.store',
+        'show' => 'admin.categories.show',
+        'edit' => 'admin.categories.edit',
+        'update' => 'admin.categories.update',
+        'destroy' => 'admin.categories.destroy',
+    ]);
 
     // Tag Routes
-    Route::resource('tags', TagController::class);
+    Route::resource('tags', TagController::class)->names([
+        'index' => 'admin.tags.index',
+        'create' => 'admin.tags.create',
+        'store' => 'admin.tags.store',
+        'show' => 'admin.tags.show',
+        'edit' => 'admin.tags.edit',
+        'update' => 'admin.tags.update',
+        'destroy' => 'admin.tags.destroy',
+    ]);
 
     // Post Routes
-    Route::resource('posts', PostController::class);
-    Route::post('posts/{post}/publish', [PostController::class, 'publish'])->name('posts.publish');
-    Route::post('posts/{post}/unpublish', [PostController::class, 'unpublish'])->name('posts.unpublish');
+    Route::resource('posts', PostController::class)->names([
+        'index' => 'admin.posts.index',
+        'create' => 'admin.posts.create',
+        'store' => 'admin.posts.store',
+        'show' => 'admin.posts.show',
+        'edit' => 'admin.posts.edit',
+        'update' => 'admin.posts.update',
+        'destroy' => 'admin.posts.destroy',
+    ]);
+    Route::post('posts/{post}/publish', [PostController::class, 'publish'])->name('admin.posts.publish');
+    Route::post('posts/{post}/unpublish', [PostController::class, 'unpublish'])->name('admin.posts.unpublish');
 
     // User Routes
-    Route::resource('users', UserController::class);
-    Route::resource('roles', RoleController::class)->except(['show']);
+    Route::resource('users', UserController::class)->names([
+        'index' => 'admin.users.index',
+        'create' => 'admin.users.create',
+        'store' => 'admin.users.store',
+        'show' => 'admin.users.show',
+        'edit' => 'admin.users.edit',
+        'update' => 'admin.users.update',
+        'destroy' => 'admin.users.destroy',
+    ]);
+
+    // Role Routes
+    Route::resource('roles', RoleController::class)->except(['show'])->names([
+        'index' => 'admin.roles.index',
+        'create' => 'admin.roles.create',
+        'store' => 'admin.roles.store',
+        'edit' => 'admin.roles.edit',
+        'update' => 'admin.roles.update',
+        'destroy' => 'admin.roles.destroy',
+    ]);
 
     // Page Routes
-    Route::resource('pages', PageController::class);
-    Route::post('pages/{page}/publish', [PageController::class, 'publish'])->name('pages.publish');
-    Route::post('pages/{page}/unpublish', [PageController::class, 'unpublish'])->name('pages.unpublish');
-
+    Route::resource('pages', PageController::class)->names([
+        'index' => 'admin.pages.index',
+        'create' => 'admin.pages.create',
+        'store' => 'admin.pages.store',
+        'show' => 'admin.pages.show',
+        'edit' => 'admin.pages.edit',
+        'update' => 'admin.pages.update',
+        'destroy' => 'admin.pages.destroy',
+    ]);
+    Route::post('pages/{page}/publish', [PageController::class, 'publish'])->name('admin.pages.publish');
+    Route::post('pages/{page}/unpublish', [PageController::class, 'unpublish'])->name('admin.pages.unpublish');
 
     // Theme Management
     Route::prefix('themes')->group(function () {
-        Route::get('/', [App\Http\Controllers\Admin\ThemeController::class, 'index'])->name('themes.index');
-        Route::post('/{theme}/activate', [App\Http\Controllers\Admin\ThemeController::class, 'activate'])->name('themes.activate');
-        Route::post('/scan', [App\Http\Controllers\Admin\ThemeController::class, 'scan'])->name('themes.scan');
-        Route::delete('/{theme}', [App\Http\Controllers\Admin\ThemeController::class, 'destroy'])->name('themes.destroy');
-        Route::post('/upload', [App\Http\Controllers\Admin\ThemeController::class, 'upload'])->name('themes.upload');
+        Route::get('/', [ThemeController::class, 'index'])->name('admin.themes.index');
+        Route::post('/{theme}/activate', [ThemeController::class, 'activate'])->name('admin.themes.activate');
+        Route::post('/scan', [ThemeController::class, 'scan'])->name('admin.themes.scan');
+        Route::delete('/{theme}', [ThemeController::class, 'destroy'])->name('admin.themes.destroy');
+        Route::post('/upload', [ThemeController::class, 'upload'])->name('admin.themes.upload');
     });
 
     // Menu Routes
-    Route::resource('menus', MenuController::class);
+    Route::resource('menus', MenuController::class)->names([
+        'index' => 'admin.menus.index',
+        'create' => 'admin.menus.create',
+        'store' => 'admin.menus.store',
+        'show' => 'admin.menus.show',
+        'edit' => 'admin.menus.edit',
+        'update' => 'admin.menus.update',
+        'destroy' => 'admin.menus.destroy',
+    ]);
+    Route::post('menus/{menu}/items', [MenuController::class, 'storeMenuItem'])->name('admin.menus.items.store');
+    Route::put('menus/items/{menuItem}', [MenuController::class, 'updateMenuItem'])->name('admin.menus.items.update');
+    Route::delete('menus/items/{menuItem}', [MenuController::class, 'destroyMenuItem'])->name('admin.menus.items.destroy');
+    Route::post('menus/{menu}/reorder', [MenuController::class, 'reorderMenuItems'])->name('admin.menus.items.reorder');
 });
