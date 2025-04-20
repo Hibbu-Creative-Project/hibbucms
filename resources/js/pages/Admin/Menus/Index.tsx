@@ -246,43 +246,64 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
     // Jika ada event onAdd
     if (evt.from !== evt.to) {
       try {
-        // Mendapatkan item yang dipindahkan - lindungi dengan try/catch
-        const movedItem = evt.oldIndex !== undefined ? menuItems[evt.oldIndex] : null;
+        // Mendapatkan item yang dipindahkan
+        const oldIndex = evt.oldIndex !== undefined ? evt.oldIndex : -1;
+        const newIndex = evt.newIndex !== undefined ? evt.newIndex : -1;
 
-        if (!movedItem) {
-          console.warn('Item yang dipindahkan tidak ditemukan', evt);
+        // Periksa apakah index valid
+        if (oldIndex < 0) {
+          console.warn('Invalid oldIndex:', oldIndex);
           return;
         }
 
-        // Periksa apakah dipindahkan ke dalam child list
-        const toElement = evt.to;
-        const fromElement = evt.from;
+        // Mendapatkan referensi ke item yang dipindahkan
+        const fromListId = evt.from.dataset.listId || 'main';
+        const toListId = evt.to.dataset.listId || 'main';
+
+        // Item yang dipindahkan
+        let movedItem: MenuItem | null = null;
+
+        // Jika dari main list
+        if (fromListId === 'main') {
+          movedItem = menuItems[oldIndex];
+        } else {
+          // Jika dari child list, cari parent item berdasarkan parentId
+          const parentId = evt.from.dataset.parentId;
+          if (parentId) {
+            const parentItem = menuItems.find(item => item.id.toString() === parentId);
+            if (parentItem && parentItem.children && oldIndex < parentItem.children.length) {
+              movedItem = parentItem.children[oldIndex];
+            }
+          }
+        }
+
+        if (!movedItem) {
+          console.warn('Item yang dipindahkan tidak ditemukan');
+          return;
+        }
 
         let updateData: UpdateItemData | null = null;
 
-        // Jika dipindahkan ke dalam child list (dengan data-parent-id)
-        if (toElement && 'dataset' in toElement && toElement.dataset.parentId) {
-          const newParentId = toElement.dataset.parentId;
-
-          // Setup data untuk update
+        // Jika dipindahkan ke child list
+        if (toListId !== 'main' && evt.to.dataset.parentId) {
+          const newParentId = evt.to.dataset.parentId;
           updateData = {
             id: movedItem.id,
             parent_id: newParentId,
-            order: evt.newIndex || 0
+            order: newIndex
           };
         }
-        // Jika dipindahkan dari child list ke main list
-        else if (fromElement && 'dataset' in fromElement && fromElement.dataset.parentId &&
-                 (!('dataset' in toElement) || !toElement.dataset.parentId)) {
-          // Setup data untuk update - dipindahkan ke top level
+        // Jika dipindahkan ke main list
+        else if (toListId === 'main') {
           updateData = {
             id: movedItem.id,
             parent_id: null,
-            order: evt.newIndex || 0
+            order: newIndex
           };
         }
 
         if (updateData) {
+          console.log('Updating menu item:', updateData);
           // Kirim ke backend
           router.post(route('admin.menus.items.reorder', activeMenu), {
             items: [updateData]
@@ -366,119 +387,122 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
         </div>
       </div>
 
-      {/* Nested children */}
-      {item.children && item.children.length > 0 && (
-        <div className="pl-8 pr-4 pb-4">
-          <ReactSortable
-            list={item.children}
-            setList={(newChildren) => {
-              // Gunakan setTimeout untuk menghindari loop yang terlalu cepat
-              setTimeout(() => {
-                try {
-                  if (!newChildren || !Array.isArray(newChildren)) {
-                    console.warn('Invalid children data:', newChildren);
-                    return;
-                  }
+      {/* Dropzone for children - always render this to allow dropping */}
+      <div className="pl-8 pr-4 pb-4">
+        <ReactSortable
+          list={item.children || []}
+          setList={(newChildren) => {
+            // Gunakan setTimeout untuk menghindari loop yang terlalu cepat
+            setTimeout(() => {
+              try {
+                if (!newChildren || !Array.isArray(newChildren)) {
+                  console.warn('Invalid children data:', newChildren);
+                  return;
+                }
 
-                  const newMenuItems = [...menuItems];
-                  const itemIndex = newMenuItems.findIndex(i => i.id === item.id);
-                  if (itemIndex !== -1) {
-                    newMenuItems[itemIndex].children = newChildren;
-                    setMenuItems(newMenuItems);
+                const newMenuItems = [...menuItems];
+                const itemIndex = newMenuItems.findIndex(i => i.id === item.id);
+                if (itemIndex !== -1) {
+                  newMenuItems[itemIndex].children = newChildren;
+                  setMenuItems(newMenuItems);
 
-                    // Update backend with new order
-                    const itemsToUpdate = newChildren.map((child, idx) => ({
-                      id: child.id,
-                      order: idx,
-                      parent_id: item.id
-                    }));
+                  // Update backend with new order
+                  const itemsToUpdate = newChildren.map((child, idx) => ({
+                    id: child.id,
+                    order: idx,
+                    parent_id: item.id
+                  }));
 
+                  if (itemsToUpdate.length > 0) {
                     router.post(route('admin.menus.items.reorder', activeMenu), {
                       items: itemsToUpdate
                     }, {
                       preserveScroll: true
                     });
                   }
-                } catch (error) {
-                  console.error('Error updating nested sortable:', error);
                 }
-              }, 10);
-            }}
-            group="nested-menu"
-            animation={150}
-            fallbackOnBody={true}
-            swapThreshold={0.65}
-            ghostClass="bg-accent/30"
-            handle=".cursor-move"
-            className="space-y-2"
-            data-parent-id={item.id}
-            emptyInsertThreshold={10}
-            forceFallback={true}
-            dragClass="opacity-70"
-            delay={100}
-            delayOnTouchOnly={true}
-            scroll={true}
-            scrollSensitivity={30}
-            bubbleScroll={true}
-          >
-            {item.children.map((child) => (
-              <div
-                key={child.id}
-                className="flex items-center gap-2 p-3 border rounded-md bg-card hover:bg-accent/50 transition-colors"
-              >
-                <div className="text-muted-foreground cursor-move">
-                  <GripVertical className="h-5 w-5" />
-                </div>
-                <Accordion type="single" collapsible className="flex-1">
-                  <AccordionItem value={child.id.toString()} className="border-none">
-                    <div className="flex items-center">
-                      {child.type === "page" && <FileText className="h-4 w-4 mr-2 text-muted-foreground" />}
-                      {child.type === "post" && <FileText className="h-4 w-4 mr-2 text-muted-foreground" />}
-                      {child.type === "custom" && <LinkIcon className="h-4 w-4 mr-2 text-muted-foreground" />}
-                      {child.type === "home" && <Home className="h-4 w-4 mr-2 text-muted-foreground" />}
-                      <span className="font-medium">{child.title}</span>
-                      <AccordionTrigger className="ml-auto" />
-                    </div>
-                    <AccordionContent>
-                      <div className="space-y-3 pt-2">
-                        <div className="space-y-1">
-                          <Label htmlFor={`item-${child.id}-label`}>Label Navigasi</Label>
-                          <Input
-                            id={`item-${child.id}-label`}
-                            defaultValue={child.title}
-                            onChange={(e) => handleUpdateMenuItem(child.id, { title: e.target.value })}
-                          />
-                        </div>
-                        <div className="space-y-1">
-                          <Label htmlFor={`item-${child.id}-url`}>URL</Label>
-                          <Input
-                            id={`item-${child.id}-url`}
-                            defaultValue={child.url}
-                            onChange={(e) => handleUpdateMenuItem(child.id, { url: e.target.value })}
-                          />
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleUpdateMenuItem(child.id, { target: child.target === '_blank' ? '_self' : '_blank' })}
-                          >
-                            <ExternalLink className="h-3.5 w-3.5 mr-1" />
-                            {child.target === '_blank' ? 'Buka di tab yang sama' : 'Buka di tab baru'}
-                          </Button>
-                        </div>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-                <Button variant="ghost" size="icon" onClick={() => removeMenuItem(child.id)}>
-                  <Trash className="h-4 w-4" />
-                </Button>
+              } catch (error) {
+                console.error('Error updating nested sortable:', error);
+              }
+            }, 10);
+          }}
+          group="nested-menu"
+          animation={150}
+          fallbackOnBody={true}
+          swapThreshold={0.65}
+          ghostClass="bg-accent/30"
+          handle=".cursor-move"
+          className={`space-y-2 ${item.children && item.children.length > 0 ? '' : 'empty-dropzone'}`}
+          data-parent-id={item.id}
+          data-list-id={`child-${item.id}`}
+          emptyInsertThreshold={10}
+          forceFallback={true}
+          dragClass="opacity-70"
+          // @ts-expect-error - hoverClass tidak ada di tipe ReactSortable tetapi bekerja dengan Sortablejs
+          hoverClass="dropzone-hover"
+          delay={100}
+          delayOnTouchOnly={true}
+          scroll={true}
+          scrollSensitivity={30}
+          bubbleScroll={true}
+        >
+          {item.children && item.children.map((child) => (
+            <div
+              key={child.id}
+              className="flex items-center gap-2 p-3 border rounded-md bg-card hover:bg-accent/50 transition-colors"
+            >
+              <div className="text-muted-foreground cursor-move">
+                <GripVertical className="h-5 w-5" />
               </div>
-            ))}
-          </ReactSortable>
-        </div>
-      )}
+              <Accordion type="single" collapsible className="flex-1">
+                <AccordionItem value={child.id.toString()} className="border-none">
+                  <div className="flex items-center">
+                    {child.type === "page" && <FileText className="h-4 w-4 mr-2 text-muted-foreground" />}
+                    {child.type === "post" && <FileText className="h-4 w-4 mr-2 text-muted-foreground" />}
+                    {child.type === "custom" && <LinkIcon className="h-4 w-4 mr-2 text-muted-foreground" />}
+                    {child.type === "home" && <Home className="h-4 w-4 mr-2 text-muted-foreground" />}
+                    <span className="font-medium">{child.title}</span>
+                    <AccordionTrigger className="ml-auto" />
+                  </div>
+                  <AccordionContent>
+                    <div className="space-y-3 pt-2">
+                      <div className="space-y-1">
+                        <Label htmlFor={`item-${child.id}-label`}>Label Navigasi</Label>
+                        <Input
+                          id={`item-${child.id}-label`}
+                          defaultValue={child.title}
+                          onChange={(e) => handleUpdateMenuItem(child.id, { title: e.target.value })}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor={`item-${child.id}-url`}>URL</Label>
+                        <Input
+                          id={`item-${child.id}-url`}
+                          defaultValue={child.url}
+                          onChange={(e) => handleUpdateMenuItem(child.id, { url: e.target.value })}
+                        />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleUpdateMenuItem(child.id, { target: child.target === '_blank' ? '_self' : '_blank' })}
+                        >
+                          <ExternalLink className="h-3.5 w-3.5 mr-1" />
+                          {child.target === '_blank' ? 'Buka di tab yang sama' : 'Buka di tab baru'}
+                        </Button>
+                      </div>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+              <Button variant="ghost" size="icon" onClick={() => removeMenuItem(child.id)}>
+                <Trash className="h-4 w-4" />
+              </Button>
+            </div>
+          ))}
+        </ReactSortable>
+      </div>
     </div>
   );
 
@@ -509,6 +533,28 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
       background: rgba(0,0,0,0.02);
       margin: 5px 0;
       border-radius: 4px;
+    }
+
+    .empty-dropzone {
+      min-height: 40px;
+      border: 2px dashed #b0bec5;
+      background: rgba(176, 190, 197, 0.1);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 5px 0;
+    }
+
+    .empty-dropzone:after {
+      content: "Drop item di sini untuk membuat submenu";
+      color: #78909c;
+      font-size: 0.75rem;
+    }
+
+    .dropzone-hover {
+      background: rgba(144, 202, 249, 0.2) !important;
+      border-color: #2196f3 !important;
     }
   `;
 
@@ -700,6 +746,9 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
                             scroll={true}
                             scrollSensitivity={30}
                             bubbleScroll={true}
+                            data-list-id="main"
+                            // @ts-expect-error - hoverClass tidak ada di tipe ReactSortable tetapi bekerja dengan Sortablejs
+                            hoverClass="dropzone-hover"
                           >
                             {menuItems.map((item, index) => renderMenuItem(item, index, menuItems))}
                           </ReactSortable>
