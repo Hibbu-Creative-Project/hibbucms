@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PageController;
-
+use App\Http\Controllers\Admin\MenuController;
 Route::get('/admin', function () {
     return redirect()->route('dashboard');
 });
@@ -53,4 +53,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
         Route::delete('/{theme}', [App\Http\Controllers\Admin\ThemeController::class, 'destroy'])->name('themes.destroy');
         Route::post('/upload', [App\Http\Controllers\Admin\ThemeController::class, 'upload'])->name('themes.upload');
     });
+
+    // Menu Routes
+    Route::resource('menus', MenuController::class);
 });

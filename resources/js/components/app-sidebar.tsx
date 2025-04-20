@@ -3,7 +3,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarRail } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { LayoutGrid, File, FileText, Settings, Users, Shield, Image, Paintbrush } from 'lucide-react';
+import { LayoutGrid, File, FileText, Settings, Users, Shield, Image, Paintbrush, AlignJustify } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -44,6 +44,12 @@ const contentNavItems = [
         href: '/admin/media',
         icon: Image,
     },
+    {
+        title: 'Menus',
+        href: '/admin/menus',
+        icon: AlignJustify,
+    },
+
 ] as NavItem[];
 
 const adminNavItems: NavItem[] = [

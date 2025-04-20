@@ -98,7 +98,7 @@ export default function Index({ pages, filters }: Props) {
       <Head title="Pages" />
 
       <div className="p-4">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex jujustify-between items-center mb-6">
           <h1 className="text-2xl font-bold">Pages</h1>
           <Link href={route('pages.create')}>
             <Button>Tambah Halaman Baru</Button>
