@@ -151,9 +151,19 @@ class MenuController extends Controller
         ]);
 
         foreach ($request->items as $item) {
+            // Pastikan parent_id adalah null atau ada di database
+            $parentId = $item['parent_id'];
+            if ($parentId !== null) {
+                // Validasi parent_id
+                $parentExists = $menu->items()->where('id', $parentId)->exists();
+                if (!$parentExists) {
+                    $parentId = null;
+                }
+            }
+
             $menu->items()->where('id', $item['id'])->update([
                 'order' => $item['order'],
-                'parent_id' => $item['parent_id'],
+                'parent_id' => $parentId,
             ]);
         }
 
