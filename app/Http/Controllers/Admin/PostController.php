@@ -119,7 +119,7 @@ class PostController extends Controller
             $post->tags()->sync($validated['tags']);
         }
 
-        return redirect()->route('posts.index')
+        return redirect()->route('admin.posts.index')
             ->with('message', 'Post created successfully.');
     }
 
@@ -190,7 +190,7 @@ class PostController extends Controller
             $post->tags()->sync($validated['tags']);
         }
 
-        return redirect()->route('posts.index')
+        return redirect()->route('admin.posts.index')
             ->with('message', 'Post updated successfully.');
     }
 
@@ -205,7 +205,7 @@ class PostController extends Controller
 
         $post->delete();
 
-        return redirect()->route('posts.index')
+        return redirect()->route('admin.posts.index')
             ->with('message', 'Post deleted successfully.');
     }
 

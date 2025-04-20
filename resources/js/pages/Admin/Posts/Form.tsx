@@ -86,7 +86,7 @@ export default function Form({ post, categories, tags, media }: Props) {
 
         if (post) {
             formData.append('_method', 'PUT');
-            router.post(`/admin/posts/${post.id}`, formData, {
+            router.post(route('admin.posts.update', post.id), formData, {
                 onSuccess: () => {
                     toast.success('Post berhasil diperbarui');
                     setIsSubmitting(false);
@@ -97,7 +97,7 @@ export default function Form({ post, categories, tags, media }: Props) {
                 }
             });
         } else {
-            router.post('/admin/posts', formData, {
+            router.post(route('admin.posts.store'), formData, {
                 onSuccess: () => {
                     toast.success('Post berhasil dibuat');
                     setIsSubmitting(false);

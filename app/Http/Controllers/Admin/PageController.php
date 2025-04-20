@@ -82,7 +82,7 @@ class PageController extends Controller
 
         Page::create($validated);
 
-        return redirect()->route('pages.index')
+        return redirect()->route('admin.pages.index')
             ->with('message', 'Halaman berhasil dibuat.');
     }
 
@@ -134,7 +134,7 @@ class PageController extends Controller
         $validated['slug'] = str($request->title)->slug();
         $page->update($validated);
 
-        return redirect()->route('pages.index')
+        return redirect()->route('admin.pages.index')
             ->with('message', 'Halaman berhasil diperbarui.');
     }
 
@@ -149,7 +149,7 @@ class PageController extends Controller
 
         $page->delete();
 
-        return redirect()->route('pages.index')
+        return redirect()->route('admin.pages.index')
             ->with('message', 'Halaman berhasil dihapus.');
     }
 

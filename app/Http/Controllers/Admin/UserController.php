@@ -69,7 +69,7 @@ class UserController extends Controller
         $user = User::create($data);
         $user->syncRoles($request->roles);
 
-        return redirect()->route('users.index')
+        return redirect()->route('admin.users.index')
             ->with('message', 'User created successfully');
     }
 
@@ -122,7 +122,7 @@ class UserController extends Controller
         $user->update($data);
         $user->syncRoles($request->roles);
 
-        return redirect()->route('users.index')
+        return redirect()->route('admin.users.index')
             ->with('message', 'User updated successfully');
     }
 
@@ -141,7 +141,7 @@ class UserController extends Controller
 
         $user->delete();
 
-        return redirect()->route('users.index')
+        return redirect()->route('admin.users.index')
             ->with('message', 'User deleted successfully');
     }
 }

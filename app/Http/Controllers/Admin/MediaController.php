@@ -148,7 +148,7 @@ class MediaController extends Controller
         $media = Media::findOrFail($id);
         $media->delete();
 
-        return redirect()->route('media.index')
+        return redirect()->route('admin.media.index')
             ->with('message', 'Media deleted successfully.');
     }
 

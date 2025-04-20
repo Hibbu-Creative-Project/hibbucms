@@ -49,7 +49,7 @@ class RoleController extends Controller
 
         $role->permissions()->sync($validated['permissions']);
 
-        return redirect()->route('roles.index')
+        return redirect()->route('admin.roles.index')
             ->with('message', 'Peran berhasil dibuat');
     }
 
@@ -77,7 +77,7 @@ class RoleController extends Controller
 
         $role->permissions()->sync($validated['permissions']);
 
-        return redirect()->route('roles.index')
+        return redirect()->route('admin.roles.index')
             ->with('message', 'Peran berhasil diperbarui');
     }
 
@@ -85,7 +85,7 @@ class RoleController extends Controller
     {
         $role->delete();
 
-        return redirect()->route('roles.index')
+        return redirect()->route('admin.roles.index')
             ->with('message', 'Peran berhasil dihapus');
     }
 }
