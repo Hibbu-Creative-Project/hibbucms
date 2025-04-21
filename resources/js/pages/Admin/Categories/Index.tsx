@@ -77,7 +77,7 @@ export default function Index({ categories, filters = { search: '' } }: Props) {
                             </Link>
                             <Link href={route('admin.categories.show', category.id)}>
                                 <Button variant="outline" size="sm">
-                                    Lihat
+                                    View
                                 </Button>
                             </Link>
                         </div>
@@ -94,7 +94,10 @@ export default function Index({ categories, filters = { search: '' } }: Props) {
 
             <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
-                    <h1 className="text-2xl font-bold">Categories</h1>
+                    <div>
+                        <h1 className="text-2xl font-bold">Categories</h1>
+                        <p className="text-muted-foreground">Manage and create categories for your content</p>
+                    </div>
                     <Link href={route('admin.categories.create')}>
                         <Button>
                             <Plus className="mr-2 h-4 w-4" />
@@ -107,7 +110,7 @@ export default function Index({ categories, filters = { search: '' } }: Props) {
                     <div className="grid grid-cols-1 gap-4">
                         <div>
                             <Input
-                                placeholder="Cari kategori..."
+                                placeholder="Search category..."
                                 value={search}
                                 onChange={(e) => handleSearch(e.target.value)}
                                 className="w-full text-gray-200 placeholder:text-gray-500"
@@ -120,16 +123,16 @@ export default function Index({ categories, filters = { search: '' } }: Props) {
                     {categories.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-12 px-4 rounded-lg">
                             <FolderTree className="h-12 w-12 text-gray-400 mb-4" />
-                            <h3 className="text-lg font-medium mb-1">Belum ada kategori</h3>
+                            <h3 className="text-lg font-medium mb-1">No categories found</h3>
                             <p className="text-center mb-4">
                                 {search
-                                    ? 'Tidak ada kategori yang sesuai dengan pencarian Anda'
-                                    : 'Mulai dengan membuat kategori untuk mengorganisir konten Anda'}
+                                    ? 'No categories found with your search'
+                                    : 'Start by creating a category to organize your content'}
                             </p>
                             <Link href={route('admin.categories.create')}>
                                 <Button>
                                     <Plus className="mr-2 h-4 w-4" />
-                                    Buat Kategori Pertama
+                                    Create First Category
                                 </Button>
                             </Link>
                         </div>
@@ -137,11 +140,11 @@ export default function Index({ categories, filters = { search: '' } }: Props) {
                         <Table>
                             <TableHeader>
                                 <TableRow className="border-b">
-                                    <TableHead>Nama</TableHead>
+                                    <TableHead>Name</TableHead>
                                     <TableHead>Slug</TableHead>
-                                    <TableHead>Deskripsi</TableHead>
-                                    <TableHead>Tanggal Dibuat</TableHead>
-                                    <TableHead>Aksi</TableHead>
+                                    <TableHead>Description</TableHead>
+                                    <TableHead>Created At</TableHead>
+                                    <TableHead>Action</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
