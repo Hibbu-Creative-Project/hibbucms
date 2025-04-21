@@ -17,7 +17,10 @@ class DatabaseSeeder extends Seeder
             RoleAndPermissionSeeder::class,
             UserSeeder::class,
             DefaultThemeSeeder::class,
-            // MenuSeeder::class,
+            MenuSeeder::class,
+            CategorySeeder::class,
+            TagSeeder::class,
+            PostSeeder::class,
         ]);
     }
 }

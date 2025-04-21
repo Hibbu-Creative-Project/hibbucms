@@ -35,17 +35,32 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/blog') }}">Blog</a>
-                    </li>
-                </ul>
-                </div>
+                @if (isset($menu) && $menu)
+                    <ul class="navbar-nav ms-auto">
+                        @foreach ($menu as $item)
+                            <li class="nav-item {{ !empty($item['child']) ? 'dropdown' : '' }}">
+                                @if (!empty($item['child']))
+                                    <a class="nav-link dropdown-toggle" href="{{ $item['url'] }}" role="button"
+                                        data-bs-toggle="dropdown">
+                                        {{ $item['title'] }}
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        @foreach ($item['child'] as $child)
+                                            <li><a class="dropdown-item" href="{{ $child['url'] }}"
+                                                    target="{{ $child['target'] }}">{{ $child['title'] }}</a></li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    <a class="nav-link" href="{{ $item['url'] }}"
+                                        target="{{ $item['target'] }}">{{ $item['title'] }}</a>
+                                @endif
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
             </div>
-        </nav>
+        </div>
+    </nav>
 
     <!-- Main Content -->
     <main class="container py-4">

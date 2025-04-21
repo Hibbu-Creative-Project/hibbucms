@@ -91,9 +91,9 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} label="Platform" />
+                <NavMain items={mainNavItems} />
                 <NavMain items={contentNavItems} label="Content Management" />
-                <NavMain items={adminNavItems} label="Administration" />
+                <NavMain items={adminNavItems} />
             </SidebarContent>
 
             <SidebarFooter>

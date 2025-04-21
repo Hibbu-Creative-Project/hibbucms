@@ -21,38 +21,39 @@ class MenuHelper
             return null;
         }
 
-        return static::renderItems($menu->items);
+        return static::formatItems($menu->items);
     }
 
-    protected static function renderItems($items)
+    protected static function formatItems($items)
     {
         if ($items->isEmpty()) {
-            return '';
+            return [];
         }
 
-        $html = '<ul class="menu">';
+        $result = [];
         foreach ($items as $item) {
-            $html .= static::renderItem($item);
+            $result[] = static::formatItem($item);
         }
-        $html .= '</ul>';
 
-        return $html;
+        return $result;
     }
 
-    protected static function renderItem($item)
+    protected static function formatItem($item)
     {
-        $hasChildren = $item->children->isNotEmpty();
-        $target = $item->target === '_blank' ? ' target="_blank"' : '';
+        $formattedItem = [
+            'id' => $item->id,
+            'title' => $item->title,
+            'url' => $item->url,
+            'target' => $item->target,
+            'type' => $item->type,
+            'order' => $item->order,
+            'child' => []
+        ];
 
-        $html = '<li class="menu-item' . ($hasChildren ? ' has-submenu' : '') . '">';
-        $html .= '<a href="' . $item->url . '"' . $target . '>' . e($item->title) . '</a>';
-
-        if ($hasChildren) {
-            $html .= static::renderItems($item->children);
+        if ($item->children->isNotEmpty()) {
+            $formattedItem['child'] = static::formatItems($item->children);
         }
 
-        $html .= '</li>';
-
-        return $html;
+        return $formattedItem;
     }
 }
