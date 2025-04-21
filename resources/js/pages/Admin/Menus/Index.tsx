@@ -610,7 +610,7 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
     }
 
     .empty-dropzone:after {
-      content: "Drop item di sini untuk membuat submenu";
+      content: "Drop item here to create a submenu";
       color: #78909c;
       font-size: 0.75rem;
     }
@@ -630,9 +630,9 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
             <div className="flex justify-between items-center mb-6">
               <div>
                 <h1 className="text-2xl font-bold">Menu</h1>
-                <p className="text-muted-foreground">Buat dan atur navigasi untuk situs Anda</p>
+                <p className="text-muted-foreground">Create and manage navigation for your site</p>
               </div>
-              <Button onClick={handleUpdateMenu} disabled={processing}>Simpan Menu</Button>
+              <Button onClick={handleUpdateMenu} disabled={processing}>Save Menu</Button>
             </div>
 
             <div className="grid gap-6 md:grid-cols-12">
@@ -643,10 +643,10 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="space-y-2">
-                  <Label htmlFor="menu-select">Pilih Menu untuk Diedit</Label>
+                  <Label htmlFor="menu-select">Select Menu to Edit</Label>
                   <Select value={activeMenu.toString()} onValueChange={handleMenuChange}>
                         <SelectTrigger>
-                      <SelectValue placeholder="Pilih menu" />
+                      <SelectValue placeholder="Select menu" />
                         </SelectTrigger>
                         <SelectContent>
                       {initialMenus.map((menu) => (
@@ -659,7 +659,7 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
                     </div>
 
                     <div className="space-y-2">
-                  <Label htmlFor="menu-name">Nama Menu</Label>
+                  <Label htmlFor="menu-name">Menu Name</Label>
                     <Input
                         id="menu-name"
                     value={data.name}
@@ -668,16 +668,13 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
                     </div>
 
                     <div className="space-y-2">
-                  <Label htmlFor="menu-location">Lokasi Tampilan</Label>
+                  <Label htmlFor="menu-location">Menu Location</Label>
                   <Select value={data.location} onValueChange={(value) => setData('location', value)}>
                         <SelectTrigger>
-                      <SelectValue placeholder="Pilih lokasi" />
+                      <SelectValue placeholder="Select location" />
                         </SelectTrigger>
                         <SelectContent>
-                      <SelectItem value="header">Navigasi Header</SelectItem>
-                      <SelectItem value="footer">Navigasi Footer</SelectItem>
-                      <SelectItem value="sidebar">Navigasi Sidebar</SelectItem>
-                      <SelectItem value="mobile">Navigasi Mobile</SelectItem>
+                      <SelectItem value="header">Header Navigation</SelectItem>
                         </SelectContent>
                     </Select>
                     </div>
@@ -685,7 +682,7 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
                     <div className="pt-2">
                   <Button variant="outline" className="w-full" onClick={handleCreateMenu} disabled={processing}>
                         <Plus className="mr-2 h-4 w-4" />
-                    Buat Menu Baru
+                    Create New Menu
                     </Button>
                     </div>
                 </CardContent>
@@ -693,15 +690,15 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
 
                 <Tabs defaultValue="pages">
                 <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="pages">Halaman</TabsTrigger>
-                <TabsTrigger value="posts">Artikel</TabsTrigger>
-                <TabsTrigger value="custom">Link Kustom</TabsTrigger>
+                <TabsTrigger value="pages">Pages</TabsTrigger>
+                <TabsTrigger value="posts">Posts</TabsTrigger>
+                <TabsTrigger value="custom">Custom Link</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="pages" className="border rounded-md mt-2">
                     <div className="p-4 space-y-4">
                     <div className="relative">
-                    <Input placeholder="Cari halaman..." />
+                    <Input placeholder="Search page..." />
                     </div>
                     <div className="space-y-2 max-h-[300px] overflow-y-auto">
                     {pages.map((page) => (
@@ -719,7 +716,7 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
                 <TabsContent value="posts" className="border rounded-md mt-2">
                     <div className="p-4 space-y-4">
                     <div className="relative">
-                    <Input placeholder="Cari artikel..." />
+                    <Input placeholder="Search post..." />
                     </div>
                     <div className="space-y-2 max-h-[300px] overflow-y-auto">
                     {posts.map((post) => (
@@ -737,10 +734,10 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
                 <TabsContent value="custom" className="border rounded-md mt-2">
                     <div className="p-4 space-y-4">
                     <div className="space-y-2">
-                    <Label htmlFor="link-text">Teks Link</Label>
+                    <Label htmlFor="link-text">Link Text</Label>
                         <Input
                         id="link-text"
-                      placeholder="Teks Menu Item"
+                      placeholder="Menu Item Text"
                       value={customLink.title}
                       onChange={(e) => setCustomLink(prev => ({ ...prev, title: e.target.value }))}
                         />
@@ -759,7 +756,7 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
                     disabled={!customLink.title || !customLink.url}
                   >
                         <Plus className="mr-2 h-4 w-4" />
-                    Tambah ke Menu
+                    Add to Menu
                     </Button>
                     </div>
                 </TabsContent>
@@ -769,17 +766,17 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
             <div className="md:col-span-8">
                 <Card>
                 <CardHeader>
-                <CardTitle>Struktur Menu</CardTitle>
-                <p className="text-sm text-muted-foreground">Drag and drop untuk mengatur urutan menu dan buat submenu</p>
+                <CardTitle>Menu Structure</CardTitle>
+                <p className="text-sm text-muted-foreground">Drag and drop to arrange menu order and create submenus</p>
                 </CardHeader>
                 <CardContent>
                 {!activeMenu ? (
                   <div className="text-center py-8 text-muted-foreground">
-                    Silakan pilih menu dari dropdown di panel kiri.
+                    Please select a menu from the dropdown on the left panel.
                   </div>
                 ) : menuItems.length === 0 ? (
                     <div className="text-center py-8 text-muted-foreground">
-                    Menu Anda kosong. Tambahkan item dari panel kiri.
+                    Your menu is empty. Add items from the left panel.
                     </div>
                     ) : (
                       <div className="space-y-2">
@@ -891,7 +888,7 @@ export default function MenuBuilderPage({ menus: initialMenus, pages, posts }: P
                         </div>
                         <div className="mt-4 text-center">
                           <p className="text-xs text-muted-foreground">
-                            Tip: Seret item menu ke dalam item lain untuk membuat submenu. Seret item keluar untuk mengembalikan ke menu utama.
+                            Tip: Drag and drop menu item to another item to create a submenu. Drag item out to return to the main menu.
                           </p>
                         </div>
                       </div>
