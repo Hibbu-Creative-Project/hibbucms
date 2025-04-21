@@ -6,43 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name') }} - @yield('title', 'Welcome')</title>
 
+    <!-- Meta Tags -->
+    <meta name="description" content="@yield('meta_description', '')">
+    <meta name="keywords" content="@yield('meta_keywords', '')">
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
+    <!-- Custom CSS -->
+    <link href="{{ asset('themes/default/assets/css/style.css') }}" rel="stylesheet">
 
     @stack('styles')
 </head>
 
-<body class="bg-light">
+<body>
+    <!-- Header -->
     <header>
-        @include($theme->getViewPath('components.header'))
+        @include('theme::partials.header')
     </header>
 
-    <main>
-        <div class="container py-4">
-            @yield('content')
-        </div>
+    <!-- Main Content -->
+    <main class="py-4">
+        @yield('content')
     </main>
 
-    <footer>
-        @include($theme->getViewPath('components.footer'))
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-auto">
+        @include('theme::partials.footer')
     </footer>
 
-    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="{{ asset('themes/default/assets/js/main.js') }}"></script>
 
     @stack('scripts')
 </body>

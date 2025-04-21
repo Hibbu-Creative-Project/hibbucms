@@ -85,49 +85,49 @@ class MenuSeeder extends Seeder
             'order' => 4,
         ]);
 
-        // // Create Footer Menu
-        // $footerMenu = Menu::create([
-        //     'name' => 'Footer Menu',
-        //     'location' => 'footer',
-        //     'description' => 'Footer navigation menu for the website',
-        //     'is_active' => true,
-        // ]);
+        // Create Footer Menu
+        $footerMenu = Menu::create([
+            'name' => 'Footer Menu',
+            'location' => 'footer',
+            'description' => 'Footer navigation menu for the website',
+            'is_active' => true,
+        ]);
 
-        // // Create Footer Menu Items
-        // MenuItem::create([
-        //     'menu_id' => $footerMenu->id,
-        //     'title' => 'Privacy Policy',
-        //     'url' => '/pages/privacy-policy',
-        //     'type' => 'page',
-        //     'target' => '_self',
-        //     'order' => 0,
-        // ]);
+        // Create Footer Menu Items
+        MenuItem::create([
+            'menu_id' => $footerMenu->id,
+            'title' => 'Privacy Policy',
+            'url' => '/pages/privacy-policy',
+            'type' => 'page',
+            'target' => '_self',
+            'order' => 0,
+        ]);
 
-        // MenuItem::create([
-        //     'menu_id' => $footerMenu->id,
-        //     'title' => 'Terms & Conditions',
-        //     'url' => '/pages/terms',
-        //     'type' => 'page',
-        //     'target' => '_self',
-        //     'order' => 1,
-        // ]);
+        MenuItem::create([
+            'menu_id' => $footerMenu->id,
+            'title' => 'Terms & Conditions',
+            'url' => '/pages/terms',
+            'type' => 'page',
+            'target' => '_self',
+            'order' => 1,
+        ]);
 
-        // MenuItem::create([
-        //     'menu_id' => $footerMenu->id,
-        //     'title' => 'FAQ',
-        //     'url' => '/pages/faq',
-        //     'type' => 'page',
-        //     'target' => '_self',
-        //     'order' => 2,
-        // ]);
+        MenuItem::create([
+            'menu_id' => $footerMenu->id,
+            'title' => 'FAQ',
+            'url' => '/pages/faq',
+            'type' => 'page',
+            'target' => '_self',
+            'order' => 2,
+        ]);
 
-        // // Create Social Media Menu
-        // $socialMenu = Menu::create([
-        //     'name' => 'Menu Sosial Media',
-        //     'location' => 'footer',
-        //     'description' => 'Menu sosial media di footer',
-        //     'is_active' => true,
-        // ]);
+        // Create Social Media Menu
+        $socialMenu = Menu::create([
+            'name' => 'Menu Sosial Media',
+            'location' => 'footer',
+            'description' => 'Menu sosial media di footer',
+            'is_active' => true,
+        ]);
 
         // // Create Social Media Menu Items
         // MenuItem::create([

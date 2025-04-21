@@ -21,12 +21,12 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Share menu with all views
-        View::share('menu', MenuHelper::render('header'));
-
-        // Alternatively, you can use composer for specific views
-        // View::composer(['themes.default.views.layouts.main', 'themes.*.views.layouts.*'], function ($view) {
-        //     $view->with('menu', MenuHelper::render('header'));
-        // });
+        // Share menus with all views
+        View::composer('theme::*', function ($view) {
+            $view->with([
+                'headerMenu' => MenuHelper::render('header'),
+                'footerMenu' => MenuHelper::render('footer')
+            ]);
+        });
     }
 }

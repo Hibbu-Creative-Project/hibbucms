@@ -1,138 +1,141 @@
-@extends('theme::layouts.main')
+@extends('theme::layouts.app')
 
 @section('title', 'Blog')
 
 @section('content')
-    <div class="row g-4">
-        <!-- Main Content -->
-        <div class="col-lg-8">
-            <div class="mb-4">
-                <h1 class="fw-bold mb-3">Artikel Blog</h1>
-                @if (request()->has('search'))
-                    <p class="text-muted">
-                        Hasil pencarian untuk: <span class="fw-medium">{{ request('search') }}</span>
-                    </p>
-                @elseif(request()->has('category'))
-                    <p class="text-muted">
-                        Artikel dalam kategori: <span class="fw-medium">{{ request('category') }}</span>
-                    </p>
-                @elseif(request()->has('tag'))
-                    <p class="text-muted">
-                        Artikel dengan tag: <span class="fw-medium">{{ request('tag') }}</span>
-                    </p>
+    <div class="container">
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <!-- Search Results Info -->
+                @if (request('search') || request('category') || request('tag'))
+                    <div class="alert alert-info mb-4">
+                        Showing results for:
+                        @if (request('search'))
+                            <strong>Search: "{{ request('search') }}"</strong>
+                        @endif
+                        @if (request('category'))
+                            <strong>Category: "{{ $categories->firstWhere('slug', request('category'))->name }}"</strong>
+                        @endif
+                        @if (request('tag'))
+                            <strong>Tag: "{{ $tags->firstWhere('slug', request('tag'))->name }}"</strong>
+                        @endif
+                        <a href="{{ route('blog') }}" class="float-end">Clear filters</a>
+                    </div>
                 @endif
-            </div>
 
-            @if ($posts->count() > 0)
-                <div class="mb-4">
-                    @foreach ($posts as $post)
-                        <article class="card mb-4 shadow-sm">
-                            <div class="card-body">
-                                <div class="row g-3">
-                                    @if ($post->featured_image)
-                                        <div class="col-md-4">
-                                            <img src="{{ $post->featured_image }}" alt="{{ $post->title }}"
-                                                class="img-fluid rounded"
-                                                style="object-fit: cover; height: 200px; width: 100%;">
-                                        </div>
-                                    @endif
-                                    <div class="col-md-{{ $post->featured_image ? '8' : '12' }}">
-                                        <h2 class="fs-4 fw-bold mb-2">
-                                            <a href="{{ url('/blog/' . $post->slug) }}"
-                                                class="text-decoration-none text-dark">
-                                                {{ $post->title }}
+                <!-- Posts List -->
+                <div class="row g-4">
+                    @forelse($posts as $post)
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                @if ($post->featured_image)
+                                    <img src="{{ asset('storage/' . $post->featured_image) }}" class="card-img-top"
+                                        alt="{{ $post->title }}">
+                                @endif
+
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $post->title }}</h5>
+                                    <p class="card-text text-muted">
+                                        {{ Str::limit(strip_tags($post->content), 100) }}
+                                    </p>
+
+                                    <!-- Post Meta -->
+                                    <div class="mb-3">
+                                        @if ($post->category)
+                                            <a href="{{ route('blog', ['category' => $post->category->slug]) }}"
+                                                class="badge bg-primary text-decoration-none">
+                                                {{ $post->category->name }}
                                             </a>
-                                        </h2>
-                                        <p class="text-muted mb-3">
-                                            {{ Str::limit($post->excerpt ?? $post->content, 200) }}
-                                        </p>
-                                        <div class="d-flex align-items-center gap-3">
-                                            <small class="text-muted">
-                                                @if ($post->published_at)
-                                                    {{ $post->published_at->format('d M Y') }}
-                                                @else
-                                                    Draft
-                                                @endif
-                                            </small>
-                                            @if ($post->category)
-                                                <a href="{{ url('/blog?category=' . $post->category->slug) }}"
-                                                    class="badge bg-light text-primary text-decoration-none">
-                                                    {{ $post->category->name }}
-                                                </a>
-                                            @endif
-                                        </div>
+                                        @endif
+
+                                        @foreach ($post->tags as $tag)
+                                            <a href="{{ route('blog', ['tag' => $tag->slug]) }}"
+                                                class="badge bg-secondary text-decoration-none">
+                                                {{ $tag->name }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <a href="{{ route('blog.post', $post->slug) }}"
+                                            class="btn btn-sm btn-outline-primary">
+                                            Read More
+                                        </a>
+                                        <small class="text-muted">
+                                            {{ $post->published_at->diffForHumans() }}
+                                        </small>
                                     </div>
                                 </div>
                             </div>
-                        </article>
-                    @endforeach
-                </div>
-
-                <div class="d-flex justify-content-center">
-                    {{ $posts->links() }}
-                </div>
-            @else
-                <div class="card text-center py-5 mb-4">
-                    <div class="card-body">
-                        <p class="text-muted">Tidak ada artikel yang ditemukan.</p>
-                    </div>
-                </div>
-            @endif
-        </div>
-
-        <!-- Sidebar -->
-        <div class="col-lg-4">
-            <!-- Search -->
-            <div class="card shadow-sm mb-4">
-                <div class="card-body">
-                    <h3 class="fs-5 fw-bold mb-3">Pencarian</h3>
-                    <form action="{{ url('/blog') }}" method="GET">
-                        <div class="input-group">
-                            <input type="text" name="search" value="{{ request('search') }}"
-                                placeholder="Cari artikel..." class="form-control">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-search"></i>
-                            </button>
                         </div>
-                    </form>
+                    @empty
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                No posts found.
+                            </div>
+                        </div>
+                    @endforelse
+                </div>
+
+                <!-- Pagination -->
+                <div class="mt-4">
+                    {{ $posts->links() }}
                 </div>
             </div>
 
-            <!-- Categories -->
-            @if ($categories->count() > 0)
-                <div class="card shadow-sm mb-4">
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Search -->
+                <div class="card mb-4">
                     <div class="card-body">
-                        <h3 class="fs-5 fw-bold mb-3">Kategori</h3>
+                        <form action="{{ route('blog') }}" method="GET">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search posts..." name="search"
+                                    value="{{ request('search') }}">
+                                <button class="btn btn-primary" type="submit">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Categories -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Categories</h5>
+                    </div>
+                    <div class="card-body">
                         <div class="list-group list-group-flush">
                             @foreach ($categories as $category)
-                                <a href="{{ url('/blog?category=' . $category->slug) }}"
+                                <a href="{{ route('blog', ['category' => $category->slug]) }}"
                                     class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                    <span>{{ $category->name }}</span>
-                                    <span class="badge bg-light text-dark rounded-pill">{{ $category->posts_count }}</span>
+                                    {{ $category->name }}
+                                    <span class="badge bg-primary rounded-pill">
+                                        {{ $category->posts_count }}
+                                    </span>
                                 </a>
                             @endforeach
                         </div>
                     </div>
                 </div>
-            @endif
 
-            <!-- Tags -->
-            @if ($tags->count() > 0)
-                <div class="card shadow-sm">
+                <!-- Tags -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Tags</h5>
+                    </div>
                     <div class="card-body">
-                        <h3 class="fs-5 fw-bold mb-3">Tag</h3>
                         <div class="d-flex flex-wrap gap-2">
                             @foreach ($tags as $tag)
-                                <a href="{{ url('/blog?tag=' . $tag->slug) }}"
-                                    class="badge bg-light text-dark text-decoration-none p-2">
-                                    {{ $tag->name }}
-                                    <span class="text-muted">({{ $tag->posts_count }})</span>
+                                <a href="{{ route('blog', ['tag' => $tag->slug]) }}"
+                                    class="btn btn-outline-secondary btn-sm">
+                                    {{ $tag->name }} ({{ $tag->posts_count }})
                                 </a>
                             @endforeach
                         </div>
                     </div>
                 </div>
-            @endif
+            </div>
         </div>
     </div>
 @endsection
