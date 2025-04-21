@@ -108,7 +108,7 @@ export default function MediaPicker({ media, selectedMediaId, onSelect, onUpload
                         onClick={() => setIsOpen(true)}
                     >
                         <ImageIcon className="h-8 w-8" />
-                        <span>Pilih Featured Image</span>
+                        <span>Select Featured Image</span>
                     </Button>
                 )}
             </div>
@@ -116,7 +116,7 @@ export default function MediaPicker({ media, selectedMediaId, onSelect, onUpload
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <DialogContent className="max-w-3xl">
                     <DialogHeader>
-                        <DialogTitle>Pilih Media</DialogTitle>
+                        <DialogTitle>Select Media</DialogTitle>
                     </DialogHeader>
 
                     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -141,10 +141,10 @@ export default function MediaPicker({ media, selectedMediaId, onSelect, onUpload
                                     <Label htmlFor="file-upload" className="cursor-pointer">
                                         <UploadIcon className="mx-auto h-12 w-12 text-gray-400" />
                                         <span className="mt-2 block text-sm font-medium">
-                                            Klik untuk upload atau drag & drop
+                                            Click to upload or drag & drop
                                         </span>
                                         <span className="mt-1 block text-xs text-gray-400">
-                                            PNG, JPG, GIF hingga 10MB
+                                            PNG, JPG, GIF up to 10MB
                                         </span>
                                     </Label>
                                     <Input

@@ -88,22 +88,22 @@ export default function Form({ post, categories, tags, media }: Props) {
             formData.append('_method', 'PUT');
             router.post(route('admin.posts.update', post.id), formData, {
                 onSuccess: () => {
-                    toast.success('Post berhasil diperbarui');
+                    toast.success('Post updated successfully');
                     setIsSubmitting(false);
                 },
                 onError: () => {
-                    toast.error('Gagal memperbarui post');
+                    toast.error('Failed to update post');
                     setIsSubmitting(false);
                 }
             });
         } else {
             router.post(route('admin.posts.store'), formData, {
                 onSuccess: () => {
-                    toast.success('Post berhasil dibuat');
+                    toast.success('Post created successfully');
                     setIsSubmitting(false);
                 },
                 onError: () => {
-                    toast.error('Gagal membuat post');
+                    toast.error('Failed to create post');
                     setIsSubmitting(false);
                 }
             });
@@ -117,7 +117,7 @@ export default function Form({ post, categories, tags, media }: Props) {
     return (
             <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
-                    <h1 className="text-2xl font-bold">{post ? 'Edit Post' : 'Buat Post Baru'}</h1>
+                    <h1 className="text-2xl font-bold">{post ? 'Edit Post' : 'Create New Post'}</h1>
                 </div>
 
                 <div className="flex gap-4">
@@ -135,7 +135,7 @@ export default function Form({ post, categories, tags, media }: Props) {
                                             title: e.target.value,
                                         })
                                     }
-                                    placeholder="Masukkan judul post"
+                                    placeholder="Enter post title"
                                     required
                                 />
                             </div>
@@ -153,7 +153,7 @@ export default function Form({ post, categories, tags, media }: Props) {
                             </div>
 
                             <div>
-                                <Label htmlFor="excerpt" className=" mb-2 block">Ringkasan</Label>
+                                <Label htmlFor="excerpt" className=" mb-2 block">Excerpt</Label>
                                 <Textarea
                                     id="excerpt"
                                     value={values.excerpt}
@@ -163,7 +163,7 @@ export default function Form({ post, categories, tags, media }: Props) {
                                             excerpt: e.target.value,
                                         })
                                     }
-                                    placeholder="Masukkan ringkasan post"
+                                    placeholder="Enter post excerpt"
                                     className="min-h-[100px]  placeholder:text-gray-500"
                                 />
                             </div>
@@ -183,7 +183,7 @@ export default function Form({ post, categories, tags, media }: Props) {
                                     disabled={isSubmitting}
                                 >
                                     {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                    {post ? 'Update Post' : 'Buat Post'}
+                                    {post ? 'Update Post' : 'Create Post'}
                                 </Button>
 
                                 <Select
@@ -207,7 +207,7 @@ export default function Form({ post, categories, tags, media }: Props) {
                         </div>
 
                         <div className="rounded-lg p-4 border space-y-4">
-                            <h3 className="font-semibold ">Kategori</h3>
+                            <h3 className="font-semibold ">Category</h3>
                             <Select
                                 value={values.category_id}
                                 onValueChange={(value) =>
@@ -218,7 +218,7 @@ export default function Form({ post, categories, tags, media }: Props) {
                                 }
                             >
                                 <SelectTrigger className="">
-                                    <SelectValue placeholder="Pilih kategori" />
+                                    <SelectValue placeholder="Select category" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {categories.map((category) => (

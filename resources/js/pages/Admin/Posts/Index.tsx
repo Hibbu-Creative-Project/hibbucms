@@ -170,7 +170,7 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                     <Link href={route('admin.posts.create')}>
                         <Button>
                             <Plus className="mr-2 h-4 w-4" />
-                            Buat Post
+                            Create Post
                         </Button>
                     </Link>
                 </div>
@@ -179,7 +179,7 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <Input
-                                placeholder="Cari post..."
+                                placeholder="Search post..."
                                 value={search}
                                 onChange={(e) => handleSearch(e.target.value)}
                                 className="w-full"
@@ -188,10 +188,10 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                         <div>
                             <Select value={status} onValueChange={handleStatusChange}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Filter berdasarkan status" />
+                                    <SelectValue placeholder="Filter by status" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="all">Semua Status</SelectItem>
+                                    <SelectItem value="all">All Status</SelectItem>
                                     <SelectItem value="draft">Draft</SelectItem>
                                     <SelectItem value="published">Published</SelectItem>
                                 </SelectContent>
@@ -200,10 +200,10 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                         <div>
                             <Select value={category} onValueChange={handleCategoryChange}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Filter berdasarkan kategori" />
+                                    <SelectValue placeholder="Filter by category" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="all">Semua Kategori</SelectItem>
+                                    <SelectItem value="all">All Categories</SelectItem>
                                     {uniqueCategories.map((cat) => (
                                         <SelectItem
                                             key={`category-${cat.id}`}
@@ -222,16 +222,16 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                     {posts.data.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-12 px-4 rounded-lg">
                             <FileText className="h-12 w-12 text-gray-400 mb-4" />
-                            <h3 className="text-lg font-medium mb-1">Belum ada post</h3>
+                            <h3 className="text-lg font-medium mb-1">No posts found</h3>
                             <p className="text-center mb-4">
                                 {(search || status !== 'all' || category !== 'all') && (status || category || search)
-                                    ? 'Tidak ada post yang sesuai dengan filter Anda'
-                                    : 'Mulai dengan membuat post baru untuk blog Anda'}
+                                    ? 'No posts found with your filter'
+                                    : 'Start by creating a post for your blog'}
                             </p>
                             <Link href={route('admin.posts.create')}>
                                 <Button>
                                     <Plus className="mr-2 h-4 w-4" />
-                                    Buat Post Pertama
+                                    Create First Post
                                 </Button>
                             </Link>
                         </div>
@@ -239,13 +239,13 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead>Judul</TableHead>
-                                    <TableHead>Kategori</TableHead>
+                                    <TableHead>Title</TableHead>
+                                    <TableHead>Category</TableHead>
                                     <TableHead>Tags</TableHead>
                                     <TableHead>Status</TableHead>
-                                    <TableHead>Tanggal Publikasi</TableHead>
-                                    <TableHead>Tanggal Dibuat</TableHead>
-                                    <TableHead>Aksi</TableHead>
+                                    <TableHead>Published At</TableHead>
+                                    <TableHead>Created At</TableHead>
+                                    <TableHead>Action</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -330,7 +330,7 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
                                                 <Link href={route('admin.posts.show', post.id)}>
                                                     <Button variant="outline" size="sm"
                                                         className="hover:bg-[#0c1015] hover:text-white">
-                                                        Lihat
+                                                        View
                                                     </Button>
                                                 </Link>
                                             </div>
