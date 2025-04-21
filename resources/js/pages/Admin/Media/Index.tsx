@@ -125,7 +125,10 @@ export default function Index({ media, filters }: Props) {
 
             <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
+                    <div>
                     <h1 className="text-2xl font-bold">Media</h1>
+                    <p className="text-muted-foreground">Manage and upload media files</p>
+                    </div>
                     <div className="flex gap-2">
                         <Input
                             type="text"
