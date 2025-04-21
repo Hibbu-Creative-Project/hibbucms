@@ -42,11 +42,10 @@ interface Props {
 const breadcrumbs = [
     {
         title: 'Dashboard',
-        href: '/admin/dashboard',
+        href: route('admin.dashboard'),
     },
     {
         title: 'Media',
-        href: '/admin/media',
     },
 ];
 
@@ -63,7 +62,7 @@ export default function Index({ media, filters }: Props) {
         });
 
         try {
-            router.post('/admin/media', formData, {
+            router.post(route('admin.media.store'), formData, {
                 forceFormData: true,
                 preserveScroll: true,
                 onSuccess: () => {
@@ -106,7 +105,7 @@ export default function Index({ media, filters }: Props) {
 
     const handleSearch = (value: string) => {
         setSearch(value);
-        router.get('/admin/media', { search: value, type }, {
+        router.get(route('admin.media.index'), { search: value, type }, {
             preserveState: true,
             replace: true,
         });
@@ -114,7 +113,7 @@ export default function Index({ media, filters }: Props) {
 
     const handleTypeFilter = (value: string) => {
         setType(value);
-        router.get('/admin/media', { search, type: value }, {
+        router.get(route('admin.media.index'), { search, type: value }, {
             preserveState: true,
             replace: true,
         });
@@ -173,16 +172,16 @@ export default function Index({ media, filters }: Props) {
                         <div className="col-span-full">
                             <div className="flex flex-col items-center justify-center py-12 px-4 border rounded-lg">
                                 <ImageIcon className="h-12 w-12 text-gray-400 mb-4" />
-                                <h3 className="text-lg font-medium mb-1">Belum ada media</h3>
+                                <h3 className="text-lg font-medium mb-1">No media found</h3>
                                 <p className="text-center mb-4">
                                     {search || type
-                                        ? 'Tidak ada media yang sesuai dengan filter Anda'
-                                        : 'Mulai dengan mengunggah file media pertama Anda'}
+                                        ? 'No media found with your filter'
+                                        : 'Start by uploading your first media file'}
                                 </p>
                                 <div {...getRootProps()} className="cursor-pointer">
                                     <Button>
                                         <Plus className="mr-2 h-4 w-4" />
-                                        Unggah Media
+                                        Upload Media
                                     </Button>
                                 </div>
                             </div>
@@ -242,7 +241,7 @@ export default function Index({ media, filters }: Props) {
                                         variant={page === media.current_page ? 'default' : 'outline'}
                                         size="sm"
                                         onClick={() =>
-                                            router.get('/admin/media', { page, search, type }, { preserveState: true })
+                                            router.get(route('admin.media.index'), { page, search, type }, { preserveState: true })
                                         }
                                     >
                                         {page}
