@@ -14,15 +14,14 @@ interface Props {
 const breadcrumbs = [
   {
     title: 'Dashboard',
-    href: '/admin/dashboard',
+    href: route('admin.dashboard'),
   },
   {
     title: 'Pages',
-    href: '/admin/pages',
+    href: route('admin.pages.index'),
   },
   {
-    title: 'Detail',
-    href: '/admin/pages/show',
+    title: 'Detail'
   },
 ];
 
@@ -39,7 +38,7 @@ export default function Show({ page }: Props) {
               <Button variant="outline">Edit</Button>
             </Link>
             <Link href={route('pages.index')}>
-              <Button variant="outline">Kembali</Button>
+              <Button variant="outline">Back</Button>
             </Link>
           </div>
         </div>
@@ -48,7 +47,7 @@ export default function Show({ page }: Props) {
           <div className="lg:col-span-2 space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>Konten</CardTitle>
+                <CardTitle>Content</CardTitle>
               </CardHeader>
               <CardContent>
                 <div
@@ -62,28 +61,28 @@ export default function Show({ page }: Props) {
           <div className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>Informasi</CardTitle>
+                <CardTitle>Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <div className="text-sm font-medium text-gray-500">Status</div>
                   <Badge variant={page.status === 'published' ? 'default' : 'secondary'}>
-                    {page.status === 'published' ? 'Dipublikasi' : 'Draft'}
+                    {page.status === 'published' ? 'Published' : 'Draft'}
                   </Badge>
                 </div>
 
                 <div>
-                  <div className="text-sm font-medium text-gray-500">Penulis</div>
+                  <div className="text-sm font-medium text-gray-500">Author</div>
                   <div>{page.user.name}</div>
                 </div>
 
                 <div>
-                  <div className="text-sm font-medium text-gray-500">Urutan</div>
+                  <div className="text-sm font-medium text-gray-500">Order</div>
                   <div>{page.order}</div>
                 </div>
 
                 <div>
-                  <div className="text-sm font-medium text-gray-500">Tanggal Dibuat</div>
+                  <div className="text-sm font-medium text-gray-500">Created Date</div>
                   <div>
                     {format(new Date(page.created_at), 'dd MMMM yyyy', {
                       locale: id,
@@ -92,7 +91,7 @@ export default function Show({ page }: Props) {
                 </div>
 
                 <div>
-                  <div className="text-sm font-medium text-gray-500">Terakhir Diperbarui</div>
+                  <div className="text-sm font-medium text-gray-500">Last Updated</div>
                   <div>
                     {format(new Date(page.updated_at), 'dd MMMM yyyy', {
                       locale: id,

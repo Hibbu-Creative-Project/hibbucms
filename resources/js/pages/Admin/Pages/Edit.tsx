@@ -33,15 +33,14 @@ interface FormData extends Record<string, string | number | null> {
 const breadcrumbs = [
   {
     title: 'Dashboard',
-    href: '/admin/dashboard',
+    href: route('admin.dashboard'),
   },
   {
     title: 'Pages',
-    href: '/admin/pages',
+    href: route('admin.pages.index'),
   },
   {
     title: 'Edit',
-    href: '/admin/pages/edit',
   },
 ];
 
@@ -74,13 +73,13 @@ export default function Edit({ page }: Props) {
       <div className="p-4">
         <form onSubmit={handleSubmit}>
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold">Edit Halaman</h1>
+            <h1 className="text-2xl font-bold">Edit Page</h1>
             <div className="flex gap-2">
               <Button
                 type="submit"
                 disabled={processing}
               >
-                Simpan
+                Save
               </Button>
             </div>
           </div>
@@ -89,16 +88,16 @@ export default function Edit({ page }: Props) {
             <div className="lg:col-span-2 space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Konten</CardTitle>
+                  <CardTitle>Content</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="title">Judul</Label>
+                    <Label htmlFor="title">Title</Label>
                     <Input
                       id="title"
                       value={data.title}
                       onChange={(e) => setData('title', e.target.value)}
-                      placeholder="Masukkan judul halaman"
+                      placeholder="Enter page title"
                     />
                     {errors.title && (
                       <span className="text-sm text-red-500">{errors.title}</span>
@@ -106,7 +105,7 @@ export default function Edit({ page }: Props) {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Konten</Label>
+                    <Label>Content</Label>
                     <Editor
                       value={data.content}
                       onChange={(value) => setData('content', value)}
@@ -122,7 +121,7 @@ export default function Edit({ page }: Props) {
             <div className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Pengaturan</CardTitle>
+                  <CardTitle>Settings</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
@@ -136,7 +135,7 @@ export default function Edit({ page }: Props) {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="draft">Draft</SelectItem>
-                        <SelectItem value="published">Publikasikan</SelectItem>
+                        <SelectItem value="published">Published</SelectItem>
                       </SelectContent>
                     </Select>
                     {errors.status && (
@@ -145,7 +144,7 @@ export default function Edit({ page }: Props) {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="order">Urutan</Label>
+                    <Label htmlFor="order">Order</Label>
                     <Input
                       id="order"
                       type="number"
@@ -170,7 +169,7 @@ export default function Edit({ page }: Props) {
                       id="meta_description"
                       value={data.meta_description}
                       onChange={(e) => setData('meta_description', e.target.value)}
-                      placeholder="Masukkan deskripsi meta untuk SEO"
+                      placeholder="Enter meta description for SEO"
                       rows={3}
                     />
                     {errors.meta_description && (
@@ -186,7 +185,7 @@ export default function Edit({ page }: Props) {
                       id="meta_keywords"
                       value={data.meta_keywords}
                       onChange={(e) => setData('meta_keywords', e.target.value)}
-                      placeholder="Masukkan kata kunci meta untuk SEO"
+                      placeholder="Enter meta keywords for SEO"
                     />
                     {errors.meta_keywords && (
                       <span className="text-sm text-red-500">

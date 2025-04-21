@@ -40,11 +40,10 @@ interface Props {
 const breadcrumbs = [
   {
     title: 'Dashboard',
-    href: '/admin/dashboard',
+    href: route('admin.dashboard'),
   },
   {
-    title: 'Pages',
-    href: '/admin/pages',
+    title: 'Pages'
   },
 ];
 
@@ -71,10 +70,10 @@ export default function Index({ pages, filters }: Props) {
   };
 
   const handleDelete = (id: number) => {
-    if (confirm('Apakah Anda yakin ingin menghapus halaman ini?')) {
+    if (confirm('Are you sure you want to delete this page?')) {
       destroy(route('pages.destroy', id), {
         onSuccess: () => {
-          toast.success('Halaman berhasil dihapus');
+          toast.success('Page deleted successfully');
         },
       });
     }
@@ -85,8 +84,8 @@ export default function Index({ pages, filters }: Props) {
     router.post(route(routeName, id), {}, {
       onSuccess: () => {
         toast.success(
-          `Halaman berhasil ${
-            currentStatus === 'draft' ? 'dipublikasikan' : 'dijadikan draft'
+          `Page successfully ${
+            currentStatus === 'draft' ? 'published' : 'drafted'
           }`
         );
       },
@@ -99,10 +98,13 @@ export default function Index({ pages, filters }: Props) {
 
       <div className="p-4">
         <div className="flex justify-between items-center mb-4">
+            <div>
             <h1 className="text-2xl font-bold">Pages</h1>
+            <p className="text-muted-foreground">Manage and create pages for your website</p>
+            </div>
             <Link href={route('pages.create')}>
                 <Button>
-                    Tambah Halaman
+                    Add Page
                 </Button>
             </Link>
         </div>
@@ -111,7 +113,7 @@ export default function Index({ pages, filters }: Props) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Input
-                placeholder="Cari halaman..."
+                placeholder="Search page..."
                 value={data.search}
                 onChange={(e) => handleSearch(e.target.value)}
                 className="w-full"
@@ -126,8 +128,8 @@ export default function Index({ pages, filters }: Props) {
                   <SelectValue placeholder="Filter status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Semua Status</SelectItem>
-                  <SelectItem value="published">Dipublikasi</SelectItem>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="published">Published</SelectItem>
                   <SelectItem value="draft">Draft</SelectItem>
                 </SelectContent>
               </Select>
@@ -138,25 +140,25 @@ export default function Index({ pages, filters }: Props) {
         <div className="rounded-lg shadow border">
           {pages.data.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 px-4">
-              <h3 className="text-lg font-medium mb-1">Belum ada halaman</h3>
+              <h3 className="text-lg font-medium mb-1">No pages found</h3>
               <p className="text-center mb-4">
                 {data.search || data.status !== 'all'
-                  ? 'Tidak ada halaman yang sesuai dengan filter Anda'
-                  : 'Mulai dengan membuat halaman baru'}
+                  ? 'No pages found with your filter'
+                  : 'Start by creating a new page'}
               </p>
               <Link href={route('pages.create')}>
-                <Button>Tambah Halaman Baru</Button>
+                <Button>Add New Page</Button>
               </Link>
             </div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Judul</TableHead>
+                  <TableHead>Title</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Penulis</TableHead>
-                  <TableHead>Tanggal</TableHead>
-                  <TableHead className="text-right">Aksi</TableHead>
+                  <TableHead>Author</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead className="text-right">Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -167,7 +169,7 @@ export default function Index({ pages, filters }: Props) {
                       <Badge
                         variant={page.status === 'published' ? 'default' : 'secondary'}
                       >
-                        {page.status === 'published' ? 'Dipublikasi' : 'Draft'}
+                        {page.status === 'published' ? 'Published' : 'Draft'}
                       </Badge>
                     </TableCell>
                     <TableCell>{page.user.name}</TableCell>
@@ -180,7 +182,7 @@ export default function Index({ pages, filters }: Props) {
                       <div className="flex justify-end gap-2">
                         <Link href={route('pages.show', page.id)}>
                           <Button variant="ghost" size="sm">
-                            Lihat
+                            View
                           </Button>
                         </Link>
                         <Link href={route('pages.edit', page.id)}>
@@ -193,14 +195,14 @@ export default function Index({ pages, filters }: Props) {
                           size="sm"
                           onClick={() => handlePublish(page.id, page.status)}
                         >
-                          {page.status === 'draft' ? 'Publikasi' : 'Draft'}
+                          {page.status === 'draft' ? 'Publish' : 'Draft'}
                         </Button>
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={() => handleDelete(page.id)}
                         >
-                          Hapus
+                          Delete
                         </Button>
                       </div>
                     </TableCell>
