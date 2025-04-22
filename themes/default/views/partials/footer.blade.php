@@ -8,7 +8,6 @@
         </div>
 
         <div class="col-md-4 mb-4 mb-md-0">
-            <h5>Quick Links</h5>
             @if ($footerMenu)
                 <ul class="list-unstyled">
                     @foreach ($footerMenu as $item)
@@ -38,21 +37,6 @@
                     <li><a href="{{ route('blog') }}" class="text-decoration-none">Blog</a></li>
                 </ul>
             @endif
-        </div>
-
-        <div class="col-md-4">
-            <h5>Follow Us</h5>
-            <div class="social-links">
-                <a href="#" class="text-decoration-none me-2">
-                    <i class="bi bi-facebook"></i>
-                </a>
-                <a href="#" class="text-decoration-none me-2">
-                    <i class="bi bi-twitter"></i>
-                </a>
-                <a href="#" class="text-decoration-none">
-                    <i class="bi bi-instagram"></i>
-                </a>
-            </div>
         </div>
     </div>
 

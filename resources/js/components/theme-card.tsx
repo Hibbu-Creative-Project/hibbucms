@@ -47,7 +47,7 @@ export function ThemeCard({ theme }: ThemeCardProps) {
                         <img
                             src={theme.preview_url}
                             alt={`${theme.name} screenshot`}
-                            className="h-full w-full object-cover"
+                            className="h-auto w-full object-cover"
                         />
                     ) : (
                         <div className="flex h-full items-center justify-center text-muted-foreground">

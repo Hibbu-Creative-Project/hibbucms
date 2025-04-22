@@ -29,3 +29,8 @@ export interface NavItem {
     icon?: LucideIcon;
     items?: NavSubItem[];
 }
+
+export interface BreadcrumbItem {
+    title: string;
+    href?: string;
+}
