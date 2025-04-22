@@ -97,4 +97,15 @@ class FrontendController extends Controller
             'relatedPosts' => $relatedPosts,
         ]);
     }
+
+    public function page($slug)
+    {
+        $page = \App\Models\Page::where('slug', $slug)
+            ->where('status', 'published')
+            ->firstOrFail();
+
+        return view('theme::pages.page', [
+            'page' => $page
+        ]);
+    }
 }

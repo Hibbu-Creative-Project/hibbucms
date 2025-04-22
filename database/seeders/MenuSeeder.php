@@ -8,153 +8,191 @@ use App\Models\MenuItem;
 
 class MenuSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
         // Create Header Menu
         $headerMenu = Menu::create([
-            'name' => 'Main Menu',
+            'name' => 'Header Menu',
             'location' => 'header',
-            'description' => 'Main navigation menu for the website',
-            'is_active' => true,
+            'is_active' => true
         ]);
 
-        // Create Header Menu Items
-        $homeItem = MenuItem::create([
-            'menu_id' => $headerMenu->id,
+        // Header Menu Items
+        $headerMenu->items()->create([
             'title' => 'Home',
             'url' => '/',
-            'type' => 'home',
-            'target' => '_self',
-            'order' => 0,
-        ]);
-
-        $aboutItem = MenuItem::create([
-            'menu_id' => $headerMenu->id,
-            'title' => 'About Us',
-            'url' => '/pages/about',
-            'type' => 'page',
-            'target' => '_self',
             'order' => 1,
+            'type' => 'custom'
         ]);
 
-        $servicesItem = MenuItem::create([
-            'menu_id' => $headerMenu->id,
-            'title' => 'Services',
-            'url' => '#',
-            'type' => 'custom',
-            'target' => '_self',
-            'order' => 2,
-        ]);
-
-        // Create submenu items under Services
-        MenuItem::create([
-            'menu_id' => $headerMenu->id,
-            'parent_id' => $servicesItem->id,
-            'title' => 'Consultation',
-            'url' => '/pages/consultation',
-            'type' => 'page',
-            'target' => '_self',
-            'order' => 0,
-        ]);
-
-        MenuItem::create([
-            'menu_id' => $headerMenu->id,
-            'parent_id' => $servicesItem->id,
-            'title' => 'Development',
-            'url' => '/pages/development',
-            'type' => 'page',
-            'target' => '_self',
-            'order' => 1,
-        ]);
-
-        MenuItem::create([
-            'menu_id' => $headerMenu->id,
+        $blog = $headerMenu->items()->create([
             'title' => 'Blog',
-            'url' => '/posts',
-            'type' => 'custom',
-            'target' => '_self',
-            'order' => 3,
+            'url' => '/blog',
+            'order' => 2,
+            'type' => 'custom'
         ]);
 
-        MenuItem::create([
-            'menu_id' => $headerMenu->id,
+        // Blog submenu items
+        $blog->children()->createMany([
+            [
+                'menu_id' => $headerMenu->id,
+                'title' => 'All Posts',
+                'url' => '/blog',
+                'order' => 1,
+                'type' => 'custom'
+            ],
+            [
+                'menu_id' => $headerMenu->id,
+                'title' => 'Categories',
+                'url' => '/blog?view=categories',
+                'order' => 2,
+                'type' => 'custom'
+            ],
+            [
+                'menu_id' => $headerMenu->id,
+                'title' => 'Tags',
+                'url' => '/blog?view=tags',
+                'order' => 3,
+                'type' => 'custom'
+            ]
+        ]);
+
+        $about = $headerMenu->items()->create([
+            'title' => 'About',
+            'url' => '/about',
+            'order' => 3,
+            'type' => 'custom'
+        ]);
+
+        $contact = $headerMenu->items()->create([
             'title' => 'Contact',
-            'url' => '/pages/contact',
-            'type' => 'page',
-            'target' => '_self',
+            'url' => '/contact',
             'order' => 4,
+            'type' => 'custom'
         ]);
 
         // Create Footer Menu
         $footerMenu = Menu::create([
             'name' => 'Footer Menu',
             'location' => 'footer',
-            'description' => 'Footer navigation menu for the website',
-            'is_active' => true,
+            'is_active' => true
         ]);
 
-        // Create Footer Menu Items
-        MenuItem::create([
-            'menu_id' => $footerMenu->id,
-            'title' => 'Privacy Policy',
-            'url' => '/pages/privacy-policy',
-            'type' => 'page',
-            'target' => '_self',
-            'order' => 0,
-        ]);
-
-        MenuItem::create([
-            'menu_id' => $footerMenu->id,
-            'title' => 'Terms & Conditions',
-            'url' => '/pages/terms',
-            'type' => 'page',
-            'target' => '_self',
+        // Footer Quick Links
+        $quickLinks = $footerMenu->items()->create([
+            'title' => 'Quick Links',
+            'url' => '#',
             'order' => 1,
+            'type' => 'custom'
         ]);
 
-        MenuItem::create([
-            'menu_id' => $footerMenu->id,
-            'title' => 'FAQ',
-            'url' => '/pages/faq',
-            'type' => 'page',
-            'target' => '_self',
+        $quickLinks->children()->createMany([
+            [
+                'menu_id' => $footerMenu->id,
+                'title' => 'Home',
+                'url' => '/',
+                'order' => 1,
+                'type' => 'custom'
+            ],
+            [
+                'menu_id' => $footerMenu->id,
+                'title' => 'Blog',
+                'url' => '/blog',
+                'order' => 2,
+                'type' => 'custom'
+            ],
+            [
+                'menu_id' => $footerMenu->id,
+                'title' => 'About Us',
+                'url' => '/about',
+                'order' => 3,
+                'type' => 'custom'
+            ],
+            [
+                'menu_id' => $footerMenu->id,
+                'title' => 'Contact',
+                'url' => '/contact',
+                'order' => 4,
+                'type' => 'custom'
+            ]
+        ]);
+
+        // Footer Resources
+        $resources = $footerMenu->items()->create([
+            'title' => 'Resources',
+            'url' => '#',
             'order' => 2,
+            'type' => 'custom'
         ]);
 
-        // Create Social Media Menu
-        $socialMenu = Menu::create([
-            'name' => 'Menu Sosial Media',
-            'location' => 'footer',
-            'description' => 'Menu sosial media di footer',
-            'is_active' => true,
+        $resources->children()->createMany([
+            [
+                'menu_id' => $footerMenu->id,
+                'title' => 'Documentation',
+                'url' => '/docs',
+                'order' => 1,
+                'type' => 'custom'
+            ],
+            [
+                'menu_id' => $footerMenu->id,
+                'title' => 'Privacy Policy',
+                'url' => '/privacy-policy',
+                'order' => 2,
+                'type' => 'custom'
+            ],
+            [
+                'menu_id' => $footerMenu->id,
+                'title' => 'Terms of Service',
+                'url' => '/terms-of-service',
+                'order' => 3,
+                'type' => 'custom'
+            ]
         ]);
 
-        // // Create Social Media Menu Items
-        // MenuItem::create([
-        //     'menu_id' => $socialMenu->id,
-        //     'title' => 'Facebook',
-        //     'url' => 'https://facebook.com/yourpage',
-        //     'type' => 'custom',
-        //     'target' => '_blank',
-        //     'order' => 0,
-        // ]);
+        // Footer Social Links
+        $social = $footerMenu->items()->create([
+            'title' => 'Social Media',
+            'url' => '#',
+            'order' => 3,
+            'type' => 'custom'
+        ]);
 
-        // MenuItem::create([
-        //     'menu_id' => $socialMenu->id,
-        //     'title' => 'Twitter',
-        //     'url' => 'https://twitter.com/yourpage',
-        //     'type' => 'custom',
-        //     'target' => '_blank',
-        //     'order' => 1,
-        // ]);
-
-        // MenuItem::create([
-        //     'menu_id' => $socialMenu->id,
-        //     'title' => 'Instagram',
-        //     'url' => 'https://instagram.com/yourpage',
-        //     'type' => 'custom',
-        //     'target' => '_blank',
-        //     'order' => 2,
-        // ]);
+        $social->children()->createMany([
+            [
+                'menu_id' => $footerMenu->id,
+                'title' => 'Facebook',
+                'url' => 'https://facebook.com',
+                'order' => 1,
+                'type' => 'custom',
+                'target' => '_blank'
+            ],
+            [
+                'menu_id' => $footerMenu->id,
+                'title' => 'Twitter',
+                'url' => 'https://twitter.com',
+                'order' => 2,
+                'type' => 'custom',
+                'target' => '_blank'
+            ],
+            [
+                'menu_id' => $footerMenu->id,
+                'title' => 'Instagram',
+                'url' => 'https://instagram.com',
+                'order' => 3,
+                'type' => 'custom',
+                'target' => '_blank'
+            ],
+            [
+                'menu_id' => $footerMenu->id,
+                'title' => 'LinkedIn',
+                'url' => 'https://linkedin.com',
+                'order' => 4,
+                'type' => 'custom',
+                'target' => '_blank'
+            ]
+        ]);
     }
 }
