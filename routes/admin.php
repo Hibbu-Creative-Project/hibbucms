@@ -10,6 +10,10 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\ThemeController;
+use App\Http\Controllers\Admin\Settings\SettingsController;
+use App\Http\Controllers\Admin\Settings\PasswordController;
+use App\Http\Controllers\Admin\Settings\ProfileController;
+use Inertia\Inertia;
 
 Route::get('/admin', function () {
     return redirect()->route('admin.dashboard');
@@ -117,4 +121,31 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::put('menus/items/{menuItem}', [MenuController::class, 'updateMenuItem'])->name('admin.menus.items.update');
     Route::delete('menus/items/{menuItem}', [MenuController::class, 'destroyMenuItem'])->name('admin.menus.items.destroy');
     Route::post('menus/{menu}/reorder', [MenuController::class, 'reorderMenuItems'])->name('admin.menus.items.reorder');
+
+
+    // Settings Routes
+    Route::prefix('settings')->group(function () {
+        Route::get('/', function() {
+            return redirect()->route('admin.settings.general');
+        });
+        Route::get('/general', [SettingsController::class, 'general'])->name('admin.settings.general');
+        Route::get('/seo', [SettingsController::class, 'seo'])->name('admin.settings.seo');
+        Route::put('/{group}', [SettingsController::class, 'update'])->name('admin.settings.update');
+        Route::post('/cache/clear', [SettingsController::class, 'clearCache'])->name('admin.settings.clear-cache');
+
+        // Route::redirect('settings', 'admin/settings/profile');
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+        Route::get('/password', [PasswordController::class, 'edit'])->name('password.edit');
+        Route::put('/password', [PasswordController::class, 'update'])->name('password.update');
+
+        Route::get('/appearance', function () {
+            return Inertia::render('Admin/Settings/Appearance');
+        })->name('appearance');
+    });
+
+
+
 });
