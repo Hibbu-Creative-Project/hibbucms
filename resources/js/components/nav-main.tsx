@@ -28,12 +28,15 @@ export function NavMain({ items, label }: NavMainProps) {
   const { component } = usePage()
 
   const isUrlMatching = (itemUrl: string) => {
+    // Pastikan itemUrl tidak undefined
+    if (!itemUrl) return false
+
     // Mengambil resource name dari URL
     const getResourceName = (url: string) => {
       const segments = url.split('/')
       // Mengambil segment yang merepresentasikan resource (posts, categories, tags, etc)
       return segments.find(segment =>
-        ['posts', 'categories', 'tags', 'pages', 'users', 'roles', 'media','settings'].includes(segment)
+        ['dashboard','posts', 'categories', 'tags', 'pages', 'users', 'roles', 'media', 'menus', 'themes', 'settings'].includes(segment)
       )
     }
 

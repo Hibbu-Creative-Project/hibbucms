@@ -9,7 +9,7 @@ import AppLogo from './app-logo';
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: '/admin/dashboard',
+        href: route('admin.dashboard'),
         icon: LayoutGrid,
     },
 ];
@@ -17,36 +17,35 @@ const mainNavItems: NavItem[] = [
 const contentNavItems = [
     {
         title: 'Pages',
-        href: '/admin/pages',
+        href: route('admin.pages.index'),
         icon: File,
     },
     {
         title: 'Posts',
-        href: '/admin/posts',
         icon: FileText,
         items: [
             {
                 title: 'All Posts',
-                href: '/admin/posts',
+                href: route('admin.posts.index'),
             },
             {
                 title: 'Categories',
-                href: '/admin/categories',
+                href: route('admin.categories.index'),
             },
             {
                 title: 'Tags',
-                href: '/admin/tags',
+                href: route('admin.tags.index'),
             },
         ],
     },
     {
         title: 'Media',
-        href: '/admin/media',
+        href: route('admin.media.index'),
         icon: Image,
     },
     {
         title: 'Menus',
-        href: '/admin/menus',
+        href: route('admin.menus.index'),
         icon: AlignJustify,
     },
 
@@ -55,22 +54,22 @@ const contentNavItems = [
 const adminNavItems: NavItem[] = [
     {
         title: 'Users',
-        href: '/admin/users',
+        href: route('admin.users.index'),
         icon: Users,
     },
     {
         title: 'Roles',
-        href: '/admin/roles',
+        href: route('admin.roles.index'),
         icon: Shield,
     },
     {
         title: 'Themes',
-        href: '/admin/themes',
+        href: route('admin.themes.index'),
         icon: Paintbrush,
     },
     {
         title: 'Settings',
-        href: '/settings',
+        href: "/settings",
         icon: Settings,
     },
 ];
@@ -82,7 +81,7 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href="/admin/dashboard" prefetch>
+                            <Link href={route('admin.dashboard')} prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>
