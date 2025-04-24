@@ -1,31 +1,31 @@
-# Deskripsi
+# Description
 
-Mohon sertakan ringkasan perubahan dan issue terkait. Mohon juga sertakan motivasi dan konteks yang relevan.
-Daftar perubahan yang diperlukan untuk menerapkan ini.
+Please include a summary of the changes and the related issue. Please also include relevant motivation and context.
+List any dependencies that are required for this change.
 
 Fixes # (issue)
 
-## Jenis Perubahan
+## Type of Change
 
-Mohon hapus opsi yang tidak relevan.
+Please delete options that are not relevant.
 
-- [ ] Bug fix (perubahan non-breaking yang memperbaiki issue)
-- [ ] New feature (perubahan non-breaking yang menambahkan fungsionalitas)
-- [ ] Breaking change (fix atau fitur yang akan menyebabkan fungsionalitas yang ada tidak berfungsi seperti yang diharapkan)
-- [ ] Perubahan dokumentasi
-- [ ] Perubahan konfigurasi
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] Documentation change
+- [ ] Configuration change
 
 ## Checklist:
 
-- [ ] Kode saya mengikuti pedoman gaya proyek ini
-- [ ] Saya telah melakukan self-review kode saya
-- [ ] Saya telah mengomentari kode saya, terutama di area yang sulit dipahami
-- [ ] Saya telah membuat perubahan yang sesuai pada dokumentasi
-- [ ] Perubahan saya tidak menghasilkan warning baru
-- [ ] Saya telah menambahkan test yang membuktikan fix saya efektif atau fitur saya bekerja
-- [ ] Unit test baru dan yang ada semua lulus di lingkungan lokal
-- [ ] Setiap perubahan yang tergantung telah digabungkan dan dipublikasikan di paket downstream
+- [ ] My code follows the style guidelines of this project
+- [ ] I have performed a self-review of my code
+- [ ] I have commented my code, particularly in hard-to-understand areas
+- [ ] I have made corresponding changes to the documentation
+- [ ] My changes generate no new warnings
+- [ ] I have added tests that prove my fix is effective or that my feature works
+- [ ] New and existing unit tests pass locally
+- [ ] Any dependent changes have been merged and published in downstream packages
 
-## Screenshots (jika ada):
+## Screenshots (if applicable):
 
-## Informasi Tambahan: 
+## Additional Information: 

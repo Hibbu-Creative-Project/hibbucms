@@ -1,45 +1,44 @@
-# Kebijakan Keamanan
+# Security Policy
 
-## Melaporkan Kerentanan Keamanan
+## Reporting Security Vulnerabilities
 
-Keamanan HibbuCMS adalah prioritas utama kami. Jika Anda menemukan kerentanan keamanan, kami sangat menghargai jika Anda melaporkannya kepada kami secara bertanggung jawab.
+Security of HibbuCMS is our top priority. If you discover a security vulnerability, we greatly appreciate if you report it to us responsibly.
 
-**Jangan membuat issue publik untuk kerentanan keamanan.**
+**Do not create public issues for security vulnerabilities.**
 
-Sebagai gantinya, kirimkan laporan ke:
+Instead, please send your report to:
 
 ```
-security@hibbucms.com
+security@hibbuproject.com
 ```
 
-Sertakan informasi berikut dalam laporan Anda:
+Please include the following information in your report:
 
-1. Deskripsi kerentanan
-2. Langkah-langkah untuk mereproduksi kerentanan
-3. Dampak potensial dari kerentanan
-4. Saran perbaikan (jika ada)
+1. Description of the vulnerability
+2. Steps to reproduce the vulnerability
+3. Potential impact of the vulnerability
+4. Suggested fixes (if any)
 
-## Versi yang Didukung
+## Supported Versions
 
-| Versi | Dukungan Keamanan |
-| ----- | ----------------- |
-| 1.x   | ✅                |
-| < 1.0 | ❌                |
+| Version | Security Support |
+| ------- | --------------- |
+| 1.x     | ✅              |
 
-## Proses Penanganan
+## Handling Process
 
-1. Konfirmasi penerimaan laporan dalam 24 jam
-2. Verifikasi kerentanan dan menentukan dampaknya
-3. Mengembangkan dan menguji perbaikan
-4. Merilis patch keamanan
-5. Memberikan kredit kepada pelapor (jika diinginkan)
+1. Confirm receipt of report within 24 hours
+2. Verify vulnerability and assess impact
+3. Develop and test fixes
+4. Release security patch
+5. Credit reporter (if desired)
 
-## Praktik Keamanan
+## Security Practices
 
-HibbuCMS menerapkan praktik keamanan berikut:
+HibbuCMS implements the following security practices:
 
-- Validasi input yang ketat
-- Perlindungan terhadap XSS
+- Strict input validation
+- XSS protection
 - CSRF protection
 - SQL injection prevention
 - Secure password hashing
@@ -48,15 +47,15 @@ HibbuCMS menerapkan praktik keamanan berikut:
 
 ## Hall of Fame
 
-Kami menghargai kontributor keamanan kami. Dengan izin, nama mereka akan ditampilkan di sini.
+We value our security contributors. With permission, their names will be displayed here.
 
-## Kebijakan Pengungkapan
+## Disclosure Policy
 
-- Kami akan merespons laporan dalam 24 jam
-- Kami akan mengonfirmasi validitas laporan
-- Kami akan merilis perbaikan secepat mungkin
-- Kami akan memberikan kredit kepada pelapor dalam catatan rilis (jika diinginkan)
+- We will respond to reports within 24 hours
+- We will confirm the validity of the report
+- We will release fixes as quickly as possible
+- We will credit reporters in release notes (if desired)
 
-## Terima Kasih
+## Thank You
 
-Terima kasih telah membantu menjaga HibbuCMS dan penggunanya tetap aman! 
+Thank you for helping keep HibbuCMS and its users safe! 

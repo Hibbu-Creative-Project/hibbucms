@@ -41,12 +41,12 @@ class ThemeServiceProvider extends ServiceProvider
             return;
         }
 
-        // Share tema aktif ke semua view
+        // Share active theme to all views
         View::composer('*', function ($view) {
             $view->with('theme', app('theme'));
         });
 
-        // Tambahkan path tema ke view finder
+        // Add theme path to view finder
         $theme = app('theme');
         $themePath = base_path("themes/{$theme->folder_name}/views");
 

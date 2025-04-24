@@ -1,14 +1,13 @@
-# Panduan Kontribusi HibbuCMS
+# HibbuCMS Contribution Guidelines
+Thank you for considering contributing to HibbuCMS! We greatly appreciate every contribution from the community.
 
-Terima kasih telah mempertimbangkan untuk berkontribusi pada HibbuCMS! Kami sangat menghargai setiap kontribusi dari komunitas.
-
-## 🤝 Cara Berkontribusi
+## 🤝 How to Contribute
 
 ### 1. Fork & Clone
 - Fork repositori HibbuCMS
-- Clone fork Anda ke lokal
+- Clone your fork to local
 ```bash
-git clone https://github.com/username-anda/hibbucms.git
+git clone https://github.com/username/hibbucms.git
 cd hibbucms
 ```
 
@@ -21,19 +20,19 @@ php artisan key:generate
 php artisan migrate --seed
 ```
 
-### 3. Buat Branch
+### 3. Create a Branch
 ```bash
-git checkout -b nama-fitur
+git checkout -b feature-name
 # atau
 git checkout -b fix-issue
 ```
 
 ### 4. Coding Guidelines
-- Ikuti PSR-12 untuk PHP
-- Gunakan TypeScript untuk kode frontend
-- Pastikan kode ter-format dengan Prettier
-- Tulis test untuk fitur baru
-- Pastikan semua test berjalan
+- Follow PSR-12 for PHP
+- Use TypeScript for frontend code
+- Ensure the code is formatted with Prettier
+- Write tests for new features
+- Ensure all tests pass
 ```bash
 php artisan test
 npm run test
@@ -49,41 +48,40 @@ type(scope): description
 ```
 
 Types:
-- feat: Fitur baru
+- feat: New feature
 - fix: Bug fix
-- docs: Perubahan dokumentasi
-- style: Formatting, missing semicolons, dll
-- refactor: Refactoring kode
-- test: Menambah/memperbaiki test
-- chore: Perubahan build process atau tools
+- docs: Documentation changes
+- style: Formatting, missing semicolons, etc.
+- refactor: Code refactoring
+- test: Add/update tests
+- chore: Changes to build process or tools
 
 ### 6. Submit Pull Request
-- Push ke fork Anda
-- Buat Pull Request ke repositori utama
-- Deskripsikan perubahan dengan jelas
-- Link ke issue terkait jika ada
+- Push to your fork
+- Create a Pull Request to the main repository
+- Describe the changes clearly
+- Link to related issues if any
 
-## 🐛 Melaporkan Bug
-- Gunakan template bug report
-- Sertakan langkah-langkah reproduksi
-- Sertakan expected vs actual behavior
-- Sertakan screenshot jika memungkinkan
+## 🐛 Reporting Bugs
+- Use the bug report template
+- Include reproduction steps
+- Include expected vs actual behavior
+- Include screenshots if possible
 
-## 💡 Mengusulkan Fitur
-- Gunakan template feature request
-- Jelaskan use case
-- Jelaskan solusi yang diusulkan
-- Pertimbangkan alternatif yang telah Anda pikirkan
+## 💡 Suggesting Features
+- Use the feature request template
+- Explain the use case
+- Explain the proposed solution
+- Consider alternatives you have thought of
 
-## 📝 Dokumentasi
-- Dokumentasi berada di folder `/docs`
-- Gunakan Markdown
-- Ikuti panduan penulisan dokumentasi
+## 📝 Documentation
+- Documentation is located in the `/docs` folder
+- Use Markdown
+- Follow the documentation writing guidelines
 
-## ⚖️ Lisensi
-Dengan berkontribusi, Anda setuju bahwa kontribusi Anda akan dilisensikan di bawah MIT License.
+## ⚖️ License
+By contributing, you agree that your contributions will be licensed under the MIT License.
 
-## 💬 Pertanyaan?
-- Buat issue di GitHub
-- Tanya di [Discord](https://discord.gg/hibbucms)
-- Kirim email ke maintainers@hibbucms.com 
+## 💬 Questions?
+- Create an issue on GitHub
+- Send an email to maintainers@hibbuproject.com 

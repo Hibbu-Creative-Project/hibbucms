@@ -1,44 +1,44 @@
-# Kode Etik HibbuCMS
+# HibbuCMS Code of Conduct
 
-## Komitmen Kami
+## Our Commitment
 
-Dalam upaya untuk membangun lingkungan yang terbuka dan ramah, kami sebagai kontributor dan pengelola berjanji untuk membuat partisipasi dalam proyek dan komunitas kami bebas dari pelecehan untuk semua orang, tanpa memandang usia, ukuran tubuh, disabilitas, etnis, identitas dan ekspresi gender, tingkat pengalaman, pendidikan, status sosial ekonomi, kebangsaan, penampilan pribadi, ras, agama, atau identitas dan orientasi seksual.
+In an effort to create an open and welcoming environment, we as contributors and maintainers pledge to make participation in our project and community a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, religion, or sexual identity and orientation.
 
-## Standar Kami
+## Our Standards
 
-Contoh perilaku yang berkontribusi menciptakan lingkungan positif:
+Examples of behavior that contributes to a positive environment:
 
-* Menggunakan bahasa yang ramah dan inklusif
-* Menghormati sudut pandang dan pengalaman yang berbeda
-* Menerima kritik konstruktif dengan baik
-* Fokus pada apa yang terbaik bagi komunitas
-* Menunjukkan empati kepada anggota komunitas lain
+* Using welcoming and inclusive language
+* Respecting differing viewpoints and experiences
+* Accepting constructive criticism gracefully
+* Focusing on what is best for the community
+* Showing empathy towards other community members
 
-Contoh perilaku yang tidak dapat diterima:
+Examples of unacceptable behavior:
 
-* Penggunaan bahasa atau citra seksual dan perhatian atau rayuan seksual yang tidak diinginkan
-* Trolling, komentar menghina/merendahkan, dan serangan pribadi atau politik
-* Pelecehan publik atau pribadi
-* Mempublikasikan informasi pribadi orang lain tanpa izin eksplisit
-* Perilaku lain yang secara wajar dapat dianggap tidak pantas dalam lingkungan profesional
+* The use of sexualized language or imagery and unwelcome sexual attention or advances
+* Trolling, insulting/derogatory comments, and personal or political attacks
+* Public or private harassment
+* Publishing others' private information without explicit permission
+* Any other conduct that could reasonably be considered inappropriate in a professional setting
 
-## Tanggung Jawab Kami
+## Our Responsibilities
 
-Pengelola proyek bertanggung jawab untuk mengklarifikasi standar perilaku yang dapat diterima dan diharapkan untuk mengambil tindakan korektif yang tepat dan adil dalam menanggapi setiap kasus perilaku yang tidak dapat diterima.
+Project maintainers are responsible for clarifying the acceptable behavior standards and are expected to take appropriate and fair corrective action in response to any instances of unacceptable behavior.
 
-Pengelola proyek memiliki hak dan tanggung jawab untuk menghapus, mengedit, atau menolak komentar, commit, kode, wiki edits, issues, dan kontribusi lain yang tidak sesuai dengan Kode Etik ini, atau untuk melarang sementara atau permanen kontributor untuk perilaku lain yang mereka anggap tidak pantas, mengancam, menyinggung, atau berbahaya.
+Project maintainers have the right and responsibility to remove, edit, or reject comments, commits, code, wiki edits, issues, and other contributions that do not align with this Code of Conduct, or to temporarily or permanently ban any contributor for other behaviors they deem inappropriate, threatening, offensive, or harmful.
 
-## Ruang Lingkup
+## Scope
 
-Kode Etik ini berlaku baik di dalam ruang proyek maupun di ruang publik ketika seseorang mewakili proyek atau komunitasnya. Contoh mewakili proyek atau komunitas termasuk menggunakan alamat email resmi proyek, posting melalui akun media sosial resmi, atau bertindak sebagai perwakilan yang ditunjuk dalam acara online atau offline.
+This Code of Conduct applies both within project spaces and in public spaces when an individual is representing the project or its community. Examples of representing a project or community include using an official project email address, posting via an official social media account, or acting as an appointed representative at an online or offline event.
 
-## Penegakan
+## Enforcement
 
-Kasus perilaku kasar, melecehkan, atau tidak dapat diterima dapat dilaporkan dengan menghubungi tim proyek di conduct@hibbucms.com. Semua keluhan akan ditinjau dan diselidiki dan akan menghasilkan respons yang dianggap perlu dan sesuai dengan keadaan. Tim proyek berkewajiban menjaga kerahasiaan pelapor. Detail lebih lanjut tentang kebijakan penegakan khusus dapat diposting secara terpisah.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team at conduct@hibbucms.com. All complaints will be reviewed and investigated and will result in a response that is deemed necessary and appropriate to the circumstances. The project team is obligated to maintain confidentiality concerning the reporter of any incident. Further details about specific enforcement policies may be posted separately.
 
-## Atribusi
+## Attribution
 
-Kode Etik ini diadaptasi dari [Contributor Covenant][homepage], versi 2.0,
-tersedia di https://www.contributor-covenant.org/version/2/0/code_of_conduct.html
+This Code of Conduct is adapted from [Contributor Covenant][homepage], version 2.0,
+available at https://www.contributor-covenant.org/version/2/0/code_of_conduct.html
 
 [homepage]: https://www.contributor-covenant.org 

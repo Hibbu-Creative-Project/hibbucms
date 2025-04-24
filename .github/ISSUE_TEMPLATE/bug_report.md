@@ -1,36 +1,36 @@
 ---
 name: Bug report
-about: Buat laporan untuk membantu kami memperbaiki
+about: Create a report to help us improve
 title: '[BUG] '
 labels: bug
 assignees: ''
 ---
 
-**Deskripsi Bug**
-Deskripsi yang jelas dan ringkas tentang apa bug tersebut.
+**Bug Description**
+A clear and concise description of what the bug is.
 
-**Langkah-langkah Reproduksi**
-1. Pergi ke '...'
-2. Klik pada '....'
-3. Scroll ke bawah ke '....'
-4. Lihat error
+**Steps to Reproduce**
+1. Go to '...'
+2. Click on '....'
+3. Scroll down to '....'
+4. See error
 
-**Perilaku yang Diharapkan**
-Deskripsi yang jelas dan ringkas tentang apa yang Anda harapkan terjadi.
+**Expected Behavior**
+A clear and concise description of what you expected to happen.
 
 **Screenshots**
-Jika memungkinkan, tambahkan screenshot untuk membantu menjelaskan masalah Anda.
+If applicable, add screenshots to help explain your problem.
 
-**Desktop (mohon lengkapi informasi berikut):**
+**Desktop (please complete the following information):**
  - OS: [e.g. Ubuntu 22.04]
  - Browser: [e.g. Chrome, Firefox]
- - Versi: [e.g. 22]
+ - Version: [e.g. 22]
 
-**Smartphone (mohon lengkapi informasi berikut):**
+**Smartphone (please complete the following information):**
  - Device: [e.g. iPhone 6]
  - OS: [e.g. iOS 8.1]
  - Browser: [e.g. Safari]
- - Versi: [e.g. 22]
+ - Version: [e.g. 22]
 
-**Informasi Tambahan**
-Tambahkan informasi lain tentang masalah di sini. 
+**Additional Information**
+Add any other information about the problem here. 

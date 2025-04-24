@@ -1,22 +1,22 @@
 ---
 name: Feature request
-about: Sarankan ide untuk proyek ini
+about: Suggest an idea for this project
 title: '[FEATURE] '
 labels: enhancement
 assignees: ''
 ---
 
-**Apakah permintaan fitur Anda terkait dengan masalah? Mohon jelaskan.**
-Deskripsi yang jelas dan ringkas tentang apa masalahnya. Contoh: Saya selalu frustrasi ketika [...]
+**Is your feature request related to a problem? Please describe.**
+A clear and concise description of what the problem is. Ex: I'm always frustrated when [...]
 
-**Jelaskan solusi yang Anda inginkan**
-Deskripsi yang jelas dan ringkas tentang apa yang Anda inginkan terjadi.
+**Describe the solution you'd like**
+A clear and concise description of what you want to happen.
 
-**Jelaskan alternatif yang telah Anda pertimbangkan**
-Deskripsi yang jelas dan ringkas tentang solusi atau fitur alternatif yang telah Anda pertimbangkan.
+**Describe alternatives you've considered**
+A clear and concise description of any alternative solutions or features you've considered.
 
 **Use Case**
-Jelaskan bagaimana fitur ini akan digunakan dan siapa yang akan mendapatkan manfaat darinya.
+Explain how this feature would be used and who would benefit from it.
 
-**Informasi Tambahan**
-Tambahkan informasi atau screenshot lain tentang permintaan fitur di sini. 
+**Additional Information**
+Add any other information or screenshots about the feature request here. 
