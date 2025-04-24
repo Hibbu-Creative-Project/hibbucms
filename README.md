@@ -12,7 +12,7 @@
 
 HibbuCMS is a modern and open-source Content Management System (CMS) built with Laravel 12 and React. It is designed to provide an intuitive, flexible, and powerful content management experience.
 
-[Demo](https://cms.hibbuproject.com/demo) • [Dokumentasi](https://cms.hibbuproject.com/docs) • [Roadmap](https://github.com/username/hibbucms/projects) • [Kontribusi](#-kontribusi) 
+[Demo](https://cms.hibbuproject.com/demo) • [Dokumentasi](https://cms.hibbuproject.com/docs) • [Roadmap](https://github.com/Hibbu-Creative-Project/hibbucms/projects) • [Contribute](#-Contribute) 
 
 </div>
 
@@ -67,7 +67,7 @@ HibbuCMS is a modern and open-source Content Management System (CMS) built with 
 
 ```bash
 # Clone repository
-git clone https://github.com/username/hibbucms.git
+git clone https://github.com/Hibbu-Creative-Project/hibbucms.git
 
 # Install dependency
 composer install
@@ -87,7 +87,7 @@ php artisan serve
 
 [Panduan instalasi lengkap](https://cms.hibbuproject.com/docs/installation)
 
-## 🤝 Kontribusi
+## 🤝 Contribute
 
 We greatly appreciate contributions from the community! HibbuCMS is an open-source project, and we welcome contributions in various forms:
 
@@ -100,13 +100,13 @@ Before contributing, please read our [Contribution Guidelines](CONTRIBUTING.md).
 
 ### Contributors
 
-<a href="https://github.com/username/hibbucms/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=username/hibbucms" />
+<a href="https://github.com/userHibbu-Creative-Projectname/hibbucms/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Hibbu-Creative-Project/hibbucms" />
 </a>
 
 ## 📊 Roadmap
 
-See our [Project Board](https://github.com/username/hibbucms/projects) for upcoming development plans.
+See our [Project Board](https://github.com/Hibbu-Creative-Project/hibbucms/projects) for upcoming development plans.
 
 ## 📜 License
 
@@ -114,13 +114,13 @@ HibbuCMS is licensed under the [MIT License](LICENSE).
 
 ## 💬 Community
 
-- [GitHub Discussions](https://github.com/username/hibbucms/discussions)
+- [GitHub Discussions](https://github.com/Hibbu-Creative-Project/hibbucms/discussions)
 
 ## 🌟 Sponsors
 
 If you like HibbuCMS and want to support its development:
 
-[![Sponsor on GitHub](https://img.shields.io/badge/Sponsor-GitHub-ea4aaa?logo=github-sponsors)](https://github.com/sponsors/username)
+[![Sponsor on GitHub](https://img.shields.io/badge/Sponsor-GitHub-ea4aaa?logo=github-sponsors)](https://github.com/sponsors/Hibbu-Creative-Project)
 [![Sponsor on OpenCollective](https://img.shields.io/badge/Sponsor-OpenCollective-7FADF2?logo=open-collective)](https://opencollective.com/hibbucms)
 
 ## 🙏 Special Thanks
@@ -130,4 +130,4 @@ If you like HibbuCMS and want to support its development:
 - [TailwindCSS](https://tailwindcss.com)
 - [Shadcn UI](https://ui.shadcn.com/)
 - [Radix UI](https://www.radix-ui.com)
-- [And all contributors](https://github.com/username/hibbucms/graphs/contributors)
+- [And all contributors](https://github.com/Hibbu-Creative-Project/hibbucms/graphs/contributors)

@@ -7,7 +7,7 @@ Thank you for considering contributing to HibbuCMS! We greatly appreciate every 
 - Fork repositori HibbuCMS
 - Clone your fork to local
 ```bash
-git clone https://github.com/username/hibbucms.git
+git clone https://github.com/Hibbu-Creative-Project/hibbucms.git
 cd hibbucms
 ```
 
