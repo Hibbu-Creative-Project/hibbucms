@@ -26,15 +26,14 @@ interface Props {
 const breadcrumbs = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: route('admin.dashboard'),
     },
     {
         title: 'Users',
-        href: '/users',
+        href: route('admin.users.index'),
     },
     {
-        title: 'Create',
-        href: '/users/create',
+        title: 'Create'
     },
 ];
 

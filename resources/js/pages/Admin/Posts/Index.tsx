@@ -166,7 +166,10 @@ export default function Index({ posts, filters = { search: '', status: 'all', ca
 
             <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
-                    <h1 className="text-2xl font-bold">Posts</h1>
+                    <div>
+                        <h1 className="text-2xl font-bold">Posts</h1>
+                        <p className="text-sm text-gray-500">Manage your blog posts here</p>
+                    </div>
                     <Link href={route('admin.posts.create')}>
                         <Button>
                             <Plus className="mr-2 h-4 w-4" />

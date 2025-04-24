@@ -22,7 +22,8 @@ import { Badge } from '@/components/ui/badge';
 import { MoreHorizontal, Search, UserPlus2, Mail, Shield, Trash2, Eye, Edit2 } from 'lucide-react';
 import { Pagination } from '@/components/ui/pagination';
 import { toast } from 'sonner';
-
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useInitials } from '@/hooks/use-initials';
 interface User {
     id: number;
     name: string;
@@ -54,12 +55,6 @@ const breadcrumbs = [
     },
 ];
 
-const roleColors: { [key: string]: string } = {
-    admin: 'bg-red-500',
-    editor: 'bg-blue-500',
-    author: 'bg-green-500',
-    user: 'bg-gray-500',
-};
 
 export default function Index({ users, filters }: Props) {
     const [search, setSearch] = useState(filters.search);
@@ -89,6 +84,9 @@ export default function Index({ users, filters }: Props) {
         }
     };
 
+
+    const getInitials = useInitials();
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Users" />
@@ -96,13 +94,13 @@ export default function Index({ users, filters }: Props) {
             <div className="flex flex-col gap-4 p-4">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold mb-1">Pengguna</h1>
-                        <p>Kelola pengguna dan hak akses mereka</p>
+                        <h1 className="text-2xl font-bold mb-1">Users</h1>
+                        <p>Manage users and their access rights</p>
                     </div>
                     <Link href="/admin/users/create">
                         <Button>
                             <UserPlus2 className="mr-2 h-4 w-4" />
-                            Tambah Pengguna
+                            Add User
                         </Button>
                     </Link>
                 </div>
@@ -114,7 +112,7 @@ export default function Index({ users, filters }: Props) {
                                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
                                 <Input
                                     type="text"
-                                    placeholder="Cari pengguna..."
+                                    placeholder="Search user..."
                                     value={search}
                                     onChange={(e) => handleSearch(e.target.value)}
                                     className="pl-9"
@@ -126,10 +124,10 @@ export default function Index({ users, filters }: Props) {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Pengguna</TableHead>
+                                <TableHead>User</TableHead>
                                 <TableHead>Email</TableHead>
-                                <TableHead>Peran</TableHead>
-                                <TableHead className="w-[100px]">Aksi</TableHead>
+                                <TableHead>Role</TableHead>
+                                <TableHead className="w-[100px]">Action</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -137,20 +135,13 @@ export default function Index({ users, filters }: Props) {
                                 <TableRow key={user.id}>
                                     <TableCell className="font-medium">
                                         <div className="flex items-center gap-3">
-                                            {user.avatar ? (
-                                                <img
-                                                    src={`/storage/${user.avatar}`}
-                                                    alt={user.name}
-                                                    className="h-10 w-10 rounded-full object-cover ring-2"
-                                                />
-                                            ) : (
-                                                <div className="flex h-10 w-10 items-center justify-center rounded-full ring-2 ">
-                                                    {user.name.charAt(0).toUpperCase()}
-                                                </div>
-                                            )}
+                                            <Avatar className="h-8 w-8">
+                                                <AvatarImage src={user.avatar || "/placeholder.svg"} alt={user.name} />
+                                                <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+                                            </Avatar>
                                             <div>
                                                 <div className="font-medium">{user.name}</div>
-                                                <div className="text-sm">Bergabung {new Date(user.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+                                                <div className="text-sm">Joined {new Date(user.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
                                             </div>
                                         </div>
                                     </TableCell>
@@ -165,7 +156,7 @@ export default function Index({ users, filters }: Props) {
                                             {user.roles.map((role) => (
                                                 <Badge
                                                     key={role.name}
-                                                    className={`${roleColors[role.name.toLowerCase()] || 'bg-gray-500'}`}
+                                                    className={`${role.name.toLowerCase()}`}
                                                 >
                                                     <Shield className="h-3 w-3 mr-1" />
                                                     {role.name}
@@ -208,7 +199,7 @@ export default function Index({ users, filters }: Props) {
                                                     className="flex items-center"
                                                 >
                                                     <Trash2 className="mr-2 h-4 w-4" />
-                                                    Hapus
+                                                    Delete
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>

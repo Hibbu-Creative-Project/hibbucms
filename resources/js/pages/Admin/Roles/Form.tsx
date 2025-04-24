@@ -8,6 +8,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { ArrowLeft } from 'lucide-react';
 import { Link } from '@inertiajs/react';
 import { toast } from 'sonner';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface Permission {
     id: number;
@@ -29,15 +30,14 @@ interface Props {
 const breadcrumbs = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: route('admin.dashboard'),
     },
     {
         title: 'Roles',
-        href: '/roles',
+        href: route('admin.roles.index'),
     },
     {
-        title: 'Create',
-        href: '/roles/create',
+        title: 'Create'
     },
 ];
 
@@ -69,24 +69,24 @@ export default function Form({ role, permissions }: Props) {
         };
 
         if (role) {
-            router.put(`/roles/${role.id}`, submitData, {
+            router.put(route('admin.roles.update', { role: role.id }), submitData, {
                 onSuccess: () => {
-                    toast.success('Peran berhasil diperbarui');
+                    toast.success('Role berhasil diperbarui');
                     setIsSubmitting(false);
                 },
                 onError: () => {
-                    toast.error('Gagal memperbarui peran');
+                    toast.error('Gagal memperbarui role');
                     setIsSubmitting(false);
                 },
             });
         } else {
-            router.post('/roles', submitData, {
+            router.post(route('admin.roles.store'), submitData, {
                 onSuccess: () => {
-                    toast.success('Peran berhasil dibuat');
+                    toast.success('Role berhasil dibuat');
                     setIsSubmitting(false);
                 },
                 onError: () => {
-                    toast.error('Gagal membuat peran');
+                    toast.error('Gagal membuat role');
                     setIsSubmitting(false);
                 },
             });
@@ -118,70 +118,76 @@ export default function Form({ role, permissions }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={role ? 'Edit Role' : 'Create Role'} />
 
-            <div className="p-4 max-w-4xl mx-auto">
-                <div className="flex justify-between items-start mb-6">
-                    <div>
-                        <Link href="/roles" className="inline-flex items-center text-gray-400 hover:text-gray-200 mb-4">
-                            <ArrowLeft className="w-4 h-4 mr-2" />
-                            Kembali ke daftar peran
-                        </Link>
-                        <h1 className="text-2xl font-bold text-gray-200">{role ? 'Edit Peran' : 'Buat Peran Baru'}</h1>
-                    </div>
-                </div>
-
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="rounded-lg border border-gray-800 bg-[#0c1015] p-6">
-                        <div className="mb-6">
-                            <Label htmlFor="name" className="text-gray-200">Nama Peran</Label>
-                            <Input
-                                id="name"
-                                type="text"
-                                value={values.name}
-                                onChange={(e) => setValues({ ...values, name: e.target.value })}
-                                className="mt-2 bg-gray-900 border-gray-800 text-gray-200"
-                                placeholder="Masukkan nama peran"
-                            />
-                        </div>
-
+            <div className="p-4">
+                <form onSubmit={handleSubmit}>
+                    <div className="flex justify-between items-center mb-6">
                         <div>
-                            <Label className="text-gray-200 mb-4 block">Izin</Label>
-                            <div className="space-y-6">
-                                {Object.entries(groupedPermissions).map(([group, groupPermissions]) => (
-                                    <div key={group} className="rounded border border-gray-800 overflow-hidden">
-                                        <div className="bg-gray-900 p-4 flex items-center">
-                                            <Checkbox
-                                                checked={groupPermissions.every(p => values.permissions.includes(p.id))}
-                                                onCheckedChange={() => togglePermissionGroup(groupPermissions)}
-                                                className="border-gray-700"
-                                            />
-                                            <span className="ml-3 text-gray-200 font-medium">{group}</span>
-                                        </div>
-                                        <div className="p-4 bg-[#0c1015] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                            {groupPermissions.map((permission) => (
-                                                <div key={permission.id} className="flex items-center">
-                                                    <Checkbox
-                                                        checked={values.permissions.includes(permission.id)}
-                                                        onCheckedChange={() => togglePermission(permission.id)}
-                                                        className="border-gray-700"
-                                                    />
-                                                    <span className="ml-3 text-gray-300">{permission.name}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                            <Link href={route('admin.roles.index')} className="inline-flex items-center mb-4">
+                                <ArrowLeft className="w-4 h-4 mr-2" />
+                                Return to roles list
+                            </Link>
+                            <h1 className="text-2xl font-bold">{role ? 'Edit Role' : 'Create New Role'}</h1>
                         </div>
-                    </div>
-
-                    <div className="flex justify-end">
                         <Button
                             type="submit"
                             disabled={isSubmitting}
-                            className="bg-white hover:bg-gray-100 text-black"
                         >
-                            {isSubmitting ? 'Menyimpan...' : role ? 'Update Peran' : 'Buat Peran'}
+                            {isSubmitting ? 'Saving...' : role ? 'Update Role' : 'Save'}
                         </Button>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-4">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Role Information</CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="name">Role Name</Label>
+                                    <Input
+                                        id="name"
+                                        type="text"
+                                        value={values.name}
+                                        onChange={(e) => setValues({ ...values, name: e.target.value })}
+                                        placeholder="Enter role name"
+                                    />
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Permissions</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="space-y-4">
+                                    {Object.entries(groupedPermissions).map(([group, groupPermissions]) => (
+                                        <div key={group} className="rounded border overflow-hidden">
+                                            <div className="p-4 flex items-center bg-gray-50">
+                                                <Checkbox
+                                                    checked={groupPermissions.every(p => values.permissions.includes(p.id))}
+                                                    onCheckedChange={() => togglePermissionGroup(groupPermissions)}
+                                                    className="border-gray-700"
+                                                />
+                                                <span className="ml-3 font-medium">{group}</span>
+                                            </div>
+                                            <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                {groupPermissions.map((permission) => (
+                                                    <div key={permission.id} className="flex items-center">
+                                                        <Checkbox
+                                                            checked={values.permissions.includes(permission.id)}
+                                                            onCheckedChange={() => togglePermission(permission.id)}
+                                                            className="border-gray-700"
+                                                        />
+                                                        <span className="ml-3">{permission.name}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </CardContent>
+                        </Card>
                     </div>
                 </form>
             </div>

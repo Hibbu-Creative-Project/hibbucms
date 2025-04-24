@@ -2,7 +2,7 @@ import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Edit2, Mail, Shield, Globe, Calendar } from 'lucide-react';
+import { ArrowLeft, Edit2, Mail, Shield, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 
@@ -32,15 +32,14 @@ interface Props {
 const breadcrumbs = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: route('admin.dashboard'),
     },
     {
         title: 'Users',
-        href: '/users',
+        href: route('admin.users.index'),
     },
     {
         title: 'Detail',
-        href: '#',
     },
 ];
 

@@ -34,3 +34,10 @@ export interface BreadcrumbItem {
     title: string;
     href?: string;
 }
+
+export interface User {
+    id: number;
+    name: string;
+    email: string;
+    avatar: string;
+}

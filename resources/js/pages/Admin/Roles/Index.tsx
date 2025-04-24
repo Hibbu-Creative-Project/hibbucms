@@ -92,13 +92,13 @@ export default function Index({ roles, filters }: Props) {
             <div className="flex flex-col gap-4 p-4">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold mb-1">Peran</h1>
-                        <p>Kelola peran dan izin pengguna</p>
+                        <h1 className="text-2xl font-bold mb-1">Roles</h1>
+                        <p>Manage roles and permissions</p>
                     </div>
                     <Link href="/admin/roles/create">
                         <Button>
                             <ShieldPlus className="mr-2 h-4 w-4" />
-                            Tambah Peran
+                            Add Role
                         </Button>
                     </Link>
                 </div>
@@ -110,7 +110,7 @@ export default function Index({ roles, filters }: Props) {
                                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
                                 <Input
                                     type="text"
-                                    placeholder="Cari peran..."
+                                    placeholder="Search role..."
                                     value={search}
                                     onChange={(e) => handleSearch(e.target.value)}
                                     className="pl-9"
@@ -122,16 +122,16 @@ export default function Index({ roles, filters }: Props) {
                     {roles.data.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-12 px-4">
                             <Shield className="h-12 w-12 text-gray-400 mb-4" />
-                            <h3 className="text-lg font-medium mb-1">Belum ada peran</h3>
+                            <h3 className="text-lg font-medium mb-1">No roles found</h3>
                             <p className="text-center mb-4">
                                 {search
-                                    ? 'Tidak ada peran yang sesuai dengan pencarian Anda'
-                                    : 'Mulai dengan membuat peran baru untuk mengatur akses pengguna'}
+                                    ? 'No roles found matching your search'
+                                    : 'Start by creating a new role to manage user access'}
                             </p>
                             <Link href="/admin/roles/create">
                                 <Button>
                                     <ShieldPlus className="mr-2 h-4 w-4" />
-                                    Buat Peran Pertama
+                                    Create First Role
                                 </Button>
                             </Link>
                         </div>
@@ -139,10 +139,10 @@ export default function Index({ roles, filters }: Props) {
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead>Peran</TableHead>
-                                    <TableHead>Izin</TableHead>
-                                    <TableHead>Pengguna</TableHead>
-                                    <TableHead className="w-[100px]">Aksi</TableHead>
+                                    <TableHead>Role</TableHead>
+                                    <TableHead>Permissions</TableHead>
+                                    <TableHead>Users</TableHead>
+                                    <TableHead className="w-[100px]">Action</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -150,13 +150,13 @@ export default function Index({ roles, filters }: Props) {
                                     <TableRow key={role.id}>
                                         <TableCell>
                                             <div className="flex items-center gap-3">
-                                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-400 text-gray-200">
+                                                <div className="flex h-10 w-10 items-center justify-center rounded-full">
                                                     <Shield className="h-5 w-5" />
                                                 </div>
                                                 <div>
                                                     <div className="font-medium">{role.name}</div>
                                                     <div className="text-sm">
-                                                        Dibuat {new Date(role.created_at).toLocaleDateString('id-ID', {
+                                                        Created {new Date(role.created_at).toLocaleDateString('id-ID', {
                                                             day: 'numeric',
                                                             month: 'long',
                                                             year: 'numeric'
@@ -188,7 +188,7 @@ export default function Index({ roles, filters }: Props) {
                                         <TableCell>
                                             <div className="flex items-center gap-2">
                                                 <Users2 className="h-4 w-4" />
-                                                {role.users_count} pengguna
+                                                {role.users_count} users
                                             </div>
                                         </TableCell>
                                         <TableCell>
@@ -217,7 +217,7 @@ export default function Index({ roles, filters }: Props) {
                                                         className="flex items-center text-red-500 hover:text-red-400"
                                                     >
                                                         <Trash2 className="mr-2 h-4 w-4" />
-                                                        Hapus
+                                                        Delete
                                                     </DropdownMenuItem>
                                                 </DropdownMenuContent>
                                             </DropdownMenu>
