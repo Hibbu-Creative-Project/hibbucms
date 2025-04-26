@@ -69,7 +69,7 @@ const adminNavItems: NavItem[] = [
     },
     {
         title: 'Settings',
-        href: "/settings",
+        href: route('admin.settings.general'),
         icon: Settings,
     },
 ];
