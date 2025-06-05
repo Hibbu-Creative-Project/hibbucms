@@ -3,7 +3,7 @@
         <div class="col-md-4 mb-4 mb-md-0">
             <h5>About Us</h5>
             <p class="text-muted">
-                {{ config('app.name') }} - Platform konten modern yang dibangun dengan Laravel dan React.
+                {{ config('app.name') }} - Modern content platform built with Laravel and React.
             </p>
         </div>
 

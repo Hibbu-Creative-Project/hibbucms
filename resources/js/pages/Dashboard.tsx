@@ -73,27 +73,27 @@ export default function Dashboard({
                 <div className="p-4">
                     <div className="flex flex-col items-center justify-center py-12 px-4 border rounded-lg">
                         <FileText className="h-12 w-12 text-gray-400 mb-4" />
-                        <h3 className="text-lg font-medium mb-1">Selamat Datang di HibbuCMS</h3>
+                        <h3 className="text-lg font-medium mb-1">Welcome to HibbuCMS</h3>
                         <p className="text-center mb-8 max-w-md">
-                            Mulai dengan membuat konten pertama Anda. Anda dapat membuat post, kategori, tag, atau mengunggah media.
+                            Start with your first content. You can create posts, categories, tags, or upload media.
                         </p>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <Link href="/admin/posts/create">
                                 <Button className="w-full">
                                     <FileText className="mr-2 h-4 w-4" />
-                                    Buat Post
+                                    Create Post
                                 </Button>
                             </Link>
                             <Link href="/admin/categories/create">
                                 <Button className="w-full">
                                     <FolderTree className="mr-2 h-4 w-4" />
-                                    Buat Kategori
+                                    Create Category
                                 </Button>
                             </Link>
                             <Link href="/admin/tags/create">
                                 <Button className="w-full">
                                     <Tag className="mr-2 h-4 w-4" />
-                                    Buat Tag
+                                    Create Tag
                                 </Button>
                             </Link>
                             <Link href="/admin/media">
@@ -146,7 +146,7 @@ export default function Dashboard({
                                     <ArrowDown className="h-4 w-4 text-red-500" />
                                 )}
                                 <span className={stats.posts.trend > 0 ? 'text-green-500' : 'text-red-500'}>
-                                    {Math.abs(stats.posts.trend)}% dari bulan lalu
+                                    {Math.abs(stats.posts.trend)}% from the previous month
                                 </span>
                             </div>
                         </CardContent>
@@ -169,7 +169,7 @@ export default function Dashboard({
                                     <ArrowDown className="h-4 w-4 text-red-500" />
                                 )}
                                 <span className={stats.categories.trend > 0 ? 'text-green-500' : 'text-red-500'}>
-                                    {Math.abs(stats.categories.trend)}% dari bulan lalu
+                                    {Math.abs(stats.categories.trend)}% from the previous month
                                 </span>
                             </div>
                         </CardContent>
@@ -183,7 +183,7 @@ export default function Dashboard({
                         <CardContent>
                             <div className="text-2xl font-bold">{stats.tags.total}</div>
                             <div className="text-xs text-muted-foreground mt-1">
-                                Membantu dalam pencarian konten
+                                Help in searching content
                             </div>
                             <div className="mt-3 flex items-center text-xs">
                                 {stats.tags.trend > 0 ? (
@@ -192,7 +192,7 @@ export default function Dashboard({
                                     <ArrowDown className="h-4 w-4 text-red-500" />
                                 )}
                                 <span className={stats.tags.trend > 0 ? 'text-green-500' : 'text-red-500'}>
-                                    {Math.abs(stats.tags.trend)}% dari bulan lalu
+                                    {Math.abs(stats.tags.trend)}% from the previous month
                                 </span>
                             </div>
                         </CardContent>
@@ -206,7 +206,7 @@ export default function Dashboard({
                         <CardContent>
                             <div className="text-2xl font-bold">{stats.media.total}</div>
                             <div className="text-xs text-muted-foreground mt-1">
-                                File media yang diunggah
+                                Uploaded media files
                             </div>
                             <div className="mt-3 flex items-center text-xs">
                                 {stats.media.trend > 0 ? (
@@ -215,7 +215,7 @@ export default function Dashboard({
                                     <ArrowDown className="h-4 w-4 text-red-500" />
                                 )}
                                 <span className={stats.media.trend > 0 ? 'text-green-500' : 'text-red-500'}>
-                                    {Math.abs(stats.media.trend)}% dari bulan lalu
+                                    {Math.abs(stats.media.trend)}% from the previous month
                                 </span>
                             </div>
                         </CardContent>
@@ -233,11 +233,11 @@ export default function Dashboard({
                             {recentPosts.length === 0 ? (
                                 <div className="flex flex-col items-center justify-center py-8">
                                     <FileText className="h-8 w-8 text-gray-400 mb-2" />
-                                    <p className="text-sm text-gray-400 text-center mb-4">Belum ada post</p>
+                                    <p className="text-sm text-gray-400 text-center mb-4">No posts yet</p>
                                     <Link href="/posts/create">
                                         <Button variant="outline" size="sm">
                                             <Plus className="mr-2 h-4 w-4" />
-                                            Buat Post
+                                            Create Post
                                         </Button>
                                     </Link>
                                 </div>
@@ -265,7 +265,7 @@ export default function Dashboard({
                                                     ? 'bg-green-100 text-green-700'
                                                     : 'bg-yellow-100 text-yellow-700'
                                             }`}>
-                                                {post.status === 'published' ? 'Dipublikasi' : 'Draft'}
+                                                {post.status === 'published' ? 'Published' : 'Draft'}
                                             </span>
                                         </div>
                                     </div>
@@ -284,7 +284,7 @@ export default function Dashboard({
                             {recentMedia.length === 0 ? (
                                 <div className="flex flex-col items-center justify-center py-8">
                                     <Image className="h-8 w-8 text-gray-400 mb-2" />
-                                    <p className="text-sm text-gray-400 text-center mb-4">Belum ada media</p>
+                                    <p className="text-sm text-gray-400 text-center mb-4">No media yet</p>
                                     <Link href="/media">
                                         <Button variant="outline" size="sm">
                                             <Plus className="mr-2 h-4 w-4" />
