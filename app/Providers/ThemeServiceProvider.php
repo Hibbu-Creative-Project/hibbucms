@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
+use App\Services\HookService;
 
 class ThemeServiceProvider extends ServiceProvider
 {
@@ -48,15 +49,88 @@ class ThemeServiceProvider extends ServiceProvider
 
         // Add theme path to view finder
         $theme = app('theme');
-        $themePath = base_path("themes/{$theme->folder_name}/views");
 
+        // Loading functions.php from parent theme (if any) and active theme
+        $this->loadThemeFunctions($theme);
+
+        // Using hook to modify theme view path
+        $themePath = apply_filters('theme.view_path_base', base_path("themes/{$theme->folder_name}/views"), $theme);
+
+        // Check if theme has parent
+        $parentTheme = $this->getParentTheme($theme);
+
+        // If theme has parent, add parent path first
+        if ($parentTheme) {
+            $parentThemePath = apply_filters('theme.parent_view_path_base', base_path("themes/{$parentTheme->folder_name}/views"), $parentTheme);
+
+            if (file_exists($parentThemePath)) {
+                $this->loadViewsFrom($parentThemePath, 'parent_theme');
+            }
+        }
+
+        // Then add active theme path (child theme if using parent)
         if (file_exists($themePath)) {
             $this->loadViewsFrom($themePath, 'theme');
         }
 
-        // Register theme assets path
+        // Register theme assets path with hook
+        $assetsPath = apply_filters('theme.assets_path_base', base_path("themes/{$theme->folder_name}/assets"), $theme);
+        $publicPath = apply_filters('theme.public_assets_path', public_path("themes/{$theme->folder_name}/assets"), $theme);
+
         $this->publishes([
-            base_path("themes/{$theme->folder_name}/assets") => public_path("themes/{$theme->folder_name}/assets"),
+            $assetsPath => $publicPath,
         ], 'theme-assets');
+
+        // Run hook after theme is loaded
+        do_action('theme.loaded', $theme);
+    }
+
+    /**
+     * Getting parent theme if current theme is a child theme
+     *
+     * @param Theme $theme
+     * @return Theme|null
+     */
+    protected function getParentTheme(Theme $theme): ?Theme
+    {
+        // Check if theme has parent settings
+        $settings = $theme->settings ?? [];
+
+        if (isset($settings['parent']) && !empty($settings['parent'])) {
+            $parentSlug = $settings['parent'];
+            return Theme::where('folder_name', $parentSlug)->first();
+        }
+
+        return null;
+    }
+
+    /**
+     * Loading functions.php from theme
+     * Loading functions.php from parent theme first (if any)
+     * then loading functions.php from active theme
+     *
+     * @param Theme $theme
+     * @return void
+     */
+    protected function loadThemeFunctions(Theme $theme): void
+    {
+        // Check if theme has parent
+        $parentTheme = $this->getParentTheme($theme);
+
+        // If theme has parent, load functions.php from parent first
+        if ($parentTheme) {
+            $parentFunctionsPath = base_path("themes/{$parentTheme->folder_name}/functions.php");
+
+            if (file_exists($parentFunctionsPath)) {
+                require_once $parentFunctionsPath;
+            }
+        }
+
+        // Then load functions.php from active theme
+        $functionsPath = base_path("themes/{$theme->folder_name}/functions.php");
+
+        if (file_exists($functionsPath)) {
+            require_once $functionsPath;
+        }
     }
 }

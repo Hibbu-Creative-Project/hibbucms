@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Theme extends Model
 {
@@ -54,23 +55,79 @@ class Theme extends Model
 
     public function activate()
     {
-        // Non-aktifkan tema lain
+        // Deactivate other themes
         static::where('is_active', true)->update(['is_active' => false]);
 
-        // Aktifkan tema ini
+        // Activate this theme
         $this->is_active = true;
         $this->save();
 
         return $this;
     }
 
+    /**
+     * Getting view path for specific template
+     * Using hook to allow modification of path
+     *
+     * @param string $view
+     * @return string
+     */
     public function getViewPath($view)
     {
-        return "themes.{$this->folder_name}.views.{$view}";
+        return apply_filters('theme.view_path', "themes.{$this->folder_name}.views.{$view}", $this, $view);
     }
 
+    /**
+     * Getting asset path for specific file
+     * Using hook to allow modification of path
+     *
+     * @param string $path
+     * @return string
+     */
     public function getAssetPath($path)
     {
-        return url("themes/{$this->folder_name}/assets/{$path}");
+        return apply_filters('theme.asset_path', url("themes/{$this->folder_name}/assets/{$path}"), $this, $path);
+    }
+
+    /**
+     * Checking if this theme is a child theme
+     *
+     * @return bool
+     */
+    public function isChildTheme(): bool
+    {
+        $settings = $this->settings ?? [];
+        return isset($settings['parent']) && !empty($settings['parent']);
+    }
+
+    /**
+     * Getting parent theme if this theme is a child theme
+     *
+     * @return Theme|null
+     */
+    public function getParentTheme(): ?Theme
+    {
+        if (!$this->isChildTheme()) {
+            return null;
+        }
+
+        $parentSlug = $this->settings['parent'];
+        return static::where('folder_name', $parentSlug)->first();
+    }
+
+    /**
+     * Getting view path from parent theme
+     *
+     * @param string $view
+     * @return string|null
+     */
+    public function getParentViewPath($view): ?string
+    {
+        $parentTheme = $this->getParentTheme();
+        if (!$parentTheme) {
+            return null;
+        }
+
+        return apply_filters('theme.parent_view_path', "parent_theme::{$view}", $parentTheme, $view);
     }
 }
