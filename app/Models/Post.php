@@ -23,6 +23,7 @@ class Post extends Model
         'featured_image_id',
         'status',
         'published_at',
+        'views',
     ];
 
     protected $casts = [
@@ -84,5 +85,16 @@ class Post extends Model
     public function scopeDraft($query)
     {
         return $query->where('status', 'draft');
+    }
+
+    public function categories()
+    {
+        // Create a relationship that returns the single category as a collection
+        // This maintains compatibility with theme code that expects a many-to-many relationship
+        return $this->hasOne(Category::class, 'id', 'category_id')
+            ->select(['categories.*'])
+            ->withDefault()
+            ->newQuery()
+            ->where('categories.id', $this->category_id);
     }
 }
