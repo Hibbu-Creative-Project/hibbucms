@@ -100,7 +100,7 @@ Before contributing, please read our [Contribution Guidelines](CONTRIBUTING.md).
 
 ### Contributors
 
-<a href="https://github.com/userHibbu-Creative-Projectname/hibbucms/graphs/contributors">
+<a href="https://github.com/Hibbu-Creative-Project/hibbucms/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Hibbu-Creative-Project/hibbucms" />
 </a>
 
