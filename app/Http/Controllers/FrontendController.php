@@ -155,7 +155,7 @@ class FrontendController extends Controller
      */
     public function post($slug)
     {
-        $post = Post::with(['category', 'tags'])
+        $post = Post::with(['category', 'tags', 'user'])
             ->where('slug', $slug)
             ->where('status', 'published')
             ->firstOrFail();
@@ -163,7 +163,19 @@ class FrontendController extends Controller
         // Run action after post is found
         do_action('post_found', $post);
 
-        $relatedPosts = Post::with(['category', 'tags'])
+        // Get previous post
+        $previousPost = Post::where('status', 'published')
+            ->where('published_at', '<', $post->published_at)
+            ->orderBy('published_at', 'desc')
+            ->first();
+
+        // Get next post
+        $nextPost = Post::where('status', 'published')
+            ->where('published_at', '>', $post->published_at)
+            ->orderBy('published_at', 'asc')
+            ->first();
+
+        $relatedPosts = Post::with(['category', 'tags', 'user'])
             ->where('status', 'published')
             ->where('id', '!=', $post->id)
             ->where(function ($query) use ($post) {
@@ -181,6 +193,26 @@ class FrontendController extends Controller
             ->take(apply_filters('related_posts_count', 3))
             ->get();
 
+        // Get categories for sidebar
+        $categories = Category::withCount(['posts' => function ($query) {
+            $query->where('status', 'published');
+        }])->get();
+
+        // Get recent posts for sidebar
+        $recentPosts = Post::with(['category', 'user'])
+            ->where('status', 'published')
+            ->where('id', '!=', $post->id)
+            ->latest('published_at')
+            ->take(5)
+            ->get();
+
+        // Get popular tags for sidebar
+        $popularTags = Tag::withCount(['posts' => function ($query) {
+            $query->where('status', 'published');
+        }])->orderBy('posts_count', 'desc')
+            ->take(10)
+            ->get();
+
         // Run action before rendering single post page
         do_action('before_single_post', $post, $relatedPosts);
 
@@ -188,6 +220,11 @@ class FrontendController extends Controller
         $data = [
             'post' => $post,
             'relatedPosts' => $relatedPosts,
+            'previousPost' => $previousPost,
+            'nextPost' => $nextPost,
+            'categories' => $categories,
+            'recentPosts' => $recentPosts,
+            'popularTags' => $popularTags,
         ];
 
         // Apply filter for data
