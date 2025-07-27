@@ -34,13 +34,15 @@ Route::resource('pages', PageController::class);
 Route::post('pages/{page}/publish', [PageController::class, 'publish'])->name('pages.publish');
 Route::post('pages/{page}/unpublish', [PageController::class, 'unpublish'])->name('pages.unpublish');
 
+
+// Import other route files first
+require __DIR__.'/admin.php';
+require __DIR__.'/settings.php';
+require __DIR__.'/auth.php';
+
+
 // Static page route (catch-all, must be last)
 // Security: Only allow alphanumeric, underscore, and hyphen characters
 Route::get('/{page}', [FrontendController::class, 'staticPage'])
     ->name('static.page')
     ->where('page', '[a-zA-Z0-9_-]+');
-
-
-require __DIR__.'/admin.php';
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';

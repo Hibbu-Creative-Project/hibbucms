@@ -2,7 +2,7 @@
 
 ## Overview
 
-HibbuCMS provides a secure and flexible system for creating custom static pages that are manually coded rather than stored in the database. This system allows developers to create pages like "About Us", "Vision & Mission", "Contact", and other company profile pages using Blade templates.
+HibbuCMS provides a secure and flexible system for creating custom static pages that are manually coded rather than stored in the database. This system allows developers to create pages like "About Us", "Vision & Mission", "Contact", and other static pages using Blade templates.
 
 ## Security Features
 
@@ -52,62 +52,46 @@ Create specific template files in your theme's static pages directory:
 
 ```
 themes/{theme}/views/pages/static/
-├── about.blade.php          # /about
-├── visi-misi.blade.php      # /visi-misi
-├── contact.blade.php        # /contact
-└── services.blade.php       # /services
+├── simple-static.blade.php          # /simple-static
+├── ...
 ```
 
 **Note**: Each page must have its own specific template file.
 
 1. **Create a specific template** for your page:
    ```
-   themes/default/views/pages/static/about.blade.php
+   themes/default/views/pages/static/simple-static.blade.php
    ```
 
 2. **Access the page** via URL:
    ```
-   https://yoursite.com/about
+   https://yoursite.com/simple-static
    ```
 
 ### Method 2: Additional Template Examples
 
 Here are more examples of specific static page templates:
 
-**File**: `themes/default/views/pages/static/services.blade.php`
+**File**: `themes/default/views/pages/static/simple-static.blade.php`
 
 ```blade
 @extends('theme::layouts.app')
 
-@section('title', 'Our Services')
-@section('description', 'Comprehensive services offered by our company')
+@section('title', 'Simple Static Page')
+@section('meta_description', 'This is a simple static page.')
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
-    <div class="max-w-6xl mx-auto">
-        <h1 class="text-4xl font-bold text-gray-900 mb-6 text-center">
-            Our Services
-        </h1>
-        
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h3 class="text-xl font-semibold mb-4">Web Development</h3>
-                <p class="text-gray-600">Custom web applications and websites built with modern technologies.</p>
-            </div>
-            
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h3 class="text-xl font-semibold mb-4">Mobile Apps</h3>
-                <p class="text-gray-600">Native and cross-platform mobile applications for iOS and Android.</p>
-            </div>
-            
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h3 class="text-xl font-semibold mb-4">Consulting</h3>
-                <p class="text-gray-600">Technical consulting and digital transformation services.</p>
-            </div>
-        </div>
-    </div>
+    <h1>Halo Dunia</h1>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    // Add any page-specific JavaScript here
+    console.log('Simple Static Page loaded');
+</script>
+@endpush
 ```
 
 ### Method 3: Hook System
@@ -119,7 +103,7 @@ You can use the hook system to modify static page behavior:
 ```php
 // Modify static page data
 add_filter('static_page_data', function($data, $page) {
-    if ($page === 'about') {
+    if ($page === 'simple-static') {
         $data['company_name'] = 'Your Company Name';
         $data['founded_year'] = '2020';
     }
@@ -147,157 +131,9 @@ add_action('before_static_page', function($page) {
 
 All static page templates receive the following data:
 
-- `$page_slug` - The requested page slug (e.g., "about", "visi-misi")
+- `$page_slug` - The requested page slug (e.g., "simple-static")
 - `$theme` - Current active theme name
 - Additional data from filters and hooks
-
-## Example Implementation
-
-### About Page Template
-
-**File**: `themes/default/views/pages/static/about.blade.php`
-
-```blade
-@extends('theme::layouts.app')
-
-@section('title', 'About Us')
-@section('description', 'Learn more about our company, mission, and values')
-
-@section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="max-w-4xl mx-auto">
-        <h1 class="text-4xl font-bold text-gray-900 mb-8 text-center">
-            About Our Company
-        </h1>
-        
-        <div class="prose max-w-none mb-12">
-            <p class="text-lg text-gray-600 mb-6">
-                We are a leading technology company dedicated to providing innovative solutions 
-                that help businesses grow and succeed in the digital age.
-            </p>
-        </div>
-        
-        <div class="grid md:grid-cols-2 gap-12 mb-12">
-            <div>
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Our Story</h2>
-                <p class="text-gray-600 mb-4">
-                    Founded in 2020, our company started with a simple mission: to bridge 
-                    the gap between technology and business needs.
-                </p>
-                <p class="text-gray-600">
-                    Today, we serve hundreds of clients worldwide, helping them transform 
-                    their digital presence and achieve their goals.
-                </p>
-            </div>
-            
-            <div>
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Our Mission</h2>
-                <p class="text-gray-600 mb-4">
-                    To empower businesses with cutting-edge technology solutions that drive 
-                    growth, efficiency, and innovation.
-                </p>
-                <p class="text-gray-600">
-                    We believe in creating lasting partnerships with our clients and 
-                    delivering exceptional value through our expertise.
-                </p>
-            </div>
-        </div>
-        
-        <div class="bg-blue-50 rounded-lg p-8 text-center">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">Ready to Work With Us?</h2>
-            <p class="text-gray-600 mb-6">
-                Let's discuss how we can help your business achieve its goals.
-            </p>
-            <a href="/contact" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
-                Get In Touch
-            </a>
-        </div>
-    </div>
-</div>
-@endsection
-```
-
-### Vision & Mission Page Template
-
-**File**: `themes/default/views/pages/static/visi-misi.blade.php`
-
-```blade
-@extends('theme::layouts.app')
-
-@section('title', 'Visi & Misi Perusahaan')
-@section('description', 'Visi dan misi perusahaan kami dalam memberikan solusi teknologi terbaik')
-@section('keywords', 'visi, misi, perusahaan, teknologi, inovasi')
-
-@section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="max-w-4xl mx-auto">
-        <h1 class="text-4xl font-bold text-gray-900 mb-8 text-center">
-            Visi & Misi Perusahaan
-        </h1>
-        
-        <div class="grid md:grid-cols-2 gap-12 mb-12">
-            <div class="bg-blue-50 rounded-lg p-8">
-                <h2 class="text-3xl font-bold text-blue-800 mb-6 text-center">Visi</h2>
-                <p class="text-lg text-gray-700 text-center leading-relaxed">
-                    Menjadi perusahaan teknologi terdepan yang memberikan solusi inovatif 
-                    dan berkelanjutan untuk kemajuan bisnis di era digital.
-                </p>
-            </div>
-            
-            <div class="bg-green-50 rounded-lg p-8">
-                <h2 class="text-3xl font-bold text-green-800 mb-6 text-center">Misi</h2>
-                <ul class="text-gray-700 space-y-3">
-                    <li class="flex items-start">
-                        <span class="text-green-600 mr-2">•</span>
-                        Mengembangkan solusi teknologi yang user-friendly dan efisien
-                    </li>
-                    <li class="flex items-start">
-                        <span class="text-green-600 mr-2">•</span>
-                        Memberikan layanan berkualitas tinggi dengan dukungan terbaik
-                    </li>
-                    <li class="flex items-start">
-                        <span class="text-green-600 mr-2">•</span>
-                        Membangun kemitraan jangka panjang dengan klien
-                    </li>
-                    <li class="flex items-start">
-                        <span class="text-green-600 mr-2">•</span>
-                        Berkontribusi pada transformasi digital Indonesia
-                    </li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="bg-gray-50 rounded-lg p-8 mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Nilai-Nilai Perusahaan</h2>
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="text-center">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Inovasi</h3>
-                    <p class="text-gray-600">Selalu mencari cara baru dan kreatif dalam menyelesaikan masalah</p>
-                </div>
-                <div class="text-center">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Integritas</h3>
-                    <p class="text-gray-600">Berkomitmen pada kejujuran dan transparansi dalam setiap tindakan</p>
-                </div>
-                <div class="text-center">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Kolaborasi</h3>
-                    <p class="text-gray-600">Bekerja sama untuk mencapai hasil terbaik bagi semua pihak</p>
-                </div>
-            </div>
-        </div>
-        
-        <div class="text-center">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">Mari Berkolaborasi</h2>
-            <p class="text-gray-600 mb-6">
-                Bergabunglah dengan kami dalam mewujudkan visi digital yang lebih baik.
-            </p>
-            <a href="/contact" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors inline-block">
-                Hubungi Kami
-            </a>
-        </div>
-    </div>
-</div>
-@endsection
-```
 
 ## Best Practices
 
@@ -378,7 +214,7 @@ To debug static page issues:
 4. **Verify template paths**:
    ```php
    // In controller
-   dd(view()->exists('theme::pages.static.about'));
+   dd(view()->exists('theme::pages.static.simple-static'));
    ```
 
 ## Advanced Usage
