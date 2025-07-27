@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![HibbuCMS Logo](/public/logo.svg)
+![HibbuCMS Logo](/public/logo.png)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Laravel](https://img.shields.io/badge/Laravel-12.0-FF2D20?logo=laravel)](https://laravel.com)
