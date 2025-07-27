@@ -255,4 +255,64 @@ class FrontendController extends Controller
 
         return view($template, $data);
     }
+
+    /**
+     * Display custom static page with security validation
+     * Uses dynamic theme system and template hierarchy
+     * Only shows pages that have specific templates, otherwise returns 404
+     *
+     * @param string $page Page slug
+     * @return \Illuminate\View\View
+     */
+    public function staticPage($page)
+    {
+        // Security: Validate page parameter to prevent path traversal attacks
+        if (!preg_match('/^[a-zA-Z0-9_-]+$/', $page)) {
+            abort(404, 'Invalid page format');
+        }
+
+        // Get current active theme dynamically instead of hardcoding
+        $theme = app('theme');
+        
+        // Run action before rendering static page
+        do_action('before_static_page', $page);
+
+        // Prepare data for view
+        $data = [
+            'page_slug' => $page,
+            'theme' => $theme
+        ];
+
+        // Apply filter for static page data
+        $data = apply_filters('static_page_data', $data, $page);
+
+        // Define template hierarchy for static pages (without generic fallbacks)
+        // Only look for specific page templates, not generic ones
+        $templates = [
+            "pages.static.{$page}",
+            "pages.{$page}",
+            "static.{$page}"
+        ];
+
+        // Apply filter for template hierarchy
+        $templates = apply_filters('static_page_templates', $templates, $page);
+
+        // Find appropriate template using TemplateHierarchy service
+        $template = TemplateHierarchy::locateTemplate($templates, $theme);
+
+        // If template found, render it
+        if ($template) {
+            return view($template, $data);
+        }
+
+        // Fallback: try theme namespace for specific page only
+        $fallbackPath = "theme::pages.static.{$page}";
+        if (view()->exists($fallbackPath)) {
+            return view($fallbackPath, $data);
+        }
+
+        // If no specific template found, return 404
+        // This ensures only pages with actual templates are displayed
+        abort(404, "Static page not found: {$page}");
+    }
 }
