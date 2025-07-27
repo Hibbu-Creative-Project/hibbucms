@@ -1,14 +1,28 @@
-import AppLogoIcon from './app-logo-icon';
+import { useSidebar } from '@/components/ui/sidebar';
 
+/**
+ * AppLogo component that displays different logos based on sidebar state
+ * Shows full logo when expanded and icon only when collapsed
+ */
 export default function AppLogo() {
+    const { state } = useSidebar();
+    const isCollapsed = state === 'collapsed';
+
     return (
         <>
-            <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-md">
-                <AppLogoIcon className="size-5 fill-current text-white dark:text-black" />
-            </div>
-            <div className="ml-1 grid flex-1 text-left text-sm">
-                <span className="mb-0.5 truncate leading-none font-semibold">Hibbu CMS</span>
-            </div>
+            {isCollapsed ? (
+                <img
+                    src="/logo-icon.svg"
+                    alt="Hibbu CMS Icon"
+                    className="h-12 w-auto text-white"
+                />
+            ) : (
+                <img
+                    src="/logo.svg"
+                    alt="Hibbu CMS Logo"
+                    className="h-42 w-auto text-white"
+                />
+            )}
         </>
     );
 }
