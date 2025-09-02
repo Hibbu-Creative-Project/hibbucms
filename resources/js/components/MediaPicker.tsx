@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ImageIcon, UploadIcon } from 'lucide-react';
+import { sanitizeUrl } from '@/utils/urlValidator';
 
 interface Media {
     id: number;
@@ -23,7 +24,7 @@ interface MediaPickerProps {
 export default function MediaPicker({ media, selectedMediaId, onSelect, onUpload, featuredImageUrl }: MediaPickerProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [activeTab, setActiveTab] = useState('upload');
-    const [previewUrl, setPreviewUrl] = useState<string | undefined>(featuredImageUrl);
+    const [previewUrl, setPreviewUrl] = useState<string | undefined>(sanitizeUrl(featuredImageUrl || ''));
 
     useEffect(() => {
         // Cleanup old preview URL when component unmounts or when new file is selected
@@ -55,7 +56,7 @@ export default function MediaPicker({ media, selectedMediaId, onSelect, onUpload
         if (previewUrl && previewUrl !== featuredImageUrl) {
             URL.revokeObjectURL(previewUrl);
         }
-        setPreviewUrl(url);
+        setPreviewUrl(sanitizeUrl(url || ''));
         onSelect(mediaId);
         setIsOpen(false);
     };
@@ -87,7 +88,7 @@ export default function MediaPicker({ media, selectedMediaId, onSelect, onUpload
                 {previewUrl ? (
                     <div className="relative group">
                         <img
-                            src={previewUrl}
+                            src={sanitizeUrl(previewUrl)}
                             alt="Featured"
                             className="w-[200px] h-[150px] object-cover rounded-lg border border-gray-700"
                         />
