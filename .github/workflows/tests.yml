@@ -57,5 +57,8 @@ jobs:
       - name: Run Migrations
         run: php artisan migrate --force
 
+      - name: Seed Database
+        run: php artisan db:seed --force
+
       - name: Tests
         run: ./vendor/bin/pest

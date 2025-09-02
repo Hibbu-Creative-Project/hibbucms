@@ -49,10 +49,13 @@ class ThemeServiceProvider extends ServiceProvider
     {
         try {
             if (!Schema::hasTable('themes')) {
+                // Register default theme namespace even when database is not available
+                $this->registerDefaultThemeNamespace();
                 return;
             }
         } catch (\Exception $e) {
-            // if database not found, skip bootstrap
+            // Jika database tidak tersedia, register default theme namespace
+            $this->registerDefaultThemeNamespace();
             return;
         }
 
@@ -85,6 +88,12 @@ class ThemeServiceProvider extends ServiceProvider
         // Then add active theme path (child theme if using parent)
         if (file_exists($themePath)) {
             $this->loadViewsFrom($themePath, 'theme');
+        } else {
+            // Fallback: register default theme path for testing
+            $defaultThemePath = base_path('themes/default/views');
+            if (file_exists($defaultThemePath)) {
+                $this->loadViewsFrom($defaultThemePath, 'theme');
+            }
         }
 
         // Register theme assets path with hook
@@ -145,6 +154,17 @@ class ThemeServiceProvider extends ServiceProvider
 
         if (file_exists($functionsPath)) {
             require_once $functionsPath;
+        }
+    }
+
+    /**
+     * Register default theme namespace for fallback
+     */
+    protected function registerDefaultThemeNamespace(): void
+    {
+        $defaultThemePath = base_path('themes/default/views');
+        if (file_exists($defaultThemePath)) {
+            $this->loadViewsFrom($defaultThemePath, 'theme');
         }
     }
 }
