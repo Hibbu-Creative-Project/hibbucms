@@ -49,10 +49,13 @@ jobs:
       - name: Set Testing Environment
         run: |
           echo "DB_CONNECTION=sqlite" >> .env
-          echo "DB_DATABASE=:memory:" >> .env
+          echo "DB_DATABASE=/tmp/database.sqlite" >> .env
           echo "CACHE_STORE=array" >> .env
           echo "SESSION_DRIVER=array" >> .env
           echo "QUEUE_CONNECTION=sync" >> .env
+
+      - name: Create Database File
+        run: touch /tmp/database.sqlite
 
       - name: Generate Application Key
         run: php artisan key:generate
