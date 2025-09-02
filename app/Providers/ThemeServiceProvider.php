@@ -17,19 +17,28 @@ class ThemeServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton('theme', function ($app) {
-            if (!Schema::hasTable('themes')) {
+            try {
+                if (!Schema::hasTable('themes')) {
+                    return new Theme([
+                        'name' => 'Default Theme',
+                        'folder_name' => 'default',
+                        'is_active' => true
+                    ]);
+                }
+
+                return Theme::getActive() ?? new Theme([
+                    'name' => 'Default Theme',
+                    'folder_name' => 'default',
+                    'is_active' => true
+                ]);
+            } catch (\Exception $e) {
+                // if database not found, return default theme
                 return new Theme([
                     'name' => 'Default Theme',
                     'folder_name' => 'default',
                     'is_active' => true
                 ]);
             }
-
-            return Theme::getActive() ?? new Theme([
-                'name' => 'Default Theme',
-                'folder_name' => 'default',
-                'is_active' => true
-            ]);
         });
     }
 
@@ -38,7 +47,12 @@ class ThemeServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (!Schema::hasTable('themes')) {
+        try {
+            if (!Schema::hasTable('themes')) {
+                return;
+            }
+        } catch (\Exception $e) {
+            // if database not found, skip bootstrap
             return;
         }
 
