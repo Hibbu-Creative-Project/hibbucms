@@ -131,7 +131,6 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
         });
         Route::get('/general', [SettingsController::class, 'general'])->name('admin.settings.general');
         Route::get('/seo', [SettingsController::class, 'seo'])->name('admin.settings.seo');
-        Route::put('/{group}', [SettingsController::class, 'update'])->name('admin.settings.update');
         Route::post('/cache/clear', [SettingsController::class, 'clearCache'])->name('admin.settings.clear-cache');
 
         // Route::redirect('settings', 'admin/settings/profile');
@@ -141,6 +140,9 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
 
         Route::get('/password', [PasswordController::class, 'edit'])->name('password.edit');
         Route::put('/password', [PasswordController::class, 'update'])->name('password.update');
+        
+        // This should be last to avoid conflicts with specific routes
+        Route::put('/{group}', [SettingsController::class, 'update'])->name('admin.settings.update');
 
         Route::get('/appearance', function () {
             return Inertia::render('Admin/Settings/Appearance');
