@@ -42,7 +42,7 @@ export function AppearanceProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         setMounted(true);
         applyTheme(appearance);
-    }, []);
+    }, [appearance]);
 
     // Handle system theme changes
     useEffect(() => {

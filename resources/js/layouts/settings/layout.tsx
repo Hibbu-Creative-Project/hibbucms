@@ -30,13 +30,13 @@ const sidebarNavItems: NavItem[] = [
 ];
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
+    // Get current URL from Inertia page props
+    const { url } = usePage();
+    
     // When server-side rendering, we only render the layout on the client...
     if (typeof window === 'undefined') {
         return null;
     }
-
-    // Get current URL from Inertia page props
-    const { url } = usePage();
 
     return (
         <div className="px-4 py-6">

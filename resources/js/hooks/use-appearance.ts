@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 /**
  * Custom hook for managing application appearance/theme
@@ -45,12 +45,12 @@ export function useAppearance() {
     /**
      * Resolve the actual theme based on appearance setting
      */
-    const resolveTheme = (appearanceSetting: 'light' | 'dark' | 'system'): 'light' | 'dark' => {
+    const resolveTheme = useCallback((appearanceSetting: 'light' | 'dark' | 'system'): 'light' | 'dark' => {
         if (appearanceSetting === 'system') {
             return getSystemTheme();
         }
         return appearanceSetting;
-    };
+    }, []);
 
     /**
      * Apply theme to document
@@ -85,7 +85,7 @@ export function useAppearance() {
         const resolved = resolveTheme(initialAppearance);
         setResolvedTheme(resolved);
         applyTheme(resolved);
-    }, []);
+    }, [resolveTheme]);
 
     // Listen for system theme changes
     useEffect(() => {

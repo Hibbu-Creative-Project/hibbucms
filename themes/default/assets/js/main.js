@@ -1,3 +1,7 @@
+// Import required libraries
+import hljs from 'highlight.js';
+import bootstrap from 'bootstrap';
+
 // Handle mobile menu
 document.addEventListener('DOMContentLoaded', function () {
     const menuButton = document.querySelector('[data-menu-button]');
@@ -54,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // Initialize Bootstrap tooltips
 document.addEventListener('DOMContentLoaded', function () {
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 });
@@ -98,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var lazyImages = [].slice.call(document.querySelectorAll('img[data-src]'));
 
     if ('IntersectionObserver' in window) {
-        let lazyImageObserver = new IntersectionObserver(function (entries, observer) {
+        let lazyImageObserver = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
                 if (entry.isIntersecting) {
                     let lazyImage = entry.target;
