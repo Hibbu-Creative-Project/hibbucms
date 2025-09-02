@@ -176,6 +176,34 @@ return [
 
     /* Cache-specific settings */
 
+    /*
+     * Teams feature allows you to scope permissions and roles per team.
+     * This is disabled by default.
+     */
+
+    'teams' => false,
+
+    /*
+     * Passport client credentials grant
+     * This feature is disabled by default.
+     */
+
+    'use_passport_client_credentials' => false,
+
+    /*
+     * When set to true, the method for checking permissions will be registered on the gate.
+     * Set this to false, if you want to implement custom logic for checking permissions.
+     */
+
+    'register_permission_check_method' => true,
+
+    /*
+     * Teams feature allows you to scope permissions and roles per team.
+     * This is disabled by default.
+     */
+
+    'testing' => true,
+
     'cache' => [
 
         /*
