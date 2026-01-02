@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Post\StorePostRequest;
+use App\Http\Requests\Post\UpdatePostRequest;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
@@ -10,7 +12,6 @@ use App\Models\Media;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -84,20 +85,9 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'excerpt' => 'nullable|string',
-            'category_id' => 'required|exists:categories,id',
-            'featured_image' => 'nullable|file|image|max:10240',
-            'featured_image_id' => 'nullable|exists:media,id',
-            'status' => 'required|in:draft,published,scheduled',
-            'published_at' => 'nullable|required_if:status,scheduled|date',
-            'tags' => 'nullable|array',
-            'tags.*' => 'exists:tags,id'
-        ]);
+        $validated = $request->validated();
 
         $validated['user_id'] = auth()->id();
         $validated['slug'] = Str::slug($validated['title']);
@@ -156,20 +146,9 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'excerpt' => 'nullable|string',
-            'category_id' => 'required|exists:categories,id',
-            'featured_image' => 'nullable|file|image|max:10240',
-            'featured_image_id' => 'nullable|exists:media,id',
-            'status' => 'required|in:draft,published,scheduled',
-            'published_at' => 'nullable|required_if:status,scheduled|date',
-            'tags' => 'nullable|array',
-            'tags.*' => 'exists:tags,id'
-        ]);
+        $validated = $request->validated();
 
         $validated['slug'] = Str::slug($validated['title']);
 
@@ -199,9 +178,12 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        if ($post->featured_image_id) {
-            Storage::disk('public')->delete($post->featured_image_id);
-        }
+        // Load the featured image relationship if not already loaded
+        $post->load('featuredImage');
+
+        // Delete the featured image file if it exists
+        // Note: We don't delete the Media record since it might be used by other posts
+        // If you want to delete orphaned media, consider a separate cleanup command
 
         $post->delete();
 

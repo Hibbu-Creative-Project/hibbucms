@@ -87,14 +87,16 @@ class Post extends Model
         return $query->where('status', 'draft');
     }
 
-    public function categories()
+    /**
+     * Get categories as a Collection for theme compatibility.
+     * This wraps the single category relationship in a Collection
+     * to maintain compatibility with theme code that expects multiple categories.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getCategoriesAttribute()
     {
-        // Create a relationship that returns the single category as a collection
-        // This maintains compatibility with theme code that expects a many-to-many relationship
-        return $this->hasOne(Category::class, 'id', 'category_id')
-            ->select(['categories.*'])
-            ->withDefault()
-            ->newQuery()
-            ->where('categories.id', $this->category_id);
+        $category = $this->category;
+        return $category ? collect([$category]) : collect();
     }
 }

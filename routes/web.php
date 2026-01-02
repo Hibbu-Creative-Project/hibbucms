@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
-use App\Http\Controllers\PageController;
 use App\Http\Controllers\FrontendController;
 
 // Frontend Routes
@@ -16,7 +15,25 @@ Route::get('/pages/{slug}', [FrontendController::class, 'page'])->name('page');
 
 // Route untuk mengakses asset tema
 Route::get('themes/{theme}/{path}', function ($theme, $path) {
+    // Security: Validate theme name and path to prevent path traversal attacks
+    if (!preg_match('/^[a-zA-Z0-9_-]+$/', $theme)) {
+        abort(404, 'Invalid theme name');
+    }
+
+    // Security: Prevent path traversal by checking for '..' and absolute path patterns
+    if (preg_match('/\.\./', $path) || str_starts_with($path, '/')) {
+        abort(403, 'Access denied');
+    }
+
     $filePath = base_path("themes/{$theme}/{$path}");
+
+    // Security: Verify the resolved path is still within the themes directory
+    $realPath = realpath($filePath);
+    $themesDir = realpath(base_path('themes'));
+
+    if (!$realPath || !$themesDir || !str_starts_with($realPath, $themesDir)) {
+        abort(404);
+    }
 
     if (!File::exists($filePath)) {
         abort(404);
@@ -29,10 +46,7 @@ Route::get('themes/{theme}/{path}', function ($theme, $path) {
     ]);
 })->where('path', '.*');
 
-// Admin routes for page management
-Route::resource('pages', PageController::class);
-Route::post('pages/{page}/publish', [PageController::class, 'publish'])->name('pages.publish');
-Route::post('pages/{page}/unpublish', [PageController::class, 'unpublish'])->name('pages.unpublish');
+
 
 
 // Import other route files first
