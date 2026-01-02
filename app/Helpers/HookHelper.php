@@ -70,7 +70,7 @@ if (!function_exists('remove_action')) {
      * @param int|null $priority Priority to be removed, null to remove all
      * @return void
      */
-    function remove_action(string $hook, callable $callback = null, int $priority = null): void
+    function remove_action(string $hook, ?callable $callback = null, ?int $priority = null): void
     {
         HookService::removeAction($hook, $callback, $priority);
     }
@@ -85,7 +85,7 @@ if (!function_exists('remove_filter')) {
      * @param int|null $priority Priority to be removed, null to remove all
      * @return void
      */
-    function remove_filter(string $hook, callable $callback = null, int $priority = null): void
+    function remove_filter(string $hook, ?callable $callback = null, ?int $priority = null): void
     {
         HookService::removeFilter($hook, $callback, $priority);
     }

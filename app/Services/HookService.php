@@ -92,7 +92,7 @@ class HookService
      * @param int|null $priority Priority to be removed, null to remove all priorities
      * @return void
      */
-    public static function removeAction(string $hook, callable $callback = null, int $priority = null): void
+    public static function removeAction(string $hook, ?callable $callback = null, ?int $priority = null): void
     {
         self::removeHook('actions', $hook, $callback, $priority);
     }
@@ -105,7 +105,7 @@ class HookService
      * @param int|null $priority Priority to be removed, null to remove all priorities
      * @return void
      */
-    public static function removeFilter(string $hook, callable $callback = null, int $priority = null): void
+    public static function removeFilter(string $hook, ?callable $callback = null, ?int $priority = null): void
     {
         self::removeHook('filters', $hook, $callback, $priority);
     }
@@ -119,7 +119,7 @@ class HookService
      * @param int|null $priority Priority to be removed
      * @return void
      */
-    protected static function removeHook(string $type, string $hook, callable $callback = null, int $priority = null): void
+    protected static function removeHook(string $type, string $hook, ?callable $callback = null, ?int $priority = null): void
     {
         $storage = $type === 'actions' ? 'actions' : 'filters';
 
